@@ -1,26 +1,21 @@
 #pragma once
 
+#include <iostream>
+
 
 class Engine {
 public:
-    Engine() {}
-    ~Engine() {}
+    Engine() {
+        std::cout << "Engine created...\n";
+    }
+    ~Engine() {
+        std::cout << "Engine destroyed.\n";
+    }
 
-    // Engine(const Engine&) = delete;
-    // Engine& operator=(const Engine&) = delete;
-    // Engine(Engine&&) = delete;
-    // Engine& operator=(Engine&&) = delete;
+    bool initialize();
+    void terminate();
 
-    // static Engine& instance() {
-    //     static Engine engine;
-    //     return engine;
-    // }
-
-
-    void Run();
-    void Stop();
-
-    void Tick(float dt);
+    void run();
 
     // bool bFixedStep{false};
 };

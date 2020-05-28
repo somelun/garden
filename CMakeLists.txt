@@ -1,24 +1,34 @@
-cmake_minimum_required(VERSION 3.1..3.15)
+cmake_minimum_required(VERSION 3.10)
 
-project(sandbox VERSION 0.1 LANGUAGES CXX)
+project(sandbox VERSION 0.1 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platform.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
+    # ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
+    # ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/window.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/device.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/application.h
 )
 
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
 )
 
 if(APPLE)
     set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/osx.mm)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/device.mm)
 endif(APPLE)
+
 
 # message(${SRC})
 
-add_executable(sandbox ${SOURCES} ${HEADERS})
+set(TARGET sandbox)
+
+add_executable(${TARGET} ${SOURCES} ${HEADERS})
+
+if(APPLE)
+    target_link_libraries(${TARGET} PRIVATE "-framework Cocoa")
+endif()

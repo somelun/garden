@@ -1,12 +1,90 @@
 #include "engine.h"
 #include <cstdint>
 #include <chrono>
-#include <thread>
 
+// remove these later please
+#include <thread>
 #include <iostream>
 
+// #include "../platforms/window.h"
 
-void Engine::Run() {
+
+template <typename F>
+struct privDefer {
+    F f;
+    privDefer(F f) : f(f) {}
+    ~privDefer() {
+        f();
+    }
+};
+
+template <typename F>
+privDefer<F> defer_func(F f) {
+    return privDefer<F>(f);
+}
+
+#define DEFER_1(x, y) x##y
+#define DEFER_2(x, y) DEFER_1(x, y)
+#define DEFER_3(x)    DEFER_2(x, __COUNTER__)
+#define defer(code)   auto DEFER_3(_defer_) = defer_func([&](){code;})
+
+
+// typedef void (*callback_function)(void);
+
+// class Defer {
+// public:
+//     Defer(void *c) : callback(c) {}
+//     ~Defer() {
+//         callback();
+
+//         std::cout << "asdfsdfdsfds\n";
+//     }
+// private:
+//      void *callback;
+// };
+
+bool Engine::initialize() {
+
+    // Window* window = new Window();
+
+    // uint16_t time = 0;
+    // int fps = 0;
+
+    // bool bRunning = true;
+    // while (bRunning) {
+    //     auto start = std::chrono::high_resolution_clock::now();
+
+    //     // actual job is here
+    //     std::this_thread::sleep_for(std::chrono::milliseconds(1));
+
+    //     auto finish = std::chrono::high_resolution_clock::now();
+
+    //     time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
+    //     fps++;
+
+    //     if (time > 1000) {
+    //         std::cout << fps << " frames per second;\n";
+    //         time -= 1000;
+    //         fps = 0;
+    //     }
+    // }
+
+    // Defer d = Defer(Engine::Tick);
+
+    // defer(Tick());
+    std::cout << "12312321321\n";
+
+
+    return true;
+}
+
+void Engine::terminate() {
+    //
+}
+
+void Engine::run() {
+    std::cout << "tick\n";
+
     uint16_t time = 0;
     int fps = 0;
 
@@ -14,7 +92,7 @@ void Engine::Run() {
     while (bRunning) {
         auto start = std::chrono::high_resolution_clock::now();
 
-        // actual jos is here
+        // actual job is here
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         auto finish = std::chrono::high_resolution_clock::now();
@@ -28,16 +106,6 @@ void Engine::Run() {
             fps = 0;
         }
     }
-
-
-}
-
-void Engine::Stop() {
-    //
-}
-
-void Engine::Tick(float dt) {
-    //
 }
 
 // double lastTime = getCurrentTime();
