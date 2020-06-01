@@ -6,9 +6,12 @@
 
 // window implementation declaration
 class window_impl_t {
-private:
+public:
     NSWindow* handler;
 };
+
+// some information aboud window resize
+// https://developer.apple.com/documentation/appkit/nswindowdelegate
 
 
 // objective-c stuff to respond to events,
@@ -17,18 +20,7 @@ private:
 @end
 
 @implementation WindowDelegate {
-    // window_t *_window;
 }
-
-// - (instancetype)initWithWindow:(window_t *)window {
-//     self = [super init];
-//     if (self != nil) {
-//         _window = window;
-//     }
-//     return self;
-// }
-
-// windowWillClose:
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
     (void)sender;
@@ -49,7 +41,6 @@ private:
 @end
 
 @implementation BufferView {
-    // window_t *_window;
 }
 
 - (void)drawRect:(NSRect)rect {
@@ -57,35 +48,43 @@ private:
     NSRectFill([self bounds]);
 }
 
+- (void)mouseDown:(NSEvent *)event {
+}
+
+- (void)mouseUp:(NSEvent *)event {
+}
+
 @end
 
-static NSAutoreleasePool* globalAutoreleasePool = nullptr;
+// static NSAutoreleasePool* globalAutoreleasePool = nullptr;
 
 // public window class implementation
-Application::Application () {
+Application::Application() {
+    std::cout << "Application\n";
     if (NSApp == nil) {
-        globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
+        // globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
         [NSApplication sharedApplication];
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
-        // [NSApp finishLaunching];
+        //
+
+        [NSApp finishLaunching];
     }
 }
 
-// window_impl_t* Application::createWindow() {
-//     return nullptr;
-// }
-
 Application::~Application () {
-    // delete window_impl;
-}
-
-void Application::run() {
-    [NSApp run];
+    std::cout << "~Application\n";
+    if (window_impl != nullptr) {
+        delete window_impl;
+    }
 }
 
 // window implementation implementation
 void Application::createWindow(const char* title, uint16_t width, uint16_t height) {
+    if (window_impl == nullptr) {
+        window_impl = new window_impl_t();
+    }
+
     NSRect rect = NSMakeRect(0, 0, width, height);
 
     NSUInteger mask = NSWindowStyleMaskTitled
@@ -93,21 +92,34 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
                     | NSWindowStyleMaskMiniaturizable
                     | NSWindowStyleMaskResizable;
 
-    NSWindow* handler = [[NSWindow alloc] initWithContentRect:rect
+    window_impl->handler = [[NSWindow alloc] initWithContentRect:rect
                                           styleMask:mask
                                             backing:NSBackingStoreBuffered
                                               defer:NO];
-    assert(handler != nil);
-    [handler setTitle:[NSString stringWithUTF8String:title]];
+    assert(window_impl->handler != nil);
+    [window_impl->handler setTitle:[NSString stringWithUTF8String:title]];
 
     WindowDelegate* delegate = [[WindowDelegate alloc] init];
     assert(delegate != nil);
-    [handler setDelegate:delegate];
+    [window_impl->handler setDelegate:delegate];
 
     BufferView* view = [[[BufferView alloc] init] autorelease];
     assert(view != nil);
-    [handler setContentView:view];
-    [handler makeFirstResponder:view];
+    [window_impl->handler setContentView:view];
+    [window_impl->handler makeFirstResponder:view];
 
-    [handler makeKeyAndOrderFront:nil];
+    [window_impl->handler makeKeyAndOrderFront:nil];
+}
+
+void Application::handle_event() {
+    @autoreleasepool {
+        NSEvent* event = nil;
+        do {
+            event = [NSApp nextEventMatchingMask:NSEventMaskAny
+                                       untilDate:[NSDate distantPast]
+                                          inMode:NSDefaultRunLoopMode
+                                         dequeue:YES];
+            [NSApp sendEvent:event];
+        } while(event);
+    }
 }

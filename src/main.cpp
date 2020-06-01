@@ -1,29 +1,12 @@
-#include <iostream>
+// #include "platforms/application.h"
+
 #include "engine/engine.h"
-// #include "platforms/window.h"
 
-#include "platforms/device.h"
-
-#include "platforms/application.h"
+#include <iostream>
 
 int main(int argc, char *argv[]) {
-
-    std::cout << "Hollow world\n";
-
-    Application application;
-    application.createWindow("empty window", 640, 480);
-    application.run();
-
-    // Outlaw::MacDevice* device = new Outlaw::MacDevice();
-    // device->Run();
-
-    // platform_initialize();
-
-//    bool f = engine.initialize();
-//    if (f) {
-//        engine.run();
-//        // std::cout << "!!!!!!!!!!!!!!\n";
-//    }
+    Engine engine;
+    engine.start();
 
     return 0;
 }
@@ -32,4 +15,12 @@ int main(int argc, char *argv[]) {
 // g++ test.mm -framework Cocoa
 // mkdir -p cli.app/Contents/MacOS
 // cp a.out cli.app/Contents/MacOS/cli
-// and then run cli.app/Contents/MacOS/cli from the command line, your process will show up as a running application.
+// and then run cli.app/Contents/MacOS/cli from the command line,
+// your process will show up as a running application.
+
+
+// engine
+// in constructor we create application, render and all other what we need
+// if all good, we can run loop and also before the loop we can check how many
+// windows do we have right now. if less then 1, then we create one window and
+// run loop for this window. sounds good?

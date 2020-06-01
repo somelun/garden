@@ -1,21 +1,17 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 
 class Engine {
 public:
-    Engine() {
-        std::cout << "Engine created...\n";
-    }
-    ~Engine() {
-        std::cout << "Engine destroyed.\n";
-    }
+    Engine();
+    ~Engine();
 
-    bool initialize();
-    void terminate();
+    void start();
+private:
+    void tick();
 
-    void run();
-
-    // bool bFixedStep{false};
+    class Application* application;
 };
