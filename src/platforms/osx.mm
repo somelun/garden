@@ -90,7 +90,7 @@ Application::~Application () {
     }
 }
 
-// window implementation implementation
+// window implementation
 void Application::createWindow(const char* title, uint16_t width, uint16_t height) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
