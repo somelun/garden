@@ -1,13 +1,16 @@
-#include "application.h"
 #import <Cocoa/Cocoa.h>
+
+#include "application.h"
+#include "../engine/buffer.h"
 
 #include <iostream>
 
 
-// window implementation declaration
+// os x window representation
 class window_impl_t {
 public:
     NSWindow* handler;
+    Buffer* buffer;
 };
 
 // some information aboud window resize
@@ -41,11 +44,37 @@ public:
 @end
 
 @implementation BufferView {
+    window_impl_t* window_;
+}
+
+- (instancetype)initWithWindow:(window_impl_t *)in_window {
+    self = [super init];
+    if (self != nil) {
+        window_ = in_window;
+    }
+    return self;
 }
 
 - (void)drawRect:(NSRect)rect {
-    [[NSColor grayColor] set];
-    NSRectFill([self bounds]);
+    // [[NSColor grayColor] set];
+    // NSRectFill([self bounds]);
+
+    Buffer* buffer = window_->buffer;
+
+    NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
+            initWithBitmapDataPlanes:&(buffer->data)
+                          pixelsWide:100
+                          pixelsHigh:100
+                       bitsPerSample:8
+                     samplesPerPixel:3
+                            hasAlpha:NO
+                            isPlanar:NO
+                      colorSpaceName:NSCalibratedRGBColorSpace
+                         bytesPerRow:400
+                        bitsPerPixel:32] autorelease];
+    NSImage *nsimage = [[[NSImage alloc] init] autorelease];
+    [nsimage addRepresentation:image_rep];
+    [nsimage drawInRect:rect];
 }
 
 - (void)mouseDown:(NSEvent *)event {
@@ -114,12 +143,16 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     assert(delegate != nil);
     [window_impl->handler setDelegate:delegate];
 
-    BufferView* view = [[[BufferView alloc] init] autorelease];
+    BufferView* view = [[[BufferView alloc] initWithWindow:window_impl] autorelease];
     assert(view != nil);
     [window_impl->handler setContentView:view];
     [window_impl->handler makeFirstResponder:view];
 
     [window_impl->handler makeKeyAndOrderFront:nil];
+}
+
+void Application::drawBuffer(class Buffer& buffer) {
+    //
 }
 
 void Application::handle_event() {
