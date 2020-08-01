@@ -7,6 +7,9 @@ public:
     //     return data;
     // }
 
+    Buffer();
+    ~Buffer();
+
     unsigned char* data;
 private:
     uint16_t width;

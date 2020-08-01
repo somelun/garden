@@ -56,9 +56,6 @@ public:
 }
 
 - (void)drawRect:(NSRect)rect {
-    // [[NSColor grayColor] set];
-    // NSRectFill([self bounds]);
-
     Buffer* buffer = window_->buffer;
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
@@ -72,9 +69,10 @@ public:
                       colorSpaceName:NSCalibratedRGBColorSpace
                          bytesPerRow:400
                         bitsPerPixel:32] autorelease];
-    NSImage *nsimage = [[[NSImage alloc] init] autorelease];
-    [nsimage addRepresentation:image_rep];
-    [nsimage drawInRect:rect];
+
+    NSImage *image = [[[NSImage alloc] init] autorelease];
+    [image addRepresentation:image_rep];
+    [image drawInRect:rect];
 }
 
 - (void)mouseDown:(NSEvent *)event {
@@ -125,6 +123,8 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
         window_impl = new window_impl_t();
     }
 
+    window_impl->buffer = new Buffer();
+
     NSRect rect = NSMakeRect(0, 0, width, height);
 
     NSUInteger mask = NSWindowStyleMaskTitled
@@ -149,10 +149,6 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     [window_impl->handler makeFirstResponder:view];
 
     [window_impl->handler makeKeyAndOrderFront:nil];
-}
-
-void Application::drawBuffer(class Buffer& buffer) {
-    //
 }
 
 void Application::handle_event() {

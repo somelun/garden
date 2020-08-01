@@ -7,8 +7,6 @@ public:
 
     void createWindow(const char* title, uint16_t width, uint16_t height);
 
-    void drawBuffer(class Buffer& buffer);
-
     void handle_event();
 
 private:
