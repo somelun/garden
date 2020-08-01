@@ -34,9 +34,11 @@ void Engine::tick() {
         auto start = std::chrono::high_resolution_clock::now();
 
         // actual job is here
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
         auto finish = std::chrono::high_resolution_clock::now();
+
+        application->test_update();
 
         time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
         fps++;

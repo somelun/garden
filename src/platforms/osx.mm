@@ -151,6 +151,11 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     [window_impl->handler makeKeyAndOrderFront:nil];
 }
 
+void Application::test_update() {
+    window_impl->buffer->update();
+    [[window_impl->handler contentView] setNeedsDisplay:YES];
+}
+
 void Application::handle_event() {
     @autoreleasepool {
         NSEvent* event = nil;

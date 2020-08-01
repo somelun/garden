@@ -10,6 +10,8 @@ public:
     Buffer();
     ~Buffer();
 
+    void update();
+
     unsigned char* data;
 private:
     uint16_t width;

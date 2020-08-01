@@ -11,8 +11,9 @@ Buffer::Buffer() {
 
     data = (unsigned char*)malloc(sizeof(unsigned char*) * size);
 
-    for (size_t i = 0; i < size / 4; i += 4) {
-        data[i] = 255;
+    size /= 4;
+    for (size_t i = 0; i < size; i += 4) {
+        data[i] = 0;
         data[i + 1] = 0;
         data[i + 2] = 0;
         data[i + 3] = 255;
@@ -21,4 +22,11 @@ Buffer::Buffer() {
 
 Buffer::~Buffer() {
 
+}
+
+void Buffer::update() {
+    size_t size = width * height / 4;
+    for (size_t i = 0; i < size; i += 4) {
+        data[i] += 1;
+    }
 }

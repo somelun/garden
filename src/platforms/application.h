@@ -7,6 +7,8 @@ public:
 
     void createWindow(const char* title, uint16_t width, uint16_t height);
 
+    void test_update();
+
     void handle_event();
 
 private:
