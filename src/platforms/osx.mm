@@ -152,7 +152,6 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
 }
 
 void Application::test_update() {
-    window_impl->buffer->update();
     [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
@@ -167,4 +166,8 @@ void Application::handle_event() {
             [NSApp sendEvent:event];
         } while(event);
     }
+}
+
+Buffer* Application::getBuffer() {
+    return window_impl->buffer;
 }

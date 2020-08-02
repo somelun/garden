@@ -1,6 +1,8 @@
 #include "engine.h"
 #include "../platforms/application.h"
 #include <chrono>
+#include "scene/base_scene.h"
+#include "buffer.h"
 
 
 // TODO: remove these later please
@@ -29,6 +31,8 @@ void Engine::tick() {
     uint16_t time = 0;
     int fps = 0;
 
+    BaseScene* scene = new BaseScene();
+
     bool bRunning = true;
     while (bRunning) {
         auto start = std::chrono::high_resolution_clock::now();
@@ -38,6 +42,7 @@ void Engine::tick() {
 
         auto finish = std::chrono::high_resolution_clock::now();
 
+        scene->fill_buffer(*application->getBuffer());
         application->test_update();
 
         time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
@@ -51,7 +56,12 @@ void Engine::tick() {
 
         application->handle_event();
     }
+
+    delete scene;
 }
+
+
+// i create scene, scene can fill the buffer, so I should delegate all job to scene, right?
 
 // double lastTime = getCurrentTime();
 // while (true)

@@ -1,4 +1,5 @@
 #include <cstdint>
+#include "../engine/buffer.h"
 
 class Application {
 public:
@@ -10,6 +11,8 @@ public:
     void test_update();
 
     void handle_event();
+
+    Buffer* getBuffer();
 
 private:
     class window_impl_t* window_impl{nullptr};

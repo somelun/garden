@@ -10,12 +10,14 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/buffer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/math/vector3.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/base_scene.h
 )
 
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/buffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/base_scene.cpp
 )
 
 if(APPLE)
