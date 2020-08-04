@@ -1,5 +1,5 @@
 #include <cstdint>
-#include "../engine/buffer.h"
+// #include "../engine/buffer.h"
 
 class Application {
 public:
@@ -12,7 +12,7 @@ public:
 
     void handle_event();
 
-    Buffer* getBuffer();
+    // Buffer* getBuffer();
 
 private:
     class window_impl_t* window_impl{nullptr};

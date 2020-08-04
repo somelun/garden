@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../buffer.h"
+// #include "../buffer.h"
 
 /*
     This class should be a base class for any scene, this class should fill existed buffer.
@@ -11,5 +11,5 @@ class BaseScene {
     // virtual void fill_buffer(class Buffer& buffer) = 0;
 
 public:
-    void fill_buffer(Buffer& buffer);
+    // void fill_buffer(Buffer& buffer);
 };

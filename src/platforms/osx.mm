@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "application.h"
-#include "../engine/buffer.h"
+// #include "../engine/buffer.h"
 
 #include <iostream>
 
@@ -10,7 +10,7 @@
 class window_impl_t {
 public:
     NSWindow* handler;
-    Buffer* buffer;
+    // Buffer* buffer;
 };
 
 // some information aboud window resize
@@ -56,23 +56,23 @@ public:
 }
 
 - (void)drawRect:(NSRect)rect {
-    Buffer* buffer = window_->buffer;
+    // Buffer* buffer = window_->buffer;
 
-    NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
-            initWithBitmapDataPlanes:&(buffer->data)
-                          pixelsWide:100
-                          pixelsHigh:100
-                       bitsPerSample:8
-                     samplesPerPixel:3
-                            hasAlpha:NO
-                            isPlanar:NO
-                      colorSpaceName:NSCalibratedRGBColorSpace
-                         bytesPerRow:400
-                        bitsPerPixel:32] autorelease];
+    // NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
+    //         initWithBitmapDataPlanes:&(buffer->data)
+    //                       pixelsWide:100
+    //                       pixelsHigh:100
+    //                    bitsPerSample:8
+    //                  samplesPerPixel:3
+    //                         hasAlpha:NO
+    //                         isPlanar:NO
+    //                   colorSpaceName:NSCalibratedRGBColorSpace
+    //                      bytesPerRow:400
+    //                     bitsPerPixel:32] autorelease];
 
-    NSImage *image = [[[NSImage alloc] init] autorelease];
-    [image addRepresentation:image_rep];
-    [image drawInRect:rect];
+    // NSImage *image = [[[NSImage alloc] init] autorelease];
+    // [image addRepresentation:image_rep];
+    // [image drawInRect:rect];
 }
 
 - (void)mouseDown:(NSEvent *)event {
@@ -123,7 +123,7 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
         window_impl = new window_impl_t();
     }
 
-    window_impl->buffer = new Buffer();
+    // window_impl->buffer = new Buffer();
 
     NSRect rect = NSMakeRect(0, 0, width, height);
 
@@ -168,6 +168,6 @@ void Application::handle_event() {
     }
 }
 
-Buffer* Application::getBuffer() {
-    return window_impl->buffer;
-}
+// Buffer* Application::getBuffer() {
+//     return window_impl->buffer;
+// }

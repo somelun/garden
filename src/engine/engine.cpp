@@ -2,7 +2,7 @@
 #include "../platforms/application.h"
 #include <chrono>
 #include "scene/base_scene.h"
-#include "buffer.h"
+// #include "buffer.h"
 
 
 // TODO: remove these later please
@@ -20,7 +20,6 @@ Engine::~Engine() {
 }
 
 void Engine::start() {
-
     std::cout << "Creating window...\n";
     application->createWindow("simple window", 640, 480);
 
@@ -42,7 +41,7 @@ void Engine::tick() {
 
         auto finish = std::chrono::high_resolution_clock::now();
 
-        scene->fill_buffer(*application->getBuffer());
+        // scene->fill_buffer(*application->getBuffer());
         application->test_update();
 
         time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();

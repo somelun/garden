@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/buffer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/math/vector3.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/base_scene.h
 )
@@ -16,7 +16,7 @@ set(HEADERS
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/buffer.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/base_scene.cpp
 )
 
