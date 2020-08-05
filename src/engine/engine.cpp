@@ -32,8 +32,7 @@ void Engine::tick() {
 
     BaseScene* scene = new BaseScene();
 
-    bool bRunning = true;
-    while (bRunning) {
+    while (application->isRunning()) {
         auto start = std::chrono::high_resolution_clock::now();
 
         // actual job is here
@@ -56,6 +55,8 @@ void Engine::tick() {
         application->handle_event();
     }
 
+    std::cout << " after tick\n";
+    application->closeWindow();
     delete scene;
 }
 

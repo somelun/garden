@@ -11,6 +11,7 @@ class window_impl_t {
 public:
     NSWindow* handler;
     // Buffer* buffer;
+    bool bClosing;
 };
 
 // some information aboud window resize
@@ -23,6 +24,15 @@ public:
 @end
 
 @implementation WindowDelegate {
+    window_impl_t* window_;
+}
+
+- (instancetype)initWithWindow:(window_impl_t *)in_window {
+    self = [super init];
+    if (self != nil) {
+        window_ = in_window;
+    }
+    return self;
 }
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
@@ -30,7 +40,8 @@ public:
     // _window->should_close = 1;
     //TODO: later handle close in other place, after cleanup
     std::cout << "windowShouldClose\n";
-    return YES;
+    window_->bClosing = true;
+    return NO;
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
@@ -139,7 +150,7 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     assert(window_impl->handler != nil);
     [window_impl->handler setTitle:[NSString stringWithUTF8String:title]];
 
-    WindowDelegate* delegate = [[WindowDelegate alloc] init];
+    WindowDelegate* delegate = [[WindowDelegate alloc] initWithWindow:window_impl];
     assert(delegate != nil);
     [window_impl->handler setDelegate:delegate];
 
@@ -149,6 +160,20 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     [window_impl->handler makeFirstResponder:view];
 
     [window_impl->handler makeKeyAndOrderFront:nil];
+}
+
+void Application::closeWindow() {
+    [window_impl->handler orderOut:nil];
+
+    [[window_impl->handler delegate] release];
+    [window_impl->handler close];
+
+    // [g_autoreleasepool drain];
+    // g_autoreleasepool = [[NSAutoreleasePool alloc] init];
+
+    // image_release(window_impl->surface);
+    // free(window_impl);
+    delete window_impl;
 }
 
 void Application::test_update() {
@@ -166,6 +191,10 @@ void Application::handle_event() {
             [NSApp sendEvent:event];
         } while(event);
     }
+}
+
+bool Application::isRunning() {
+    return !window_impl->bClosing;
 }
 
 // Buffer* Application::getBuffer() {
