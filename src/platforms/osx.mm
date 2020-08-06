@@ -173,7 +173,7 @@ void Application::closeWindow() {
 
     // image_release(window_impl->surface);
     // free(window_impl);
-    delete window_impl;
+    // delete window_impl;
 }
 
 void Application::test_update() {
