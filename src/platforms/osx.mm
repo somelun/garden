@@ -9,6 +9,14 @@
 // os x window representation
 class window_impl_t {
 public:
+    window_impl_t() {
+        std::cout << "window_impl_t\n";
+    }
+
+    ~window_impl_t() {
+        std::cout << "~window_impl_t\n";
+    }
+
     NSWindow* handler;
     // Buffer* buffer;
     bool bClosing;
