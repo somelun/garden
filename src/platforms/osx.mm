@@ -19,7 +19,7 @@ public:
 
     NSWindow* handler;
     // Buffer* buffer;
-    bool bClosing;
+    bool bClosing{false};
 };
 
 // some information aboud window resize
@@ -131,9 +131,9 @@ Application::Application() {
 
 Application::~Application () {
     std::cout << "~Application\n";
-    if (window_impl != nullptr) {
-        delete window_impl;
-    }
+    // if (window_impl != nullptr) {
+    //     delete window_impl;
+    // }
 }
 
 // window implementation
@@ -180,8 +180,7 @@ void Application::closeWindow() {
     // g_autoreleasepool = [[NSAutoreleasePool alloc] init];
 
     // image_release(window_impl->surface);
-    // free(window_impl);
-    // delete window_impl;
+    delete window_impl;
 }
 
 void Application::test_update() {

@@ -56,7 +56,6 @@ void Engine::tick() {
         application->handle_event();
     }
 
-    std::cout << " after tick\n";
     application->closeWindow();
     delete scene;
 }
