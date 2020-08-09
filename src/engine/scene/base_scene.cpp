@@ -1,11 +1,12 @@
 #include "base_scene.h"
 #include <stdlib.h>
 
-// void BaseScene::fill_buffer(class Buffer& buffer) {
-//     size_t size = buffer.width * buffer.height / 4;
+#include "../framebuffer.h"
 
-//     for (size_t i = 0; i < size; i += 4) {
-//         buffer.data[i] += 1;
-//     }
-// }
+void Scene::update_buffer(Framebuffer& buffer) {
+    size_t size = buffer.getWidth() * buffer.getHeight() / 4;
 
+    for (size_t i = 0; i < size; i += 4) {
+        buffer.data[i] += 1;
+    }
+}

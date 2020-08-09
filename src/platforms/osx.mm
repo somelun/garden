@@ -1,7 +1,7 @@
 #import <Cocoa/Cocoa.h>
 
 #include "application.h"
-// #include "../engine/buffer.h"
+#include "../engine/framebuffer.h"
 
 #include <iostream>
 
@@ -9,16 +9,8 @@
 // os x window representation
 class window_impl_t {
 public:
-    window_impl_t() {
-        std::cout << "window_impl_t\n";
-    }
-
-    ~window_impl_t() {
-        std::cout << "~window_impl_t\n";
-    }
-
     NSWindow* handler;
-    // Buffer* buffer;
+    Framebuffer* buffer;
     bool bClosing{false};
 };
 
@@ -45,8 +37,6 @@ public:
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
     (void)sender;
-    // _window->should_close = 1;
-    //TODO: later handle close in other place, after cleanup
     std::cout << "windowShouldClose\n";
     window_->bClosing = true;
     return NO;
@@ -75,23 +65,23 @@ public:
 }
 
 - (void)drawRect:(NSRect)rect {
-    // Buffer* buffer = window_->buffer;
+    Framebuffer* buffer = window_->buffer;
 
-    // NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
-    //         initWithBitmapDataPlanes:&(buffer->data)
-    //                       pixelsWide:100
-    //                       pixelsHigh:100
-    //                    bitsPerSample:8
-    //                  samplesPerPixel:3
-    //                         hasAlpha:NO
-    //                         isPlanar:NO
-    //                   colorSpaceName:NSCalibratedRGBColorSpace
-    //                      bytesPerRow:400
-    //                     bitsPerPixel:32] autorelease];
+    NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
+            initWithBitmapDataPlanes:&(buffer->data)
+                          pixelsWide:100
+                          pixelsHigh:100
+                       bitsPerSample:8
+                     samplesPerPixel:3
+                            hasAlpha:NO
+                            isPlanar:NO
+                      colorSpaceName:NSCalibratedRGBColorSpace
+                         bytesPerRow:400
+                        bitsPerPixel:32] autorelease];
 
-    // NSImage *image = [[[NSImage alloc] init] autorelease];
-    // [image addRepresentation:image_rep];
-    // [image drawInRect:rect];
+    NSImage *image = [[[NSImage alloc] init] autorelease];
+    [image addRepresentation:image_rep];
+    [image drawInRect:rect];
 }
 
 - (void)mouseDown:(NSEvent *)event {
@@ -142,8 +132,6 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
         window_impl = new window_impl_t();
     }
 
-    // window_impl->buffer = new Buffer();
-
     NSRect rect = NSMakeRect(0, 0, width, height);
 
     NSUInteger mask = NSWindowStyleMaskTitled
@@ -181,6 +169,11 @@ void Application::closeWindow() {
 
     // image_release(window_impl->surface);
     delete window_impl;
+}
+
+void Application::draw_buffer(Framebuffer* buffer) {
+    window_impl->buffer = buffer;
+    [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
 void Application::test_update() {

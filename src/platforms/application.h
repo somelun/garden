@@ -13,6 +13,8 @@ public:
 
     void test_update();
 
+    void draw_buffer(class Framebuffer* buffer);
+
     void handle_event();
 
     // Buffer* getBuffer();

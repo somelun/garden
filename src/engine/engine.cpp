@@ -2,7 +2,7 @@
 #include "../platforms/application.h"
 #include <chrono>
 #include "scene/base_scene.h"
-// #include "buffer.h"
+#include "framebuffer.h"
 
 
 // TODO: remove these later please
@@ -31,24 +31,25 @@ void Engine::tick() {
     uint16_t time = 0;
     int fps = 0;
 
-    BaseScene* scene = new BaseScene();
+    Scene* scene = new Scene();
+
+    Framebuffer* framebuffer = new Framebuffer();
 
     while (application->isRunning()) {
-        auto start = std::chrono::high_resolution_clock::now();
+        auto start = std::chrono::steady_clock::now();
 
         // actual job is here
         // std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
-        auto finish = std::chrono::high_resolution_clock::now();
+        scene->update_buffer(*framebuffer);
+        application->draw_buffer(framebuffer);
 
-        // scene->fill_buffer(*application->getBuffer());
-        application->test_update();
+        auto finish = std::chrono::steady_clock::now();
 
         time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
         fps++;
 
         if (time > 1000) {
-            std::cout << fps << " frames per second;\n";
             time -= 1000;
             fps = 0;
         }
