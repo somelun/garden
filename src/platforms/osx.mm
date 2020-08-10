@@ -69,14 +69,14 @@ public:
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
             initWithBitmapDataPlanes:&(buffer->data)
-                          pixelsWide:100
-                          pixelsHigh:100
+                          pixelsWide:buffer->getWidth()
+                          pixelsHigh:buffer->getHeight()
                        bitsPerSample:8
                      samplesPerPixel:3
                             hasAlpha:NO
                             isPlanar:NO
                       colorSpaceName:NSCalibratedRGBColorSpace
-                         bytesPerRow:400
+                         bytesPerRow:buffer->getWidth() * 4
                         bitsPerPixel:32] autorelease];
 
     NSImage *image = [[[NSImage alloc] init] autorelease];
