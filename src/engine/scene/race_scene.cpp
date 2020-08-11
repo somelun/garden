@@ -1,9 +1,9 @@
-#include "base_scene.h"
+#include "race_scene.h"
 #include <stdlib.h>
 
 #include "../framebuffer.h"
 
-void Scene::update_buffer(Framebuffer& buffer)
+void RaceScene::update_buffer(Framebuffer& buffer)
 {
     size_t size = buffer.getWidth() * buffer.getHeight() * 4;
 

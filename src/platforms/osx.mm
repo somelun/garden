@@ -37,13 +37,11 @@ public:
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
     (void)sender;
-    std::cout << "windowShouldClose\n";
     window_->bClosing = true;
     return NO;
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
-    std::cout << "windowWillClose\n";
 }
 
 @end
@@ -96,7 +94,7 @@ public:
 
 // public window class implementation
 Application::Application() {
-    std::cout << "Application\n";
+    std::cout << "Application launching...\n";
     if (NSApp == nil) {
         // globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
         [NSApplication sharedApplication];
@@ -120,10 +118,7 @@ Application::Application() {
 }
 
 Application::~Application () {
-    std::cout << "~Application\n";
-    // if (window_impl != nullptr) {
-    //     delete window_impl;
-    // }
+    std::cout << "Application closing...\n";
 }
 
 // window implementation
@@ -167,16 +162,11 @@ void Application::closeWindow() {
     // [g_autoreleasepool drain];
     // g_autoreleasepool = [[NSAutoreleasePool alloc] init];
 
-    // image_release(window_impl->surface);
     delete window_impl;
 }
 
 void Application::draw_buffer(Framebuffer* buffer) {
     window_impl->buffer = buffer;
-    [[window_impl->handler contentView] setNeedsDisplay:YES];
-}
-
-void Application::test_update() {
     [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
@@ -193,10 +183,6 @@ void Application::handle_event() {
     }
 }
 
-bool Application::isRunning() {
+bool Application::is_running() {
     return !window_impl->bClosing;
 }
-
-// Buffer* Application::getBuffer() {
-//     return window_impl->buffer;
-// }

@@ -1,7 +1,7 @@
 #include "engine.h"
 #include "../platforms/application.h"
 #include <chrono>
-#include "scene/base_scene.h"
+#include "scene/race_scene.h"
 #include "framebuffer.h"
 
 
@@ -11,18 +11,15 @@
 
 
 Engine::Engine() {
-    std::cout << "Engine\n";
     application = new Application();
 }
 
 Engine::~Engine() {
-    std::cout << "~Engine\n";
     delete application;
 }
 
 void Engine::start() {
-    std::cout << "Creating window...\n";
-    application->createWindow("simple window", 640, 480);
+    application->createWindow("simple window", 800, 600);
 
     tick();
 }
@@ -31,11 +28,11 @@ void Engine::tick() {
     uint16_t time = 0;
     int fps = 0;
 
-    Scene* scene = new Scene();
+    Scene* scene = new RaceScene();
 
     Framebuffer* framebuffer = new Framebuffer();
 
-    while (application->isRunning()) {
+    while (application->is_running()) {
         auto start = std::chrono::steady_clock::now();
 
         // actual job is here
