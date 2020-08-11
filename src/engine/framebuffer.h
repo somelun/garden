@@ -13,8 +13,8 @@ public:
     void draw(uint16_t x, uint16_t y, unsigned char color);
     void clear();
 
-    const uint16_t getWidth() const { return width; }
-    const uint16_t getHeight() const { return height; }
+    uint16_t getWidth() const { return width; }
+    uint16_t getHeight() const { return height; }
 
     // unsigned char& getData() const { return *data; }
 

@@ -22,6 +22,8 @@ Framebuffer::~Framebuffer()
 void Framebuffer::draw(uint16_t x, uint16_t y, unsigned char color)
 {
     assert(x < width && y  < height);
+
+    (void)color;
 }
 
 void Framebuffer::clear()

@@ -4,6 +4,7 @@ project(sandbox VERSION 0.1 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic")
 
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/application.h
