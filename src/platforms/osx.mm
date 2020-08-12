@@ -1,12 +1,12 @@
-#import <Cocoa/Cocoa.h>
-
 #include "application.h"
-#include "../engine/framebuffer.h"
 
+#import <Cocoa/Cocoa.h>
 #include <iostream>
 
+#include "../engine/framebuffer.h"
 
-// os x window representation
+
+// MacOS window implementation
 class window_impl_t {
 public:
     NSWindow* handler;
@@ -63,18 +63,18 @@ public:
 }
 
 - (void)drawRect:(NSRect)rect {
-    Framebuffer* buffer = window_->buffer;
+    unsigned char* data = window_->buffer->get_data();
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
-            initWithBitmapDataPlanes:&(buffer->data)
-                          pixelsWide:buffer->getWidth()
-                          pixelsHigh:buffer->getHeight()
+            initWithBitmapDataPlanes:&(data)
+                          pixelsWide:window_->buffer->get_width()
+                          pixelsHigh:window_->buffer->get_height()
                        bitsPerSample:8
                      samplesPerPixel:3
                             hasAlpha:NO
                             isPlanar:NO
                       colorSpaceName:NSCalibratedRGBColorSpace
-                         bytesPerRow:buffer->getWidth() * 4
+                         bytesPerRow:window_->buffer->get_width() * 4
                         bitsPerPixel:32] autorelease];
 
     NSImage *image = [[[NSImage alloc] init] autorelease];
@@ -122,7 +122,7 @@ Application::~Application () {
 }
 
 // window implementation
-void Application::createWindow(const char* title, uint16_t width, uint16_t height) {
+void Application::create_window(const char* title, uint16_t width, uint16_t height) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
     }
@@ -153,7 +153,7 @@ void Application::createWindow(const char* title, uint16_t width, uint16_t heigh
     [window_impl->handler makeKeyAndOrderFront:nil];
 }
 
-void Application::closeWindow() {
+void Application::close_window() {
     [window_impl->handler orderOut:nil];
 
     [[window_impl->handler delegate] release];

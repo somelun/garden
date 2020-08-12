@@ -1,13 +1,11 @@
 #include "engine.h"
-#include "../platforms/application.h"
+
 #include <chrono>
-#include "scene/race_scene.h"
-#include "framebuffer.h"
-
-
-// TODO: remove these later please
 #include <thread>
-#include <iostream>
+
+#include "framebuffer.h"
+#include "../platforms/application.h"
+#include "scene/race_scene.h"
 
 
 Engine::Engine() {
@@ -19,7 +17,7 @@ Engine::~Engine() {
 }
 
 void Engine::start() {
-    application->createWindow("simple window", 800, 600);
+    application->create_window("test window", 800, 600);
 
     tick();
 }
@@ -54,80 +52,6 @@ void Engine::tick() {
         application->handle_event();
     }
 
-    application->closeWindow();
+    application->close_window();
     delete scene;
 }
-
-
-// i create scene, scene can fill the buffer, so I should delegate all job to scene, right?
-
-// double lastTime = getCurrentTime();
-// while (true)
-// {
-//   double current = getCurrentTime();
-//   double elapsed = current - lastTime;
-//   processInput();
-//   update(elapsed);
-//   render();
-//   lastTime = current;
-// }
-
-
-
-// double previous = getCurrentTime();
-// double lag = 0.0;
-// while (true)
-// {
-//   double current = getCurrentTime();
-//   double elapsed = current - previous;
-//   previous = current;
-//   lag += elapsed;
-
-//   processInput();
-
-//   while (lag >= MS_PER_UPDATE)
-//   {
-//     update();
-//     lag -= MS_PER_UPDATE;
-//   }
-
-//   render();
-// }
-
-
-
-
-    // double t = 0.0;
-    // double dt = 0.01;
-
-    // double currentTime = hires_time_in_seconds();
-    // double accumulator = 0.0;
-
-    // State previous;
-    // State current;
-
-    // while ( !quit )
-    // {
-    //     double newTime = time();
-    //     double frameTime = newTime - currentTime;
-    //     if ( frameTime > 0.25 )
-    //         frameTime = 0.25;
-    //     currentTime = newTime;
-
-    //     accumulator += frameTime;
-
-    //     while ( accumulator >= dt )
-    //     {
-    //         previousState = currentState;
-    //         integrate( currentState, t, dt );
-    //         t += dt;
-    //         accumulator -= dt;
-    //     }
-
-    //     const double alpha = accumulator / dt;
-
-    //     State state = currentState * alpha +
-    //         previousState * ( 1.0 - alpha );
-
-    //     render( state );
-    // }

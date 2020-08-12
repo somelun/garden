@@ -3,14 +3,13 @@
 
 #include "../framebuffer.h"
 
-void RaceScene::update_buffer(Framebuffer& buffer)
-{
-    size_t size = buffer.getWidth() * buffer.getHeight() * 4;
+void RaceScene::update_buffer(Framebuffer& buffer) {
+    unsigned char* data = buffer.get_data();
 
-    for (size_t i = 0; i < size; i += 4)
-    {
-        buffer.data[i] += 1;
-        buffer.data[i + 1] -= 2;
-        buffer.data[i + 2] += 1;
+    size_t size = buffer.get_width() * buffer.get_height() * 4;
+    for (size_t i = 0; i < size; i += 4) {
+        data[i] += 1;
+        data[i + 1] -= 2;
+        data[i + 2] += 1;
     }
 }

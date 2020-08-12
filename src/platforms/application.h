@@ -1,15 +1,14 @@
 #pragma once
 
 #include <cstdint>
-// #include "../engine/buffer.h"
 
 class Application {
 public:
     Application();
     ~Application();
 
-    void createWindow(const char* title, uint16_t width, uint16_t height);
-    void closeWindow();
+    void create_window(const char* title, uint16_t width, uint16_t height);
+    void close_window();
 
     void draw_buffer(class Framebuffer* buffer);
 
