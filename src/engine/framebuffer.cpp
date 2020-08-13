@@ -7,9 +7,15 @@ Framebuffer::Framebuffer()
 }
 
 Framebuffer::Framebuffer(uint16_t w, uint16_t h)
+    : Framebuffer(w, h, 1, 1) {
+}
+
+Framebuffer::Framebuffer(uint16_t w, uint16_t h, uint16_t pw, uint16_t ph)
     : width(w)
-    , height(h) {
-    data = (unsigned char*)malloc(sizeof(unsigned char*) * width * height * 4);
+    , height(h)
+    , pixel_width(pw)
+    , pixel_height(ph) {
+    data = (unsigned char*)malloc(sizeof(unsigned char*) * width * height * pixel_width * pixel_height *  4);
 }
 
 Framebuffer::~Framebuffer() {
