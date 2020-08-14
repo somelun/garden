@@ -18,5 +18,4 @@ public:
 
 private:
     class window_impl_t* window_impl{nullptr};
-
 };

@@ -4,7 +4,11 @@ project(sandbox VERSION 0.1 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic")
+
+if(MSVC)
+else()
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic")
+endif()
 
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/application.h
@@ -25,6 +29,10 @@ set(SOURCES
 if(APPLE)
     set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/osx.mm)
 endif(APPLE)
+
+if(MSVC)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/win64.cpp)
+endif(MSVC)
 
 # message(${SRC})
 
