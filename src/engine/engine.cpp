@@ -53,5 +53,7 @@ void Engine::tick() {
     }
 
     application->close_window();
+
+    delete framebuffer;
     delete scene;
 }
