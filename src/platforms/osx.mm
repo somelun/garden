@@ -5,10 +5,8 @@
 
 #include "../engine/framebuffer.h"
 
-
 // MacOS window implementation
-class window_impl_t {
-public:
+struct window_impl_t {
     NSWindow* handler;
     Framebuffer* buffer;
     bool bClosing{false};

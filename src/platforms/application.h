@@ -17,5 +17,5 @@ public:
     bool is_running();
 
 private:
-    class window_impl_t* window_impl{nullptr};
+    struct window_impl_t* window_impl{nullptr};
 };
