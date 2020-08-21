@@ -5,3 +5,14 @@ The goal is to create simple sandbox, so I could use it for fun projecs, such as
 My aim is make it from scratch, completely independent of any libraries, but supporting for window, linux and mac os.
 
 **Work In Progress!**
+
+## Building
+
+### Mac OS
+
+```cmd
+cd build
+cmake .. 
+make
+./sandbox
+```
