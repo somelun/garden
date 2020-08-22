@@ -1,9 +1,9 @@
-#include "application.h"
+#include "../application.h"
 
 #import <Cocoa/Cocoa.h>
 #include <iostream>
 
-#include "../engine/framebuffer.h"
+#include "../framebuffer.h"
 
 // MacOS window implementation
 struct window_impl_t {

@@ -11,27 +11,29 @@ else()
 endif()
 
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/application.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/math/vector3.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/math/vector3.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/base_scene.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/race_scene.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/base_scene.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/base_scene_2d.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/base_scene_3d.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.h
 )
 
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scene/race_scene.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.cpp
 )
 
 if(APPLE)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/osx.mm)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/osx.mm)
 endif(APPLE)
 
 if(MSVC)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/platforms/win64.cpp)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/win64.cpp)
 endif(MSVC)
 
 # message(${SRC})

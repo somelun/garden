@@ -4,8 +4,8 @@
 #include <thread>
 
 #include "framebuffer.h"
-#include "../platforms/application.h"
-#include "scene/race_scene.h"
+#include "application.h"
+#include "scenes/race_scene.h"
 
 
 Engine::Engine() {
