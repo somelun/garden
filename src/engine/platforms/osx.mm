@@ -61,7 +61,7 @@ struct window_impl_t {
 }
 
 - (void)drawRect:(NSRect)rect {
-    unsigned char* data = window_->buffer->get_data();
+    uint8_t* data = window_->buffer->get_data();
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
             initWithBitmapDataPlanes:&(data)

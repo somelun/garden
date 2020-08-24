@@ -16,7 +16,7 @@ public:
     constexpr uint16_t get_width() const { return width * pixel_width; }
     constexpr uint16_t get_height() const { return height * pixel_height; }
 
-    unsigned char* get_data() const { return data; }
+    uint8_t* get_data() const { return data; }
 
 private:
     uint16_t width;
@@ -25,5 +25,5 @@ private:
     uint16_t pixel_width;
     uint16_t pixel_height;
 
-    unsigned char* data;
+    uint8_t* data;
 };
