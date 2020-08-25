@@ -24,7 +24,6 @@ set(HEADERS
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.cpp
 )
 

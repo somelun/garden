@@ -1,29 +1,39 @@
 #pragma once
 
 #include <cstdint>
+#include <stdlib.h>
 
 class Framebuffer {
 public:
-    Framebuffer();
-    Framebuffer(uint16_t w, uint16_t h);
-    Framebuffer(uint16_t w, uint16_t h, uint16_t pw, uint16_t ph);
+    Framebuffer() : Framebuffer(640, 480) {}
+    Framebuffer(uint16_t w, uint16_t h) : width(w), height(h) {
+        data = new uint8_t[width * height *  4];
+    }
 
-    ~Framebuffer();
+    ~Framebuffer() {
+        delete [] data;
+    }
 
     void draw(uint16_t x, uint16_t y, unsigned char color);
-    void clear();
 
-    constexpr uint16_t get_width() const { return width * pixel_width; }
-    constexpr uint16_t get_height() const { return height * pixel_height; }
+    void clear() {
+        size_t size = width * height * 4;
+        for (size_t i = 0; i < size; i += 4) {
+            data[i]     = 0;
+            data[i + 1] = 0;
+            data[i + 2] = 0;
+            data[i + 3] = 255;
+        }
+    }
+
+    constexpr uint16_t get_width() const { return width; }
+    constexpr uint16_t get_height() const { return height; }
 
     uint8_t* get_data() const { return data; }
 
 private:
     uint16_t width;
     uint16_t height;
-
-    uint16_t pixel_width;
-    uint16_t pixel_height;
 
     uint8_t* data;
 };
