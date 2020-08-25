@@ -1,7 +1,7 @@
 #pragma once
 
-#include "base_scene_2d.h"
+#include "base_scene.h"
 
-class RaceScene : public Scene2d {
+class RaceScene : public Scene {
     virtual void update_buffer(class Framebuffer& buffer) override;
 };

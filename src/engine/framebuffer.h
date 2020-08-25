@@ -14,7 +14,13 @@ public:
         delete [] data;
     }
 
-    void draw(uint16_t x, uint16_t y, unsigned char color);
+    uint8_t& operator()(size_t x, size_t y) {
+        return data[y * width + x];
+    }
+
+    uint8_t operator()(size_t x, size_t y) const {
+        return data[y * width + x];
+    }
 
     void clear() {
         size_t size = width * height * 4;
