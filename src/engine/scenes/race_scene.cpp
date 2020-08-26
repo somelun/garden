@@ -13,5 +13,7 @@ void RaceScene::update_buffer(Framebuffer& buffer) {
         data[i + 2] += 1;
     }
 
-    draw_pixel(buffer, 300, 300);
+    draw_pixel(buffer, 50, 50);
+
+    draw_line(buffer, 10, 10, 50, 50);
 }
