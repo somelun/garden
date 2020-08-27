@@ -3,6 +3,8 @@
 #include "../framebuffer.h"
 #include <algorithm>
 
+#include <iostream>
+
 /**
  * This class should not be used at all.
  * Instead use scene2d and scene3d to add new behaviors.
@@ -18,7 +20,10 @@ protected:
     void draw_pixel(Framebuffer& buffer, uint16_t x, uint16_t y) {
         uint8_t* data = buffer.get_data();
 
-        uint16_t index = (x * buffer.get_width() + y) * 4;
+        uint32_t index = (x * buffer.get_width() + y) * 4;
+
+        // std::cout << x << ", " << y << ", " << index << std::endl;
+
         for (int i = 0; i < 4; ++i) {
             data[index + i] = 0;
         }
@@ -30,6 +35,7 @@ protected:
                             uint16_t y0,
                             uint16_t x1,
                             uint16_t y1) {
+
         bool steep = false;
         if (std::abs(x0-x1) < std::abs(y0-y1)) {
             std::swap(x0, y0);

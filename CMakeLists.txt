@@ -11,7 +11,7 @@ else()
 endif()
 
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/math/vector3.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/math.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h

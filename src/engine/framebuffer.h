@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <stdlib.h>
 
+
 class Framebuffer {
 public:
     Framebuffer() : Framebuffer(640, 480) {}
@@ -42,4 +43,5 @@ private:
     uint16_t height;
 
     uint8_t* data;
+
 };
