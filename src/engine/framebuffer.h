@@ -1,47 +1,42 @@
 #pragma once
 
 #include <cstdint>
-#include <stdlib.h>
+#include <string.h> // required for memset
 
 
 class Framebuffer {
 public:
     Framebuffer() : Framebuffer(640, 480) {}
-    Framebuffer(uint16_t w, uint16_t h) : width(w), height(h) {
-        data = new uint8_t[width * height *  4];
+    Framebuffer(uint16_t w, uint16_t h) : width_(w), height_(h) {
+        data_ = new uint8_t[width_ * height_ *  4];
     }
 
     ~Framebuffer() {
-        delete [] data;
+        delete [] data_;
     }
 
     uint8_t& operator()(size_t x, size_t y) {
-        return data[y * width + x];
+        return data_[y * width_ + x];
     }
 
     uint8_t operator()(size_t x, size_t y) const {
-        return data[y * width + x];
+        return data_[y * width_ + x];
     }
 
     void clear() {
-        size_t size = width * height * 4;
-        for (size_t i = 0; i < size; i += 4) {
-            data[i]     = 0;
-            data[i + 1] = 0;
-            data[i + 2] = 0;
-            data[i + 3] = 255;
-        }
+        size_t size = width_ * height_ * 4;
+        memset(data_, 0, size * sizeof(*data_));
     }
 
-    constexpr uint16_t get_width() const { return width; }
-    constexpr uint16_t get_height() const { return height; }
+    constexpr uint16_t get_width() const { return width_; }
+    constexpr uint16_t get_height() const { return height_; }
 
-    uint8_t* get_data() const { return data; }
+    uint8_t* get_data() const { return data_; }
 
 private:
-    uint16_t width;
-    uint16_t height;
+    uint16_t width_;
+    uint16_t height_;
 
-    uint8_t* data;
+    uint8_t* data_;
 
 };
