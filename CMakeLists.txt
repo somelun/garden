@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(sandbox VERSION 0.1 LANGUAGES CXX OBJCXX)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 if(MSVC)
@@ -12,10 +12,10 @@ endif()
 
 set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/math.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/render2d.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/base_scene.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.h
 )
 

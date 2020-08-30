@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 ///////////////////////////////////////////////////////////
 // vector3
 
@@ -118,4 +120,4 @@ inline vector4<T> operator+(const vector4<T>& v) {
 //                 (v1.x * v2.y - v1.y * v2.x));
 // }
 
-using color = vector4<uint8_t>;
+using color_t = vector4<uint8_t>;
