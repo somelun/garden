@@ -15,7 +15,7 @@ struct vector3 {
     vector3() : x(0), y(0), z(0) {}
     vector3(T x_, T y_, T z_) : x(x_), y(y_), z(z_) {}
 
-inline vector3<T> operator+(const vector3<T>& v) {
+    inline vector3<T> operator+(const vector3<T>& v) {
         return vector3<T>(x + v.x, y + v.y, z + v.z);
     }
 
@@ -87,6 +87,10 @@ inline vector4<T> operator+(const vector4<T>& v) {
     }
 
     inline T& operator[](int i) {
+        return raw[i];
+    }
+
+    inline const T& operator[](int i) const {
         return raw[i];
     }
 

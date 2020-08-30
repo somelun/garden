@@ -17,7 +17,7 @@ Engine::~Engine() {
 }
 
 void Engine::start() {
-    application->create_window("test window", 1000, 1000);
+    application->create_window("test window", 640, 480);
 
     tick();
 }
@@ -28,7 +28,7 @@ void Engine::tick() {
 
     RaceScene* scene = new RaceScene();
 
-    Framebuffer* framebuffer = new Framebuffer(1000, 1000);
+    Framebuffer* framebuffer = new Framebuffer(640, 480);
 
     while (application->is_running()) {
         auto start = std::chrono::steady_clock::now();
