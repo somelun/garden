@@ -6,10 +6,22 @@
 #include <cstdlib>
 
 
+static void fill(Framebuffer& buffer, const color_t& color) {
+    uint8_t* data = buffer.get_data();
+
+    size_t size = buffer.get_width() * buffer.get_height() * 4;
+    for (size_t i = 0; i < size; i += 4) {
+        data[i]     = color[0];
+        data[i + 1] = color[1];
+        data[i + 2] = color[2];
+        data[i + 3] = color[3];
+    }
+}
+
 static void draw_pixel(Framebuffer& buffer, uint16_t x, uint16_t y, const color_t& color) {
     uint8_t* data = buffer.get_data();
 
-    uint32_t index = (x * buffer.get_width() + y) * 4;
+    uint32_t index = (y * buffer.get_width() + x) * 4;
     for (int i = 0; i < 4; ++i) {
         data[index + i] = color[i];
     }
