@@ -4,5 +4,12 @@
 
 class RaceScene {
 public:
-    void update_buffer(class Framebuffer& buffer);
+    RaceScene(class Framebuffer& buffer);
+
+    void update_buffer();
+
+private:
+    class Framebuffer& buffer_;
+
+    float distance_{0.0f};
 };

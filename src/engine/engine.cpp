@@ -26,9 +26,8 @@ void Engine::tick() {
     uint16_t time = 0;
     int fps = 0;
 
-    RaceScene* scene = new RaceScene();
-
     Framebuffer* framebuffer = new Framebuffer(640, 480);
+    RaceScene* scene = new RaceScene(*framebuffer);
 
     while (application->is_running()) {
         auto start = std::chrono::steady_clock::now();
@@ -36,7 +35,7 @@ void Engine::tick() {
         // actual job is here
         // std::this_thread::sleep_for(std::chrono::milliseconds(16));
 
-        scene->update_buffer(*framebuffer);
+        scene->update_buffer();
         application->draw_buffer(framebuffer);
 
         auto finish = std::chrono::steady_clock::now();

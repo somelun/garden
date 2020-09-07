@@ -7,7 +7,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 if(MSVC)
 else()
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic")
 endif()
 
 set(HEADERS
