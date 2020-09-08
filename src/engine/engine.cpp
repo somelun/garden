@@ -7,6 +7,7 @@
 #include "application.h"
 #include "scenes/race_scene.h"
 
+#include <iostream>
 
 Engine::Engine() {
     application = new Application();
@@ -29,16 +30,14 @@ void Engine::tick() {
     Framebuffer* framebuffer = new Framebuffer(640, 480);
     RaceScene* scene = new RaceScene(*framebuffer);
 
+    auto start = std::chrono::steady_clock::now();
     while (application->is_running()) {
-        auto start = std::chrono::steady_clock::now();
-
-        // actual job is here
-        // std::this_thread::sleep_for(std::chrono::milliseconds(16));
-
-        scene->update_buffer();
-        application->draw_buffer(framebuffer);
 
         auto finish = std::chrono::steady_clock::now();
+        double delta_time = std::chrono::duration<double>(finish - start).count();
+
+        scene->update_buffer(delta_time);
+        application->draw_buffer(framebuffer);
 
         time += std::chrono::duration_cast<std::chrono::milliseconds>(finish - start).count();
         fps++;
@@ -49,6 +48,8 @@ void Engine::tick() {
         }
 
         application->handle_event();
+
+        start = finish;
     }
 
     application->close_window();

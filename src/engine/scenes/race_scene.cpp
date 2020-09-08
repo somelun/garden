@@ -16,14 +16,14 @@ const color_t GREY         = {128, 128, 128, 255};
 
 
 RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
-    fill(buffer_, WHITE);
+    // fill(buffer_, WHITE);
 }
 
-void RaceScene::update_buffer() {
+void RaceScene::update_buffer(double delta_time) {
     uint16_t width = buffer_.get_width();
     uint16_t height = buffer_.get_height();
 
-    distance_ += 10.0f * 0.1f;
+    distance_ += 50.0f * delta_time;
 
     for (size_t y = height / 2; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
@@ -39,7 +39,7 @@ void RaceScene::update_buffer() {
             int right_clip = (middle_point + road_width) * width;
             int right_grass = (middle_point + road_width + clip_width) * width;
 
-            color_t grass_color = sinf(20.0f * powf(1.0f - perspective, 3) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
+            color_t grass_color = sinf(30.0f * powf(1.0f - perspective, 5) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
 
             if (x >= 0 && x < left_grass) {
                 draw_pixel(buffer_, x, y, grass_color);
