@@ -9,7 +9,7 @@
 struct window_impl_t {
     NSWindow* handler;
     Framebuffer* buffer;
-    bool bClosing{false};
+    bool bClosing{false};   //TODO: bad name
 };
 
 // some information aboud window resize
@@ -78,6 +78,16 @@ struct window_impl_t {
     NSImage *image = [[[NSImage alloc] init] autorelease];
     [image addRepresentation:image_rep];
     [image drawInRect:rect];
+}
+
+- (void)keyDown:(NSEvent *)event {
+    NSString* chars = [event characters];
+
+    [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+}
+
+- (void)keyUp:(NSEvent *)event {
+    //
 }
 
 - (void)mouseDown:(NSEvent *)event {
