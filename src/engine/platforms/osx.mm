@@ -84,6 +84,8 @@ struct window_impl_t {
     NSString* chars = [event characters];
 
     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
+
+    NSLog(@"%d", [event keyCode]);
 }
 
 - (void)keyUp:(NSEvent *)event {
