@@ -23,7 +23,7 @@ void RaceScene::update_buffer(double delta_time) {
     uint16_t width = buffer_.get_width();
     uint16_t height = buffer_.get_height();
 
-    distance_ += 50.0f * delta_time;
+    distance_ += 100.0f * delta_time;
 
     for (size_t y = height / 2; y < height; ++y) {
         for (int x = 0; x < width; ++x) {
@@ -39,13 +39,14 @@ void RaceScene::update_buffer(double delta_time) {
             int right_clip = (middle_point + road_width) * width;
             int right_grass = (middle_point + road_width + clip_width) * width;
 
-            color_t grass_color = sinf(30.0f * powf(1.0f - perspective, 5) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
+            color_t grass_color = sinf(28.0f * powf(1.0f - perspective, 3) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
+            color_t clip_color = sinf(80.0f * powf(1.0f - perspective, 3) + distance_) > 0.0f ? RED : WHITE;
 
             if (x >= 0 && x < left_grass) {
                 draw_pixel(buffer_, x, y, grass_color);
             } else
             if (x >= left_grass && x < left_clip) {
-                draw_pixel(buffer_, x, y, RED);
+                draw_pixel(buffer_, x, y, clip_color);
             }
             else
             if (x >= left_clip && x < right_clip) {
@@ -53,7 +54,7 @@ void RaceScene::update_buffer(double delta_time) {
             }
             else
             if (x >= right_clip && x <= right_grass) {
-                draw_pixel(buffer_, x, y, RED);
+                draw_pixel(buffer_, x, y, clip_color);
             }
             else
             if (x >= right_grass && x < width) {
