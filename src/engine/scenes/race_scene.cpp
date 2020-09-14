@@ -30,7 +30,8 @@ void RaceScene::update_buffer(double delta_time) {
 
             float perspective = (float)(y - height / 2) / height;
 
-            float middle_point = 0.5f;
+            float middle_point = 0.5f + 0.5f * powf((1.0f - perspective), 3);
+
             float road_width = 0.05f + perspective * 0.85f;
             float clip_width = road_width * 0.15f;
 
