@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../sandbox_math.h"
+#include <vector>
+// #include <pair>
 
 class RaceScene {
 public:
@@ -12,4 +14,8 @@ private:
     class Framebuffer& buffer_;
 
     float distance_{0.0f};
+
+    std::vector<std::pair<float, float>> track_data;
+
+    float curvature_ = 0.0f;
 };
