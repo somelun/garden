@@ -18,32 +18,32 @@ const color_t GREY         = {128, 128, 128, 255};
 RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // fill(buffer_, WHITE);
 
-    track_data.push_back(std::make_pair(0.0f, 10.0f));
-    track_data.push_back(std::make_pair(0.0f, 200.0f));
-    track_data.push_back(std::make_pair(1.0f, 200.0f));
-    track_data.push_back(std::make_pair(0.0f, 400.0f));
-    track_data.push_back(std::make_pair(-1.0f, 100.0f));
-    track_data.push_back(std::make_pair(0.0f, 200.0f));
-    track_data.push_back(std::make_pair(-1.0f, 200.0f));
-    track_data.push_back(std::make_pair(1.0f, 200.0f));
+    track_data_.push_back(std::make_pair(0.0f, 10.0f));
+    track_data_.push_back(std::make_pair(0.0f, 200.0f));
+    track_data_.push_back(std::make_pair(1.0f, 200.0f));
+    track_data_.push_back(std::make_pair(0.0f, 400.0f));
+    track_data_.push_back(std::make_pair(-1.0f, 100.0f));
+    track_data_.push_back(std::make_pair(0.0f, 200.0f));
+    track_data_.push_back(std::make_pair(-1.0f, 200.0f));
+    track_data_.push_back(std::make_pair(1.0f, 200.0f));
 }
 
-void RaceScene::update_buffer(double delta_time) {
+void RaceScene::update_buffer(double dt) {
     uint16_t width = buffer_.get_width();
     uint16_t height = buffer_.get_height();
 
-    distance_ += 100.0f * delta_time;
+    distance_ += 100.0f * dt;
 
     float offset = 0.0f;
-    int track_section = 0;
+    size_t track_section = 0;
 
-    while (track_section < track_data.size() && offset < distance_) {
-        offset += track_data[track_section++].second;
+    while (track_section < track_data_.size() && offset < distance_) {
+        offset += track_data_[track_section++].second;
     }
 
-    float curv = track_data[track_section - 1].first;
+    float curv = track_data_[track_section - 1].first;
 
-    float curv_diff = (curv - curvature_) * delta_time;
+    float curv_diff = (curv - curvature_) * dt;
     curvature_ += curv_diff;
 
     for (size_t y = height / 2; y < height; ++y) {
@@ -84,5 +84,4 @@ void RaceScene::update_buffer(double delta_time) {
             }
         }
     }
-    // abort();
 }
