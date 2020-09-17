@@ -19,13 +19,19 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // fill(buffer_, WHITE);
 
     track_data_.push_back(std::make_pair(0.0f, 10.0f));
+    track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    track_data_.push_back(std::make_pair(0.4f, 200.0f));
+    track_data_.push_back(std::make_pair(0.4f, 200.0f));
     track_data_.push_back(std::make_pair(0.0f, 200.0f));
-    track_data_.push_back(std::make_pair(1.0f, 200.0f));
-    track_data_.push_back(std::make_pair(0.0f, 400.0f));
-    track_data_.push_back(std::make_pair(-1.0f, 100.0f));
     track_data_.push_back(std::make_pair(0.0f, 200.0f));
-    track_data_.push_back(std::make_pair(-1.0f, 200.0f));
-    track_data_.push_back(std::make_pair(1.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(1.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.0f, 400.0f));
+    // track_data_.push_back(std::make_pair(-1.0f, 100.0f));
+    // track_data_.push_back(std::make_pair(0.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(-1.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(1.0f, 200.0f));
 }
 
 void RaceScene::update_buffer(double dt) {
@@ -51,7 +57,7 @@ void RaceScene::update_buffer(double dt) {
 
             float perspective = (float)(y - height / 2) / height;
 
-            float middle_point = 0.5f + curvature_;//0.5f * powf((1.0f - perspective), 3);
+            float middle_point = 0.5f + curvature_ * powf((1.0f - perspective), 2);
 
             float road_width = 0.05f + perspective * 0.85f;
             float clip_width = road_width * 0.15f;
@@ -61,8 +67,8 @@ void RaceScene::update_buffer(double dt) {
             int right_clip = (middle_point + road_width) * width;
             int right_grass = (middle_point + road_width + clip_width) * width;
 
-            color_t grass_color = sinf(28.0f * powf(1.0f - perspective, 3) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
-            color_t clip_color = sinf(80.0f * powf(1.0f - perspective, 3) + distance_) > 0.0f ? RED : WHITE;
+            color_t grass_color = sinf(28.0f * powf(1.0f - perspective, 8) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
+            color_t clip_color = sinf(80.0f * powf(1.0f - perspective, 5) + distance_) > 0.0f ? RED : WHITE;
 
             if (x >= 0 && x < left_grass) {
                 draw_pixel(buffer_, x, y, grass_color);
