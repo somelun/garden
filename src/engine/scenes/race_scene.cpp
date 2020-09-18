@@ -5,18 +5,23 @@
 
 #include <iostream>
 
+const uint16_t kRoadHeight = 300;
+
 
 // TODO: move all constans from here later
 const color_t WHITE        = {255, 255, 255, 255};
 const color_t GREEN        = {  0, 255,   0, 255};
-const color_t DARK_GREEN   = {0, 101, 51, 255};
+const color_t DARK_GREEN   = { 48, 143,  56, 255};
 const color_t RED          = {255,   0,   0, 255};
-const color_t BLUE         = {  0,   0, 255, 255};
+const color_t BLUE         = {  37,101, 121, 255};
 const color_t GREY         = {128, 128, 128, 255};
 
 
 RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
-    // fill(buffer_, WHITE);
+    fill(buffer_, BLUE);
+
+    width_ = buffer_.get_width();
+    height_ = buffer_.get_height();
 
     track_data_.push_back(std::make_pair(0.0f, 10.0f));
     track_data_.push_back(std::make_pair(0.2f, 200.0f));
@@ -34,10 +39,22 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // track_data_.push_back(std::make_pair(1.0f, 200.0f));
 }
 
-void RaceScene::update_buffer(double dt) {
-    uint16_t width = buffer_.get_width();
-    uint16_t height = buffer_.get_height();
+void RaceScene::update(double dt) {
+    // update2(dt);
 
+    // return;
+
+    size_t initial_y = height_ - kRoadHeight;
+    for (size_t y = initial_y; y < height_; ++y) {
+        for (int x = 0; x < width_; ++x) {
+
+            draw_pixel(buffer_, x, y, DARK_GREEN);
+
+        }
+    }
+}
+
+void RaceScene::update2(double dt) {
     distance_ += 100.0f * dt;
 
     float offset = 0.0f;
@@ -52,20 +69,20 @@ void RaceScene::update_buffer(double dt) {
     float curv_diff = (curv - curvature_) * dt;
     curvature_ += curv_diff;
 
-    for (size_t y = height / 2; y < height; ++y) {
-        for (int x = 0; x < width; ++x) {
+    for (size_t y = height_ / 2; y < height_; ++y) {
+        for (int x = 0; x < width_; ++x) {
 
-            float perspective = (float)(y - height / 2) / height;
+            float perspective = (float)(y - height_ / 2) / height_;
 
             float middle_point = 0.5f + curvature_ * powf((1.0f - perspective), 2);
 
             float road_width = 0.05f + perspective * 0.85f;
             float clip_width = road_width * 0.15f;
 
-            int left_grass = (middle_point - road_width - clip_width) * width;
-            int left_clip = (middle_point - road_width) * width;
-            int right_clip = (middle_point + road_width) * width;
-            int right_grass = (middle_point + road_width + clip_width) * width;
+            int left_grass = (middle_point - road_width - clip_width) * width_;
+            int left_clip = (middle_point - road_width) * width_;
+            int right_clip = (middle_point + road_width) * width_;
+            int right_grass = (middle_point + road_width + clip_width) * width_;
 
             color_t grass_color = sinf(28.0f * powf(1.0f - perspective, 8) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
             color_t clip_color = sinf(80.0f * powf(1.0f - perspective, 5) + distance_) > 0.0f ? RED : WHITE;
@@ -85,7 +102,7 @@ void RaceScene::update_buffer(double dt) {
                 draw_pixel(buffer_, x, y, clip_color);
             }
             else
-            if (x >= right_grass && x < width) {
+            if (x >= right_grass && x < width_) {
                 draw_pixel(buffer_, x, y, grass_color);
             }
         }
