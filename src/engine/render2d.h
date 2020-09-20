@@ -57,3 +57,8 @@ static void draw_line(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1
         }
     }
 }
+
+static void draw_quad(Framebuffer& buffer, const color_t& color) {
+    //
+}
+

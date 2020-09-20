@@ -51,11 +51,36 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // track_data_.push_back(std::make_pair(1.0f, 200.0f));
 }
 
+// current_x = 160 // Half of a 320 width screen
+// dx = 0 // Curve amount, constant per segment
+// ddx = 0 // Curve amount, changes per line
+
+// for each line of the screen from the bottom to the top:
+//   if line of screen's Z Map position is below segment.position:
+//     dx = bottom_segment.dx
+//   else if line of screen's Z Map position is above segment.position:
+//     dx = segment.dx
+//   end if
+//   ddx += dx
+//   current_x += ddx
+//   this_line.x = current_x
+// end for
+
+// // Move segments
+// segment_y += constant * speed // Constant makes sure the segment doesn't move too fast
+// if segment.position < 0 // 0 is nearest
+//   bottom_segment = segment
+//   segment.position = zmap.length - 1 // Send segment position to farthest distance
+//   segment.dx = GetNextDxFromTrack() // Fetch next curve amount from track data
+// end if
+
 void RaceScene::update(double dt) {
     // update2(dt);
     // return;
 
-    distance_ += kSpeed * dt;
+    // static float asd = 0.1f;
+
+    distance_ += kSpeed * dt * 0.5f;
 
     size_t initial_y = height_ - kRoadHeight;
 
@@ -66,13 +91,14 @@ void RaceScene::update(double dt) {
 
             float middle_point = 0.5f;
 
-            float road_width = 0.05f + perspective * 0.85f;
-            float clip_width = road_width * 0.15f;
+            // should be between 0 and 0.5
+            float half_road_width = 0.4f;// + perspective * 0.85f;
+            float clip_width = half_road_width * 0.15f;
 
-            int left_grass = (middle_point - road_width - clip_width) * width_;
-            int left_clip = (middle_point - road_width) * width_;
-            int right_clip = (middle_point + road_width) * width_;
-            int right_grass = (middle_point + road_width + clip_width) * width_;
+            int left_grass = (middle_point - half_road_width - clip_width) * width_;
+            int left_clip = (middle_point - half_road_width) * width_;
+            int right_clip = (middle_point + half_road_width) * width_;
+            int right_grass = (middle_point + half_road_width + clip_width) * width_;
 
             if (x >= 0 && x < left_grass) {
                 draw_pixel(buffer_, x, y, DARK_GREEN);
@@ -96,6 +122,11 @@ void RaceScene::update(double dt) {
             // draw_pixel(buffer_, x, y, DARK_GREEN);
         }
     }
+
+    // if (asd < 10) {
+    //     asd += dt;
+    // }
+
 }
 
 void RaceScene::update2(double dt) {
