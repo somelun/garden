@@ -75,6 +75,8 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 // end if
 
 void RaceScene::update(double dt) {
+
+    return;
     // update2(dt);
     // return;
 
