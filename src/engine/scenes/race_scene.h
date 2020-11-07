@@ -1,8 +1,11 @@
 #pragma once
 
-#include "../sandbox_math.h"
+#include "../maths.h"
 #include <vector>
-// #include <pair>
+
+struct segment {
+
+};
 
 class RaceScene {
 public:
@@ -22,4 +25,6 @@ private:
     std::vector<std::pair<float, float>> track_data_;
 
     void update2(double dt);
+
+    std::vector<segment> segments_;
 };

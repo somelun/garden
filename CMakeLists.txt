@@ -11,7 +11,7 @@ else()
 endif()
 
 set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/sandbox_math.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/maths.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/render2d.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/application.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h

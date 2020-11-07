@@ -5,8 +5,10 @@
 
 #include <iostream>
 
-const uint16_t kRoadHeight = 300;
-const uint16_t kSpeed = 100;
+namespace defaults {
+    uint16_t road_height = 300;
+    uint16_t speed = 100;
+}
 
 
 // TODO: move all constans from here later
@@ -24,16 +26,16 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     width_ = buffer_.get_width();
     height_ = buffer_.get_height();
 
-    uint16_t fov_angle = 60;
-    float y_world = sin(fov_angle / 2);
-    float z_world = (fov_angle / 2);
+    // uint16_t fov_angle = 60;
+    // float y_world = sin(fov_angle / 2);
+    // float z_world = (fov_angle / 2);
 
     // x_screen = (y_world*scaling)/z_world + (x_resolution/2)
     // 640 = (sin(30)*scaling/cos(30)) + 320
     // 320 = tan(30)*scaling
     // 320/tan(30) = scaling
 
-    float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
+    // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
     track_data_.push_back(std::make_pair(0.0f, 10.0f));
     track_data_.push_back(std::make_pair(0.2f, 200.0f));
@@ -76,20 +78,20 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
 void RaceScene::update(double dt) {
 
-    return;
-    // update2(dt);
     // return;
-
+    // // update2(dt);
+    // // return;
+    // 
     // static float asd = 0.1f;
 
-    distance_ += kSpeed * dt * 0.5f;
+    distance_ += defaults::speed * dt * 0.5f;
 
-    size_t initial_y = height_ - kRoadHeight;
+    // size_t initial_y = height_ - defaults::road_height;
 
     for (size_t y = height_ / 2; y < height_; ++y) {
         for (int x = 0; x < width_; ++x) {
 
-            float perspective = (float)(y - height_ / 2) / height_;
+            // float perspective = (float)(y - height_ / 2) / height_;
 
             float middle_point = 0.5f;
 
