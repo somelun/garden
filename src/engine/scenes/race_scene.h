@@ -1,10 +1,13 @@
 #pragma once
 
-#include "../maths.h"
 #include <vector>
+#include "../maths.h"
 
-struct segment {
-
+struct Segment {
+    // we store only z points for segments, because y point is always 0 and
+    // x point is always screen_width / 2
+    float closest{0.0};
+    float farthest{0.0};
 };
 
 class RaceScene {
@@ -26,5 +29,5 @@ private:
 
     void update2(double dt);
 
-    std::vector<segment> segments_;
+    std::vector<Segment> segments_;
 };

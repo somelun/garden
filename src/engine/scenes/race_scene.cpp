@@ -6,6 +6,7 @@
 #include <iostream>
 
 namespace defaults {
+    float segment_length = 200.0f;
     uint16_t road_height = 300;
     uint16_t speed = 100;
 }
@@ -26,6 +27,11 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     width_ = buffer_.get_width();
     height_ = buffer_.get_height();
 
+    draw_quad(buffer, RED, {320, 100}, 100, {320, 300}, 300);
+
+    for (int i = 0; i < 32; ++i) {
+        segments_.emplace_back(Segment());
+    }
     // uint16_t fov_angle = 60;
     // float y_world = sin(fov_angle / 2);
     // float z_world = (fov_angle / 2);
@@ -37,14 +43,15 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
-    track_data_.push_back(std::make_pair(0.0f, 10.0f));
-    track_data_.push_back(std::make_pair(0.2f, 200.0f));
-    track_data_.push_back(std::make_pair(0.2f, 200.0f));
-    track_data_.push_back(std::make_pair(0.2f, 200.0f));
-    track_data_.push_back(std::make_pair(0.4f, 200.0f));
-    track_data_.push_back(std::make_pair(0.4f, 200.0f));
-    track_data_.push_back(std::make_pair(0.0f, 200.0f));
-    track_data_.push_back(std::make_pair(0.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.0f, 10.0f));
+    // track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.2f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.4f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.4f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.0f, 200.0f));
+    // track_data_.push_back(std::make_pair(0.0f, 200.0f));
+
     // track_data_.push_back(std::make_pair(1.0f, 200.0f));
     // track_data_.push_back(std::make_pair(0.0f, 400.0f));
     // track_data_.push_back(std::make_pair(-1.0f, 100.0f));
@@ -78,6 +85,7 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
 void RaceScene::update(double dt) {
 
+    return;
     // return;
     // // update2(dt);
     // // return;

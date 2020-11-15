@@ -15,11 +15,11 @@ public:
         delete [] data_;
     }
 
-    uint8_t& operator()(size_t x, size_t y) {
+    uint8_t& operator()(const size_t x, const size_t y) {
         return data_[y * width_ + x];
     }
 
-    uint8_t operator()(size_t x, size_t y) const {
+    uint8_t operator()(const size_t x, const size_t y) const {
         return data_[y * width_ + x];
     }
 

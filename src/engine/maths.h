@@ -7,27 +7,23 @@
 
 template<typename T>
 struct vector2 {
-    vector2() : x_(0), y_(0) {}
-    vector2(T x, T y) : x_(x), y_(y) {}
+    vector2() : x(0), y(0) {}
+    vector2(T x, T y) : x(x), y(y) {}
 
     inline vector2<T> operator+(const vector2<T>& v) {
-        return vector2<T>(x_ + v.x(), y_ + v.y());
+        return vector2<T>(x + v.x, y + v.y);
     }
 
     inline vector2<T> operator-(const vector2<T>& v) {
-        return vector2<T>(x_ - v.x(), y_ - v.y());
+        return vector2<T>(x - v.x, y - v.y);
     }
 
     inline vector2<T> operator*(float f) {
-        return vector2<T>(x_ * f, y_ * f);
+        return vector2<T>(x * f, y * f);
     }
 
-    const T& x() const { return x_; }
-    const T& y() const { return y_; }
-
-private:
-    T x_;
-    T y_;
+    T x;
+    T y;
 };
 
 ///////////////////////////////////////////////////////////
