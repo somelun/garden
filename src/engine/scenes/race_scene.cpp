@@ -49,7 +49,8 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
-    DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
+    DrawQuad(buffer_, RED, {23, 23}, {123, 50}, {45, 256}, {300, 300});
+    // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
     // track_data_.push_back(std::make_pair(0.0f, 10.0f));
@@ -231,38 +232,6 @@ void RaceScene::update2(double dt) {
     }
 }
 
-void RaceScene::draw_triangle_flat_bottom(Framebuffer& buffer, const color_t& color, vector2i p0, vector2i p1, vector2i p2) {
-    float dxy_left  = (p2.x - p0.x) / (p2.y - p0.y);
-    float dxy_right = (p1.x - p0.x) / (p1.y - p0.y);
-
-    float xs = p0.x;
-    float xe = p0.x;
-
-    for (int y = p0.y; y <= p1.y; ++y) {
-        draw_line(buffer, xs, y, xe, y, color);
-
-        xs += dxy_left;
-        xe += dxy_right;
-
-    }
-}
-
-void RaceScene::draw_triangle_flat_top(Framebuffer& buffer, const color_t& color, vector2i p0, vector2i p1, vector2i p2) {
-    float dxy_left  = (p2.x - p0.x) / (p2.y - p0.y);
-    float dxy_right = (p2.x - p1.x) / (p2.y - p1.y);
-
-    float xs = p0.x;
-    float xe = p1.x;
-
-    for (int y = p0.y; y <= p2.y; ++y) {
-        draw_line(buffer, xs, y, xe, y, color);
-
-        xs += dxy_left;
-        xe += dxy_right;
-
-    }
-}
-
 void RaceScene::DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
     // check for horizontal or vertical
     if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
@@ -288,9 +257,6 @@ void RaceScene::DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1
             DrawTriangleBottom(buffer, color, p1, p2, p3);
         } else {
             int new_x = p1.x + (int)(0.5f + (float)(p2.y - p1.y) * (float)(p3.x - p1.x) / (float)(p3.y - p1.y));
-
-            //Draw_Bottom_Tri16(p1.x,p1.y,new_x,y2,p2.x,y2,color, dest_buffer, mempitch);
-            //Draw_Top_Tri16(p2.x,y2,new_x,y2,p3.x,p3.y,color, dest_buffer, mempitch);
 
             DrawTriangleBottom(buffer, color, p1, {new_x, p2.y}, p2);
             DrawTriangleTop(buffer, color, p2, {new_x, p2.y}, p3);
@@ -496,79 +462,7 @@ void RaceScene::DrawTriangleBottom(Framebuffer& buffer, const Color& color, Poin
     }
 }
 
-/*
- * Createize  edge buckets from the given edges
- * @param n    Number of vertices
- * @param x[]  array of x points
- * @param y[]  array of y points
- * @return     List of edge buckets
- */
-// void create_edges(n, x[], y[]) {
-//     instantiate a new edge table
-//     loop through x[] & y[] pairs {
-//         if the edge's slope is NOT undefined (verticle) {
-//             create bucket with edge
-//             add bucket to edge table
-//         }
-//     }
-// }
-
-
-/*
- * Given the edge table of the polygon, fill the polygons
- * @param edgeTable The polygon's edge table representation
- */
-// processEdgeTable (edgeTable) {
-//     while (edge table is NOT empty) {
-//     // Remove edges from the active list if y == ymax
-//         if (active list is NOT empty) {
-//             for (iterate through all buckets in the active list) {
-//                 if (current bucket's ymax == current scanline) {
-//                     remove bucket from active list
-//                     remove bucket from edge table
-//                 }
-//             }
-//         }
-// // Add edge from edge table to active list if y == ymin
-//         for (iterate through the bucket in the edge table) {
-//             if (bucket's ymin == scanline) {
-//                 add bucket to active list
-//             }
-//         }
-// // Sort active list by x position and slope
-//         sortTheActiveList();
-// // Fill the polygon pixel
-//         for (iterate through the active list) {
-//             for (from vertep1.x.x to vertep2.x.x of the bucket) {
-//                 setPixelColor()
-//             }
-//         }
-// // Increment X variables of buckets based on the slope
-//         for (all buckets in the active list) {
-//             if (bucketsdX != 0) {
-//                 bucket's sum += bucket's dX
-//        while (bucket's sum >= bucket's dY) {
-//             increment or decrement bucket's X depending on sign of   bucket's slope
-//             edge's sum -= dY
-//                 }
-//             }
-//         }
-//     }
-// }
-//
-/*
- * Draw a filled polygon in the Canvas C.
- * The polygon has n distinct vertices.  The coordinates of the vertices
- * making up the polygon are stored in the x and y arrays.  The ith
- * vertex will have coordinate (x[i],y[i]).
- * @param n - number of vertices
- * @param x - x coordinates
- * @param y - y coordinates
- */
-// void drawPolygon(n, x[], y[]) {
-//     // Create edge table
-//     finalEdgeTable = createEdges()
-//     // Sort edges by minY
-//     sort(finalEdgeTable)
-//     processEdgeTable(finalEdgeTable)
-// }
+void RaceScene::DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4) {
+    DrawTriangle2D(buffer, color, p1, p2, p3);
+    DrawTriangle2D(buffer, color, p2, p3, p4);
+}

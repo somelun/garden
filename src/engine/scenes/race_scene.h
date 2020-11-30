@@ -42,12 +42,12 @@ private:
     std::vector<std::pair<float, float>> track_data_;
 
     void update2(double dt);
-    void draw_triangle_flat_bottom(Framebuffer& buffer, const color_t& color, vector2i p0, vector2i p1, vector2i p2);
-    void draw_triangle_flat_top(Framebuffer& buffer, const color_t& color, vector2i p0, vector2i p1, vector2i p2);
 
     void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
     void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
     void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+
+    void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
 
     std::vector<Segment> segments_;
 };
