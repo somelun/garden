@@ -7,7 +7,6 @@
 #include "application.h"
 #include "scenes/race_scene.h"
 
-#include <iostream>
 
 const uint16_t kWidth = 640;
 const uint16_t kHeight = 480;
