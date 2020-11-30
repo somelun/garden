@@ -47,8 +47,9 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // DrawTriagnleTop(buffer_, GREY, {300, 300}, {500, 300}, {320, 400});
 
-    DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
+    // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
+    DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
     // track_data_.push_back(std::make_pair(0.0f, 10.0f));
@@ -281,22 +282,23 @@ void RaceScene::DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1
     }
 
     if (p1.y == p2.y) {
-        DrawTriagnleTop(buffer, color, p1, p2, p3);
+        DrawTriangleTop(buffer, color, p1, p2, p3);
     } else {
         if (p2.y == p3.y) {
-            //Draw_Bottom_Tri16(p1.x,p1.y,p2.x,y2,p3.x,p3.y,color, dest_buffer, mempitch);
+            DrawTriangleBottom(buffer, color, p1, p2, p3);
         } else {
-            // int new_x = p1.x + (int)(0.5f + (float)(p2.y - p1.y) * (float)(p3.x - p1.x) / (float)(p3.y - p1.y));
+            int new_x = p1.x + (int)(0.5f + (float)(p2.y - p1.y) * (float)(p3.x - p1.x) / (float)(p3.y - p1.y));
 
-            // draw each sub-triangle
             //Draw_Bottom_Tri16(p1.x,p1.y,new_x,y2,p2.x,y2,color, dest_buffer, mempitch);
             //Draw_Top_Tri16(p2.x,y2,new_x,y2,p3.x,p3.y,color, dest_buffer, mempitch);
 
+            DrawTriangleBottom(buffer, color, p1, {new_x, p2.y}, p2);
+            DrawTriangleTop(buffer, color, p2, {new_x, p2.y}, p3);
         }
     }
 }
 
-void RaceScene::DrawTriagnleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
+void RaceScene::DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
     // if (p1.y == p3.y || p2.y == p3.y) {
     //     return;
     // }

@@ -46,7 +46,7 @@ private:
     void draw_triangle_flat_top(Framebuffer& buffer, const color_t& color, vector2i p0, vector2i p1, vector2i p2);
 
     void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    void DrawTriagnleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+    void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
     void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
 
     std::vector<Segment> segments_;
