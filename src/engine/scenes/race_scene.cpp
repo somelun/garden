@@ -23,7 +23,7 @@ const color_t GREY         = {128, 128, 128, 255};
 
 
 RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
-    fill(buffer_, BLUE);
+    FillScreen(buffer_, BLUE);
 
     width_ = buffer_.get_width();
     height_ = buffer_.get_height();
@@ -49,7 +49,7 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
-    DrawQuad(buffer_, RED, {23, 23}, {123, 50}, {45, 256}, {300, 300});
+    // DrawQuad(buffer_, RED, {23, 23}, {123, 50}, {45, 256}, {300, 300});
     // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
@@ -148,24 +148,24 @@ void RaceScene::update(double dt) {
             int right_clip = (middle_point + half_road_width) * width_;
             int right_grass = (middle_point + half_road_width + clip_width) * width_;
 
-            if (x >= 0 && x < left_grass) {
-                draw_pixel(buffer_, x, y, DARK_GREEN);
-            } else
-            if (x >= left_grass && x < left_clip) {
-                draw_pixel(buffer_, x, y, RED);
-            }
-            else
-            if (x >= left_clip && x < right_clip) {
-                draw_pixel(buffer_, x, y, GREY);
-            }
-            else
-            if (x >= right_clip && x <= right_grass) {
-                draw_pixel(buffer_, x, y, RED);
-            }
-            else
-            if (x >= right_grass && x < width_) {
-                draw_pixel(buffer_, x, y, DARK_GREEN);
-            }
+            // if (x >= 0 && x < left_grass) {
+            //     draw_pixel(buffer_, x, y, DARK_GREEN);
+            // } else
+            // if (x >= left_grass && x < left_clip) {
+            //     draw_pixel(buffer_, x, y, RED);
+            // }
+            // else
+            // if (x >= left_clip && x < right_clip) {
+            //     draw_pixel(buffer_, x, y, GREY);
+            // }
+            // else
+            // if (x >= right_clip && x <= right_grass) {
+            //     draw_pixel(buffer_, x, y, RED);
+            // }
+            // else
+            // if (x >= right_grass && x < width_) {
+            //     draw_pixel(buffer_, x, y, DARK_GREEN);
+            // }
 
             // draw_pixel(buffer_, x, y, DARK_GREEN);
         }
@@ -210,259 +210,24 @@ void RaceScene::update2(double dt) {
             color_t grass_color = sinf(28.0f * powf(1.0f - perspective, 8) + distance_ * 0.1f) > 0.0f ? GREEN : DARK_GREEN;
             color_t clip_color = sinf(80.0f * powf(1.0f - perspective, 5) + distance_) > 0.0f ? RED : WHITE;
 
-            if (x >= 0 && x < left_grass) {
-                draw_pixel(buffer_, x, y, grass_color);
-            } else
-            if (x >= left_grass && x < left_clip) {
-                draw_pixel(buffer_, x, y, clip_color);
-            }
-            else
-            if (x >= left_clip && x < right_clip) {
-                draw_pixel(buffer_, x, y, GREY);
-            }
-            else
-            if (x >= right_clip && x <= right_grass) {
-                draw_pixel(buffer_, x, y, clip_color);
-            }
-            else
-            if (x >= right_grass && x < width_) {
-                draw_pixel(buffer_, x, y, grass_color);
-            }
+            // if (x >= 0 && x < left_grass) {
+            //     draw_pixel(buffer_, x, y, grass_color);
+            // } else
+            // if (x >= left_grass && x < left_clip) {
+            //     draw_pixel(buffer_, x, y, clip_color);
+            // }
+            // else
+            // if (x >= left_clip && x < right_clip) {
+            //     draw_pixel(buffer_, x, y, GREY);
+            // }
+            // else
+            // if (x >= right_clip && x <= right_grass) {
+            //     draw_pixel(buffer_, x, y, clip_color);
+            // }
+            // else
+            // if (x >= right_grass && x < width_) {
+            //     draw_pixel(buffer_, x, y, grass_color);
+            // }
         }
     }
-}
-
-void RaceScene::DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
-    // check for horizontal or vertical
-    if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
-        return;
-    }
-
-    if (p2.y < p1.y) {
-        std::swap(p1, p2);
-    }
-
-    if (p3.y < p1.y) {
-        std::swap(p1, p3);
-    }
-
-    if (p3.y < p2.y) {
-        std::swap(p2, p3);
-    }
-
-    if (p1.y == p2.y) {
-        DrawTriangleTop(buffer, color, p1, p2, p3);
-    } else {
-        if (p2.y == p3.y) {
-            DrawTriangleBottom(buffer, color, p1, p2, p3);
-        } else {
-            int new_x = p1.x + (int)(0.5f + (float)(p2.y - p1.y) * (float)(p3.x - p1.x) / (float)(p3.y - p1.y));
-
-            DrawTriangleBottom(buffer, color, p1, {new_x, p2.y}, p2);
-            DrawTriangleTop(buffer, color, p2, {new_x, p2.y}, p3);
-        }
-    }
-}
-
-void RaceScene::DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
-    // if (p1.y == p3.y || p2.y == p3.y) {
-    //     return;
-    // }
-    //
-    // if (p2.x < p1.x) {
-    //     std::swap(p1, p2);
-    // }
-    //
-    // int height = p3.y - p1.y;
-    //
-    // int dx_left  = ((p3.x - p1.x) << FIXP16_SHIFT) / height;
-    // int dx_right = ((p3.x - p2.x) << FIXP16_SHIFT) / height;
-
-    int min_clip_x = 0;
-    int max_clip_x = 639;
-    int min_clip_y = 0;
-    int max_clip_y = 479;
-
-    uint8_t* dest_buffer = nullptr;
-
-    int mempitch = 3;
-
-    float dx_right,    // the dx/dy ratio of the right edge of line
-        dx_left,     // the dx/dy ratio of the left edge of line
-        xs,xe,       // the starting and ending points of the edges
-        height;      // the height of the triangle
-
-    int temp_y,
-        right,         // used by clipping
-        left;
-
-    uint8_t* dest_addr = NULL;
-
-    if (p2.x < p1.x) {
-        std::swap(p1, p2);
-    }
-
-    height = p3.y - p1.y;
-
-    dx_left  = (p3.x - p1.x) / height;
-    dx_right = (p3.x - p2.x) / height;
-
-    xs = (float)p1.x;
-    xe = (float)p2.x + 0.5f;
-
-    if (p1.y < 0) {
-        xs = xs + dx_left * (float)(-p1.y + min_clip_y);
-        xe = xe + dx_right * (float)(-p1.y + min_clip_y);
-
-        p1.y = 0;
-
-    }
-
-    if (p3.y > max_clip_y) {
-        p3.y = max_clip_y;
-    }
-
-    dest_addr = dest_buffer + p1.y * mempitch;
-
-    if (p1.x >= min_clip_x && p1.x <= max_clip_x &&
-        p2.x >= min_clip_x && p2.x <= max_clip_x &&
-        p3.x >= min_clip_x && p3.x <= max_clip_x) {
-
-        for (temp_y = p1.y; temp_y <= p3.y; temp_y++, dest_addr += mempitch) {
-
-            // memset((UCHAR*)dest_addr + (unsigned int)xs, color, (unsigned int)((int)xe - (int)xs + 1));
-
-            // __asm__(
-            //     "mov edi, dest"
-            //     "mov ecx, count"
-            //     "mov ax,  data"
-            //     "rep stosw"
-            // );
-
-            draw_line(buffer, xs, temp_y, xe, temp_y, color);
-
-            xs += dx_left;
-            xe += dx_right;
-
-        }
-    } else {
-        for (temp_y = p1.y; temp_y <= p3.y; temp_y++, dest_addr += mempitch) {
-            left  = (int)xs;
-            right = (int)xe;
-
-            xs += dx_left;
-            xe += dx_right;
-
-            if (left < min_clip_x) {
-                left = min_clip_x;
-
-                if (right < min_clip_x) {
-                    continue;
-                }
-            }
-
-            if (right > max_clip_x) {
-                right = max_clip_x;
-
-                if (left > max_clip_x) {
-                    continue;
-                }
-            }
-
-            // memset((UCHAR*)dest_addr + (unsigned int)left, color, (unsigned int)(right - left + 1));
-
-            draw_line(buffer, left, temp_y, right - left + 1, temp_y, color);
-        }
-    }
-}
-
-void RaceScene::DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
-    float dx_right,    // the dx/dy ratio of the right edge of line
-        dx_left,     // the dx/dy ratio of the left edge of line
-        xs,xe,       // the starting and ending points of the edges
-        height;      // the height of the triangle
-
-    int temp_y,
-        right,         // used by clipping
-        left;
-
-    int min_clip_x = 0;
-    int max_clip_x = 639;
-    int min_clip_y = 0;
-    int max_clip_y = 479;
-
-    if (p3.x < p2.x) {
-        std::swap(p2, p3);
-    }
-
-    height = p3.y - p1.y;
-
-    dx_left  = (p2.x - p1.x) / height;
-    dx_right = (p3.x - p1.x) / height;
-
-    xs = (float)p1.x;
-    xe = (float)p1.x; // +(float)0.5;
-
-    if (p1.y < min_clip_y) {
-        xs = xs + dx_left * (float)(-p1.y + min_clip_y);
-        xe = xe + dx_right * (float)(-p1.y + min_clip_y);
-
-        p1.y = min_clip_y;
-    }
-
-    if (p3.y > max_clip_y) {
-        p3.y = max_clip_y;
-    }
-
-    if (p1.x >= min_clip_x && p1.x <= max_clip_x &&
-        p2.x >= min_clip_x && p2.x <= max_clip_x &&
-        p3.x >= min_clip_x && p3.x <= max_clip_x) {
-
-        for (temp_y = p1.y; temp_y <= p3.y; temp_y++/*, dest_addr += mempitch*/) {
-            // memset((UCHAR  *)dest_addr+(unsigned int)xs, color,(unsigned int)((int)xe-(int)xs+1));
-
-            // std::cout << xs << ", " << xe << std::endl;
-
-            draw_line(buffer, xs, temp_y, xe, temp_y, color);
-
-        // std::cout << temp_y << ", " << xs << ", " << (int)xe - (int)xs + 1 << std::endl;
-
-            xs += dx_left;
-            xe += dx_right;
-        }
-    } else {
-        for (temp_y = p1.y; temp_y <= p3.y; temp_y++/*, dest_addr += mempitch*/) {
-            left  = (int)xs;
-            right = (int)xe;
-
-            xs += dx_left;
-            xe += dx_right;
-
-            if (left < min_clip_x) {
-                left = min_clip_x;
-
-                if (right < min_clip_x) {
-                    continue;
-                }
-            }
-
-            if (right > max_clip_x) {
-                right = max_clip_x;
-
-                if (left > max_clip_x) {
-                    continue;
-                }
-            }
-
-            // memset((UCHAR  *)dest_addr+(unsigned int)left, color,(unsigned int)(right-left+1));
-
-            draw_line(buffer, left, temp_y, right - left + 1, temp_y, color);
-
-        }
-    }
-}
-
-void RaceScene::DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4) {
-    DrawTriangle2D(buffer, color, p1, p2, p3);
-    DrawTriangle2D(buffer, color, p2, p3, p4);
 }

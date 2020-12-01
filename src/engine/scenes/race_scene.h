@@ -41,13 +41,15 @@ private:
 
     std::vector<std::pair<float, float>> track_data_;
 
+    // // TODO: better to move those functions to render, but I don't know the good way to use them
+    // void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+    // void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+    // void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+    // 
+    // void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
+
     void update2(double dt);
 
-    void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-
-    void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
 
     std::vector<Segment> segments_;
 };
