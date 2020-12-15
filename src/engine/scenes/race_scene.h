@@ -3,25 +3,14 @@
 #include <vector>
 #include "../maths.h"
 
-struct Bucket {
-    int yMax;
-    int yMin;
-    int x;
-    int sign;
-    int dX;
-    int dY;
-    double sum;
-};
-
-struct Vertex {
-    int x;
-    int y;
-};
-
-struct Segment {
-    vector3f world_coords;  // world coordinates
-    vector3f screen_coords;  // screen coordinates
-    color_t color;
+struct RoadSegment {
+    vector3i worldPoint1;
+    vector3i screenPoint1;
+    vector3i cameraPoint1;
+    vector3i worldPoint2;
+    vector3i screenPoint2;
+    vector3i cameraPoint2;
+    Color color;
 };
 
 class RaceScene {
@@ -41,15 +30,7 @@ private:
 
     std::vector<std::pair<float, float>> track_data_;
 
-    // // TODO: better to move those functions to render, but I don't know the good way to use them
-    // void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    // void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    // void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-    // 
-    // void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
-
     void update2(double dt);
 
-
-    std::vector<Segment> segments_;
+    std::vector<RoadSegment> road_;
 };

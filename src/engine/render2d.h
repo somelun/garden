@@ -14,8 +14,8 @@ static void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, P
 
 static void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
 
-static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const color_t& color);
-static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const color_t& color);
+static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color);
+static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const Color& color);
 
 // inmplementations
 void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
@@ -258,6 +258,10 @@ static void FillScreen(Framebuffer& buffer, const Color& color) {
     uint8_t* data = buffer.get_data();
 
     size_t size = buffer.get_width() * buffer.get_height() * 4;
+    
+    //
+
+    // return;
     for (size_t i = 0; i < size; i += 4) {
         data[i]     = color.r();
         data[i + 1] = color.g();
@@ -278,7 +282,7 @@ static void FillScreen(Framebuffer& buffer, const Color& color) {
         //
 }
 
-static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const color_t& color) {
+static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const Color& color) {
     uint8_t* data = buffer.get_data();
 
     uint32_t index = (y * buffer.get_width() + x) * 4;
@@ -289,7 +293,7 @@ static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const color_t
 }
 
 // https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
-static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const color_t& color) {
+static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color) {
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
         std::swap(x0, y0);

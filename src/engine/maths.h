@@ -169,5 +169,4 @@ private:
 //                 (v1.x * v2.y - v1.y * v2.x));
 // }
 
-using color_t = vector4<uint8_t>;
 using Color = vector4<uint8_t>;

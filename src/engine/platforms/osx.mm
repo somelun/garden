@@ -40,6 +40,7 @@ struct window_impl_t {
 }
 
 - (void)windowWillClose:(NSNotification *)notification {
+    (void)notification;
 }
 
 @end
@@ -81,21 +82,23 @@ struct window_impl_t {
 }
 
 - (void)keyDown:(NSEvent *)event {
-    NSString* chars = [event characters];
+//    NSString* chars = [event characters];
 
     [self interpretKeyEvents:[NSArray arrayWithObject:event]];
 
-    NSLog(@"%d", [event keyCode]);
+//    NSLog(@"%d", [event keyCode]);
 }
 
 - (void)keyUp:(NSEvent *)event {
-    //
+    (void)event;
 }
 
 - (void)mouseDown:(NSEvent *)event {
+    (void)event;
 }
 
 - (void)mouseUp:(NSEvent *)event {
+    (void)event;
 }
 
 @end
