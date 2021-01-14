@@ -17,11 +17,13 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/render.h
 )
 
 set(SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/render.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/race_scene.cpp
 )
 

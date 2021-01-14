@@ -4,10 +4,10 @@
 
 class Application {
 public:
-    Application();
+    Application(uint16_t width, uint16_t height);
     ~Application();
 
-    void create_window(const char* title, uint16_t width, uint16_t height);
+    void create_window(const char* title);
     void close_window();
 
     void draw_buffer(class Framebuffer* buffer);
@@ -18,4 +18,7 @@ public:
 
 private:
     struct window_impl_t* window_impl{nullptr};
+
+    uint16_t width_;
+    uint16_t height_;
 };

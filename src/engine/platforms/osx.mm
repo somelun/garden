@@ -106,7 +106,8 @@ struct window_impl_t {
 // static NSAutoreleasePool* globalAutoreleasePool = nullptr;
 
 // public window class implementation
-Application::Application() {
+Application::Application(uint16_t width, uint16_t height)
+    : width_(width),height_(height) {
     std::cout << "Application launching...\n";
     if (NSApp == nil) {
         // globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
@@ -135,17 +136,20 @@ Application::~Application () {
 }
 
 // window implementation
-void Application::create_window(const char* title, uint16_t width, uint16_t height) {
+void Application::create_window(const char* title) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
+    } else {
+        // i think that for now we already have window, so just do nothing
+        return;
     }
 
-    NSRect rect = NSMakeRect(0, 0, width, height);
+    NSRect rect = NSMakeRect(0, 0, width_, height_);
 
     NSUInteger mask = NSWindowStyleMaskTitled
                     | NSWindowStyleMaskClosable
-                    | NSWindowStyleMaskMiniaturizable
-                    | NSWindowStyleMaskResizable;
+                    | NSWindowStyleMaskMiniaturizable;
+//                    | NSWindowStyleMaskResizable;
 
     window_impl->handler = [[NSWindow alloc] initWithContentRect:rect
                                           styleMask:mask

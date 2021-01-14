@@ -8,12 +8,13 @@
 #include "scenes/race_scene.h"
 
 
-const uint16_t kWidth = 640;
-const uint16_t kHeight = 480;
+const uint16_t kWidth = 800;
+const uint16_t kHeight = 600;
 const uint16_t kFPS = 60;
 
+
 Engine::Engine() {
-    application = new Application();
+    application = new Application(kWidth, kHeight);
 }
 
 Engine::~Engine() {
@@ -21,14 +22,18 @@ Engine::~Engine() {
 }
 
 void Engine::start() {
-    application->create_window("test window", kWidth, kHeight);
+    application->create_window("test window");
+
+//    windows_t& windows = application->create_window("test window", kWidth, kHeight);
 
     tick();
 }
 
 void Engine::tick() {
-    Framebuffer* framebuffer = new Framebuffer(kWidth, kHeight);
+    Framebuffer* framebuffer = new Framebuffer(kWidth, kHeight);    // TODO: move to render
     RaceScene* scene = new RaceScene(*framebuffer);
+
+//    RaceScene* scene = new RaceScene(windows.framebuffer);
 
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();

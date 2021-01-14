@@ -10,8 +10,35 @@
 namespace defaults {
     float segment_length = 200.0f;
     uint16_t road_height = 300;
-    uint16_t speed = 100;
+    uint16_t speed = 200;
+    uint16_t drawDistance = 250;
 }
+
+
+int roadW = 2000;
+int segL = 200;
+float camD = 0.84f;
+
+struct Line {
+    float x, y, z;
+    float X, Y, W;
+    
+    float scale;
+    
+    Line() {
+        x = y = z = 0;
+    }
+    
+    void project(int camX, int camY, int camZ) {
+        scale = camD / (z - camZ);
+        X = (1 + scale * (x - camX)) * 640 / 2;
+        Y = (1 - scale * (y - camY)) * 480 / 2;
+        W = scale * roadW * 640 / 2;
+    }
+};
+
+
+std::vector<Line> lines;
 
 // TODO: move all constans from here later
 const Color WHITE        = {255, 255, 255, 255};
@@ -30,13 +57,26 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     road_.reserve(500);
     for (int i = 0; i < 500; ++i) {
-        RoadSegment roadSegment;
-        roadSegment.worldPoint1 = vector3i(0, 0, i * defaults::segment_length);
-        roadSegment.worldPoint2 = vector3i(0, 0, (i + 1) * defaults::segment_length);
-        roadSegment.color = DARK_GREEN;
+        RoadSegment* roadSegment = new RoadSegment();
+        roadSegment->n = i;
+        roadSegment->worldPoint1 = vector3i(0, 0, i * defaults::segment_length);
+        roadSegment->worldPoint2 = vector3i(0, 0, (i + 1) * defaults::segment_length);
+        roadSegment->color = DARK_GREEN;
 //        color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
         road_.push_back(roadSegment);
     }
+    
+    length_ = 500 * defaults::segment_length;
+//    std::cout << length_ << std::endl;
+    
+    
+    for (int i = 0; i < 1600; ++i) {
+        Line line;
+        line.z = i * segL;
+        
+        lines.push_back(line);
+    }
+    
     // uint16_t fov_angle = 60;
     // float y_world = sin(fov_angle / 2);
     // float z_world = (fov_angle / 2);
@@ -54,7 +94,8 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
-    // DrawQuad(buffer_, RED, {23, 23}, {123, 50}, {45, 256}, {300, 300});
+//     DrawQuad(buffer_, RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
+    
     // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
@@ -107,25 +148,29 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 // end if
 
 void RaceScene::update(double dt) {
-
-    // for (int i = 0; i < 300; ++i) {
-    //     Segment& segment = segments_[i % 1600];
-    //     segment.project({0, 500, 0});
-    //
-    //     Segment p = segments_[(i - 1) % 1600];
-    //
-    //     draw_quad(buffer_, GREEN, {0, p.screen_coords.y}, width_, {0, segment.screen_coords.y}, width_);
-        // draw_quad(buffer, RED, {320, 100}, 100, {320, 300}, 300);
-    //     // draw_quad(buffer, RED, {320, 100}, 100, {320, 300}, 300);
-    // }
-    //
-
-
-    // draw_triangle_flat_bottom(buffer_, GREY, {180, 120}, {240, 180}, {120, 180});
-    //
-    // draw_triangle_flat_top(buffer_, GREY, {300, 300}, {500, 300}, {400, 400});
-
-
+    return;
+    
+    distance_ += dt * defaults::speed;
+    
+//    std::cout << distance_ << std::endl;
+    
+//    RoadSegment* segment = findSegment();
+    
+    for (int i = 1; i < 300; ++i) {
+        Line& l = lines[i % 1600];
+        l.project(0, 1500, 0);
+        
+        Color grass = (i / 3) % 2 ? Color(16, 200, 16, 255) : Color(0, 154, 0, 255);
+        Color rumble = (i / 3) % 2 ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255);
+        Color road = (i / 3) % 2 ? Color(107, 107, 107, 255) : Color(105, 105, 105, 255);
+        
+        Line& p = lines[(i - 1) % 1600];
+        
+        DrawQuad(buffer_, grass, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+        DrawQuad(buffer_, rumble, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+        DrawQuad(buffer_, road, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+    }
+    
     return;
     // return;
     // // update2(dt);
@@ -236,3 +281,17 @@ void RaceScene::update2(double dt) {
 //        }
 //    }
 }
+
+RoadSegment* RaceScene::findSegment() {
+    return road_[int(distance_/defaults::segment_length) % 500];
+}
+
+//void RaceScene::Project(vector3i& point, vector3i cameraCoords) {
+//    point.camera.x     = (p.world.x || 0) - cameraX;
+//    point.camera.y     = (p.world.y || 0) - cameraY;
+//    point.camera.z     = (p.world.z || 0) - cameraZ;
+//    point.screen.scale = cameraDepth/p.camera.z;
+//    point.screen.x     = Math.round((width/2)  + (p.screen.scale * p.camera.x  * width/2));
+//    point.screen.y     = Math.round((height/2) - (p.screen.scale * p.camera.y  * height/2));
+//    point.screen.w     = Math.round(             (p.screen.scale * roadWidth   * width/2));
+//}
