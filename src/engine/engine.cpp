@@ -22,26 +22,22 @@ Engine::~Engine() {
 }
 
 void Engine::start() {
-    application->create_window("test window");
+    application->create_window("Sanbox");
 
-//    windows_t& windows = application->create_window("test window", kWidth, kHeight);
-
-    tick();
+    RunLoop();
 }
 
-void Engine::tick() {
-    Framebuffer* framebuffer = new Framebuffer(kWidth, kHeight);    // TODO: move to render
-    RaceScene* scene = new RaceScene(*framebuffer);
-
-//    RaceScene* scene = new RaceScene(windows.framebuffer);
+void Engine::RunLoop() {
+    // Framebuffer* framebuffer = new Framebuffer(kWidth, kHeight);    // TODO: move to render
+    // RaceScene* scene = new RaceScene(*framebuffer);
 
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();
 
     while (application->is_running()) {
 
-        scene->update(dt);
-        application->draw_buffer(framebuffer);
+        // scene->update(dt);
+        // application->draw_buffer(framebuffer);
         application->handle_event();
 
         auto new_time = std::chrono::steady_clock::now();
@@ -59,6 +55,6 @@ void Engine::tick() {
 
     application->close_window();
 
-    delete scene;
-    delete framebuffer;
+    // delete scene;
+    // delete framebuffer;
 }

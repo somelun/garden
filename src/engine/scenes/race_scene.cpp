@@ -1,5 +1,4 @@
 #include "race_scene.h"
-#include "../render2d.h"
 
 #include <math.h>
 
@@ -22,13 +21,13 @@ float camD = 0.84f;
 struct Line {
     float x, y, z;
     float X, Y, W;
-    
+
     float scale;
-    
+
     Line() {
         x = y = z = 0;
     }
-    
+
     void project(int camX, int camY, int camZ) {
         scale = camD / (z - camZ);
         X = (1 + scale * (x - camX)) * 640 / 2;
@@ -50,33 +49,33 @@ const Color GREY         = {128, 128, 128, 255};
 
 
 RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
-    FillScreen(buffer_, BLUE);
+    // FillScreen(buffer_, BLUE);
 
-    width_ = buffer_.get_width();
-    height_ = buffer_.get_height();
+//     width_ = buffer_.get_width();
+//     height_ = buffer_.get_height();
 
-    road_.reserve(500);
-    for (int i = 0; i < 500; ++i) {
-        RoadSegment* roadSegment = new RoadSegment();
-        roadSegment->n = i;
-        roadSegment->worldPoint1 = vector3i(0, 0, i * defaults::segment_length);
-        roadSegment->worldPoint2 = vector3i(0, 0, (i + 1) * defaults::segment_length);
-        roadSegment->color = DARK_GREEN;
-//        color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
-        road_.push_back(roadSegment);
-    }
-    
-    length_ = 500 * defaults::segment_length;
-//    std::cout << length_ << std::endl;
-    
-    
-    for (int i = 0; i < 1600; ++i) {
-        Line line;
-        line.z = i * segL;
-        
-        lines.push_back(line);
-    }
-    
+//     road_.reserve(500);
+//     for (int i = 0; i < 500; ++i) {
+//         RoadSegment* roadSegment = new RoadSegment();
+//         roadSegment->n = i;
+//         roadSegment->worldPoint1 = vector3i(0, 0, i * defaults::segment_length);
+//         roadSegment->worldPoint2 = vector3i(0, 0, (i + 1) * defaults::segment_length);
+//         roadSegment->color = DARK_GREEN;
+// //        color: Math.floor(n/rumbleLength)%2 ? COLORS.DARK : COLORS.LIGHT
+//         road_.push_back(roadSegment);
+//     }
+
+//     length_ = 500 * defaults::segment_length;
+// //    std::cout << length_ << std::endl;
+
+
+//     for (int i = 0; i < 1600; ++i) {
+//         Line line;
+//         line.z = i * segL;
+
+//         lines.push_back(line);
+//     }
+
     // uint16_t fov_angle = 60;
     // float y_world = sin(fov_angle / 2);
     // float z_world = (fov_angle / 2);
@@ -95,7 +94,7 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
 //     DrawQuad(buffer_, RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
-    
+
     // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
 
@@ -149,28 +148,28 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
 void RaceScene::update(double dt) {
     return;
-    
+
     distance_ += dt * defaults::speed;
-    
+
 //    std::cout << distance_ << std::endl;
-    
+
 //    RoadSegment* segment = findSegment();
-    
-    for (int i = 1; i < 300; ++i) {
-        Line& l = lines[i % 1600];
-        l.project(0, 1500, 0);
-        
-        Color grass = (i / 3) % 2 ? Color(16, 200, 16, 255) : Color(0, 154, 0, 255);
-        Color rumble = (i / 3) % 2 ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255);
-        Color road = (i / 3) % 2 ? Color(107, 107, 107, 255) : Color(105, 105, 105, 255);
-        
-        Line& p = lines[(i - 1) % 1600];
-        
-        DrawQuad(buffer_, grass, {0, 0}, {0, 0}, {0, 0}, {0, 0});
-        DrawQuad(buffer_, rumble, {0, 0}, {0, 0}, {0, 0}, {0, 0});
-        DrawQuad(buffer_, road, {0, 0}, {0, 0}, {0, 0}, {0, 0});
-    }
-    
+
+    // for (int i = 1; i < 300; ++i) {
+    //     Line& l = lines[i % 1600];
+    //     l.project(0, 1500, 0);
+
+    //     Color grass = (i / 3) % 2 ? Color(16, 200, 16, 255) : Color(0, 154, 0, 255);
+    //     Color rumble = (i / 3) % 2 ? Color(255, 255, 255, 255) : Color(0, 0, 0, 255);
+    //     Color road = (i / 3) % 2 ? Color(107, 107, 107, 255) : Color(105, 105, 105, 255);
+
+    //     Line& p = lines[(i - 1) % 1600];
+
+    //     // DrawQuad(buffer_, grass, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+    //     // DrawQuad(buffer_, rumble, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+    //     // DrawQuad(buffer_, road, {0, 0}, {0, 0}, {0, 0}, {0, 0});
+    // }
+
     return;
     // return;
     // // update2(dt);

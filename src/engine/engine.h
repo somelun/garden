@@ -7,7 +7,7 @@ public:
 
     void start();
 private:
-    void tick();
+    void RunLoop();
 
     class Application* application;
 };

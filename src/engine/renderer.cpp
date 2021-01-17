@@ -1,24 +1,15 @@
-#pragma once
-
+#include "renderer.h"
 #include "framebuffer.h"
-#include "math.h"
-#include <algorithm>
-#include <cstdlib>
-#include <iostream>
 
+Renderer::Renderer() {
+    framebuffer_ = new Framebuffer(800, 600);
+}
 
-// declarations
-static void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-static void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
-static void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3);
+Renderer::~Renderer() {
+    delete framebuffer_;
+}
 
-static void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4);
-
-static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color);
-static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const Color& color);
-
-// inmplementations
-void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
+void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {
     // check for horizontal or vertical
     if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
         return;
@@ -37,20 +28,20 @@ void DrawTriangle2D(Framebuffer& buffer, const Color& color, Point p1, Point p2,
     }
 
     if (p1.y == p2.y) {
-        DrawTriangleTop(buffer, color, p1, p2, p3);
+        DrawTriangleTop(color, p1, p2, p3);
     } else {
         if (p2.y == p3.y) {
-            DrawTriangleBottom(buffer, color, p1, p2, p3);
+            DrawTriangleBottom(color, p1, p2, p3);
         } else {
             int new_x = p1.x + (int)(0.5f + (float)(p2.y - p1.y) * (float)(p3.x - p1.x) / (float)(p3.y - p1.y));
 
-            DrawTriangleBottom(buffer, color, p1, {new_x, p2.y}, p2);
-            DrawTriangleTop(buffer, color, p2, {new_x, p2.y}, p3);
+            DrawTriangleBottom(color, p1, {new_x, p2.y}, p2);
+            DrawTriangleTop(color, p2, {new_x, p2.y}, p3);
         }
     }
 }
 
-void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
+void Renderer::DrawTriangleTop(const Color& color, Point p1, Point p2, Point p3) {
     // if (p1.y == p3.y || p2.y == p3.y) {
     //     return;
     // }
@@ -69,7 +60,7 @@ void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2
     int min_clip_y = 0;
     int max_clip_y = 479;
 
-    uint8_t* dest_buffer = nullptr;
+    uint8_t* dest_framebuffer_ = nullptr;
 
     int mempitch = 3;
 
@@ -108,7 +99,7 @@ void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2
         p3.y = max_clip_y;
     }
 
-    dest_addr = dest_buffer + p1.y * mempitch;
+    dest_addr = dest_framebuffer_ + p1.y * mempitch;
 
     if (p1.x >= min_clip_x && p1.x <= max_clip_x &&
         p2.x >= min_clip_x && p2.x <= max_clip_x &&
@@ -125,7 +116,7 @@ void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2
             //     "rep stosw"
             // );
 
-            DrawLine(buffer, xs, temp_y, xe, temp_y, color);
+            DrawLine(xs, temp_y, xe, temp_y, color);
 
             xs += dx_left;
             xe += dx_right;
@@ -157,12 +148,12 @@ void DrawTriangleTop(Framebuffer& buffer, const Color& color, Point p1, Point p2
 
             // memset((UCHAR*)dest_addr + (unsigned int)left, color, (unsigned int)(right - left + 1));
 
-            DrawLine(buffer, left, temp_y, right - left + 1, temp_y, color);
+            DrawLine(left, temp_y, right - left + 1, temp_y, color);
         }
     }
 }
 
-void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3) {
+void Renderer::DrawTriangleBottom(const Color& color, Point p1, Point p2, Point p3) {
     float dx_right,    // the dx/dy ratio of the right edge of line
         dx_left,     // the dx/dy ratio of the left edge of line
         xs,xe,       // the starting and ending points of the edges
@@ -209,7 +200,7 @@ void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point
 
             // std::cout << xs << ", " << xe << std::endl;
 
-            DrawLine(buffer, xs, temp_y, xe, temp_y, color);
+            DrawLine(xs, temp_y, xe, temp_y, color);
 
         // std::cout << temp_y << ", " << xs << ", " << (int)xe - (int)xs + 1 << std::endl;
 
@@ -242,23 +233,23 @@ void DrawTriangleBottom(Framebuffer& buffer, const Color& color, Point p1, Point
 
             // memset((UCHAR  *)dest_addr+(unsigned int)left, color,(unsigned int)(right-left+1));
 
-            DrawLine(buffer, left, temp_y, right - left + 1, temp_y, color);
+            DrawLine(left, temp_y, right - left + 1, temp_y, color);
 
         }
     }
 }
 
-void DrawQuad(Framebuffer& buffer, const Color& color, Point p1, Point p2, Point p3, Point p4) {
-    DrawTriangle2D(buffer, color, p1, p2, p3);
-    DrawTriangle2D(buffer, color, p2, p3, p4);
+void Renderer::DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point p4) {
+    DrawTriangle2D(color, p1, p2, p3);
+    DrawTriangle2D(color, p2, p3, p4);
 }
 
 // fills the whole screen with one color
-static void FillScreen(Framebuffer& buffer, const Color& color) {
-    uint8_t* data = buffer.get_data();
+void Renderer::FillScreen(const Color& color) {
+    uint8_t* data = framebuffer_->get_data();
 
-    size_t size = buffer.get_width() * buffer.get_height() * 4;
-    
+    size_t size = framebuffer_->get_width() * framebuffer_->get_height() * 4;
+
     //
 
     // return;
@@ -282,10 +273,10 @@ static void FillScreen(Framebuffer& buffer, const Color& color) {
         //
 }
 
-static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const Color& color) {
-    uint8_t* data = buffer.get_data();
+void Renderer::DrawPixel(uint16_t x, uint16_t y, const Color& color) {
+    uint8_t* data = framebuffer_->get_data();
 
-    uint32_t index = (y * buffer.get_width() + x) * 4;
+    uint32_t index = (y * framebuffer_->get_width() + x) * 4;
     data[index]     = color.r();
     data[index + 1] = color.g();
     data[index + 2] = color.b();
@@ -293,7 +284,7 @@ static void DrawPixel(Framebuffer& buffer, uint16_t x, uint16_t y, const Color& 
 }
 
 // https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
-static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color) {
+void Renderer::DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color) {
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
         std::swap(x0, y0);
@@ -311,9 +302,9 @@ static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1,
     uint16_t y = y0;
     for (size_t x = x0; x <= x1; ++x) {
         if (steep) {
-            DrawPixel(buffer, y, x, color);
+            DrawPixel(y, x, color);
         } else {
-            DrawPixel(buffer, x, y, color);
+            DrawPixel(x, y, color);
         }
         error2 += derror2;
         if (error2 > dx) {
@@ -322,13 +313,3 @@ static void DrawLine(Framebuffer& buffer, uint16_t x0, uint16_t y0, uint16_t x1,
         }
     }
 }
-
-//project: function(p, cameraX, cameraY, cameraZ, cameraDepth, width, height, roadWidth) {
-//  p.camera.x     = (p.world.x || 0) - cameraX;
-//  p.camera.y     = (p.world.y || 0) - cameraY;
-//  p.camera.z     = (p.world.z || 0) - cameraZ;
-//  p.screen.scale = cameraDepth/p.camera.z;
-//  p.screen.x     = Math.round((width/2)  + (p.screen.scale * p.camera.x  * width/2));
-//  p.screen.y     = Math.round((height/2) - (p.screen.scale * p.camera.y  * height/2));
-//  p.screen.w     = Math.round(             (p.screen.scale * roadWidth   * width/2));
-//},

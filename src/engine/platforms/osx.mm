@@ -62,6 +62,10 @@ struct window_impl_t {
 }
 
 - (void)drawRect:(NSRect)rect {
+    if (window_->buffer == nullptr) {
+        return;
+    }
+
     uint8_t* data = window_->buffer->get_data();
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
@@ -183,8 +187,8 @@ void Application::close_window() {
 }
 
 void Application::draw_buffer(Framebuffer* buffer) {
-    window_impl->buffer = buffer;
-    [[window_impl->handler contentView] setNeedsDisplay:YES];
+    // window_impl->buffer = buffer;
+    // [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
 void Application::handle_event() {
