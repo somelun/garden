@@ -10,7 +10,7 @@ public:
     void create_window(const char* title);
     void close_window();
 
-    void draw_buffer(class Framebuffer* buffer);
+    void draw_buffer(class Framebuffer* framebuffer);
 
     void handle_event();
 

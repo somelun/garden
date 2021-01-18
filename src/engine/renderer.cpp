@@ -1,12 +1,16 @@
 #include "renderer.h"
 #include "framebuffer.h"
 
-Renderer::Renderer() {
-    framebuffer_ = new Framebuffer(800, 600);
+Renderer::Renderer(uint16_t width, uint16_t height) {
+    framebuffer_ = new Framebuffer(width, height);
 }
 
 Renderer::~Renderer() {
     delete framebuffer_;
+}
+
+void Renderer::Present() {
+    //
 }
 
 void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {

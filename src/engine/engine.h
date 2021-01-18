@@ -5,9 +5,10 @@ public:
     Engine();
     ~Engine();
 
-    void start();
+    void Start();
 private:
     void RunLoop();
 
-    class Application* application;
+    class Application* application_;
+    class Renderer* renderer_;
 };

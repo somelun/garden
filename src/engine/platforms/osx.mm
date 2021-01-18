@@ -1,9 +1,8 @@
 #include "../application.h"
+#include "../framebuffer.h"
 
 #import <Cocoa/Cocoa.h>
 #include <iostream>
-
-#include "../framebuffer.h"
 
 // MacOS window implementation
 struct window_impl_t {
@@ -186,9 +185,9 @@ void Application::close_window() {
     delete window_impl;
 }
 
-void Application::draw_buffer(Framebuffer* buffer) {
-    // window_impl->buffer = buffer;
-    // [[window_impl->handler contentView] setNeedsDisplay:YES];
+void Application::draw_buffer(Framebuffer* framebuffer) {
+    window_impl->buffer = framebuffer;
+    [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
 void Application::handle_event() {

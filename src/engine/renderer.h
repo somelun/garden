@@ -5,10 +5,18 @@
 #include <cstdlib>
 #include <iostream>
 
+class Framebuffer;
+
 class Renderer {
 public:
-    Renderer();
+    Renderer(uint16_t width, uint16_t height);
     ~Renderer();
+
+    void Present();
+
+    inline Framebuffer* GetFramebuffer() {
+        return framebuffer_;
+    }
 
     void DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3);
 

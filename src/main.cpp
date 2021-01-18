@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     (void)argv;
 
     Engine engine;
-    engine.start();
+    engine.Start();
 
     return 0;
 }

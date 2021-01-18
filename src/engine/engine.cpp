@@ -1,11 +1,12 @@
 #include "engine.h"
+#include "application.h"
+#include "renderer.h"
 
 #include <chrono>
 #include <thread>
 
-#include "framebuffer.h"
-#include "application.h"
-#include "scenes/race_scene.h"
+// #include "framebuffer.h"
+// #include "scenes/race_scene.h"
 
 
 const uint16_t kWidth = 800;
@@ -14,31 +15,33 @@ const uint16_t kFPS = 60;
 
 
 Engine::Engine() {
-    application = new Application(kWidth, kHeight);
+    application_ = new Application(kWidth, kHeight);
+    renderer_ = new Renderer(kWidth, kHeight);
 }
 
 Engine::~Engine() {
-    delete application;
+    delete renderer_;
+    delete application_;
 }
 
-void Engine::start() {
-    application->create_window("Sanbox");
+void Engine::Start() {
+    application_->create_window("Sanbox");
 
     RunLoop();
 }
 
 void Engine::RunLoop() {
-    // Framebuffer* framebuffer = new Framebuffer(kWidth, kHeight);    // TODO: move to render
     // RaceScene* scene = new RaceScene(*framebuffer);
 
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();
 
-    while (application->is_running()) {
+    while (application_->is_running()) {
 
         // scene->update(dt);
-        // application->draw_buffer(framebuffer);
-        application->handle_event();
+
+        application_->handle_event();
+        application_->draw_buffer(renderer_->GetFramebuffer());
 
         auto new_time = std::chrono::steady_clock::now();
         double delta_time = std::chrono::duration<double>(new_time - current_time).count();
@@ -53,8 +56,7 @@ void Engine::RunLoop() {
         current_time = new_time;
     }
 
-    application->close_window();
+    application_->close_window();
 
     // delete scene;
-    // delete framebuffer;
 }
