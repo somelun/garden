@@ -1,10 +1,9 @@
 #include "race_scene.h"
+#include "../renderer.h"
 
 #include <math.h>
-
 #include <iostream>
 
-#define FIXP16_SHIFT 16
 
 namespace defaults {
     float segment_length = 200.0f;
@@ -48,8 +47,8 @@ const Color BLUE         = {  37,101, 121, 255};
 const Color GREY         = {128, 128, 128, 255};
 
 
-RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
-    // FillScreen(buffer_, BLUE);
+RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
+    renderer_.FillScreen(BLUE);
 
 //     width_ = buffer_.get_width();
 //     height_ = buffer_.get_height();
@@ -81,7 +80,7 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
     // float z_world = (fov_angle / 2);
 
     // draw_quad(buffer, RED, {320, 100}, 100, {320, 300}, 300);
-    // draw_quad(buffer, RED, {320, 100}, 100, {320, 300}, 300);
+    // renderer_.DrawQuad(RED, {320, 100}, 100, {320, 300}, 300);
     // x_screen = (y_world*scaling)/z_world + (x_resolution/2)
     // 640 = (sin(30)*scaling/cos(30)) + 320
     // 320 = tan(30)*scaling
@@ -93,7 +92,7 @@ RaceScene::RaceScene(Framebuffer& buffer) : buffer_(buffer) {
 
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
-//     DrawQuad(buffer_, RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
+    renderer_.DrawQuad(RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
 
     // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);

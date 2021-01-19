@@ -61,6 +61,7 @@ struct window_impl_t {
 }
 
 - (void)drawRect:(NSRect)rect {
+    // FIXME: hmm, doesn't look good
     if (window_->buffer == nullptr) {
         return;
     }
