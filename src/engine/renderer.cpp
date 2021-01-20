@@ -120,7 +120,7 @@ void Renderer::DrawTriangleTop(const Color& color, Point p1, Point p2, Point p3)
             //     "rep stosw"
             // );
 
-            DrawLine(xs, temp_y, xe, temp_y, color);
+            DrawLine(color, xs, temp_y, xe, temp_y);
 
             xs += dx_left;
             xe += dx_right;
@@ -152,7 +152,7 @@ void Renderer::DrawTriangleTop(const Color& color, Point p1, Point p2, Point p3)
 
             // memset((UCHAR*)dest_addr + (unsigned int)left, color, (unsigned int)(right - left + 1));
 
-            DrawLine(left, temp_y, right - left + 1, temp_y, color);
+            DrawLine(color, left, temp_y, right - left + 1, temp_y);
         }
     }
 }
@@ -204,7 +204,7 @@ void Renderer::DrawTriangleBottom(const Color& color, Point p1, Point p2, Point 
 
             // std::cout << xs << ", " << xe << std::endl;
 
-            DrawLine(xs, temp_y, xe, temp_y, color);
+            DrawLine(color, xs, temp_y, xe, temp_y);
 
         // std::cout << temp_y << ", " << xs << ", " << (int)xe - (int)xs + 1 << std::endl;
 
@@ -237,7 +237,7 @@ void Renderer::DrawTriangleBottom(const Color& color, Point p1, Point p2, Point 
 
             // memset((UCHAR  *)dest_addr+(unsigned int)left, color,(unsigned int)(right-left+1));
 
-            DrawLine(left, temp_y, right - left + 1, temp_y, color);
+            DrawLine(color, left, temp_y, right - left + 1, temp_y);
 
         }
     }
@@ -277,7 +277,7 @@ void Renderer::FillScreen(const Color& color) {
         //
 }
 
-void Renderer::DrawPixel(uint16_t x, uint16_t y, const Color& color) {
+void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
     uint8_t* data = framebuffer_->get_data();
 
     uint32_t index = (y * framebuffer_->get_width() + x) * 4;
@@ -288,7 +288,7 @@ void Renderer::DrawPixel(uint16_t x, uint16_t y, const Color& color) {
 }
 
 // https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
-void Renderer::DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, const Color& color) {
+void Renderer::DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
     bool steep = false;
     if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
         std::swap(x0, y0);
@@ -306,9 +306,9 @@ void Renderer::DrawLine(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1, cons
     uint16_t y = y0;
     for (size_t x = x0; x <= x1; ++x) {
         if (steep) {
-            DrawPixel(y, x, color);
+            DrawPixel(color, y, x);
         } else {
-            DrawPixel(x, y, color);
+            DrawPixel(color, x, y);
         }
         error2 += derror2;
         if (error2 > dx) {
