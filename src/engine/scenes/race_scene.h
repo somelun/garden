@@ -1,19 +1,18 @@
 #pragma once
 
 #include <vector>
-#include "../maths.h"
 
 class Renderer;
 
 struct RoadSegment {
     uint16_t n;
-    vector3i worldPoint1;
-    vector3i screenPoint1;
-    vector3i cameraPoint1;
-    vector3i worldPoint2;
-    vector3i screenPoint2;
-    vector3i cameraPoint2;
-    Color color;
+    // vector3i worldPoint1;
+    // vector3i screenPoint1;
+    // vector3i cameraPoint1;
+    // vector3i worldPoint2;
+    // vector3i screenPoint2;
+    // vector3i cameraPoint2;
+    // Color color;
 };
 
 class RaceScene {

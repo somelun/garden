@@ -1,6 +1,6 @@
 #pragma once
 
-#include "maths.h"
+#include "math/vec.h"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>

@@ -258,10 +258,10 @@ void Renderer::FillScreen(const Color& color) {
 
     // return;
     for (size_t i = 0; i < size; i += 4) {
-        data[i]     = color.r();
-        data[i + 1] = color.g();
-        data[i + 2] = color.b();
-        data[i + 3] = color.a();
+        data[i]     = color.x;
+        data[i + 1] = color.y;
+        data[i + 2] = color.z;
+        data[i + 3] = color.w;
     }
     // TODO:
     // __asm__(//"lea dword rdi, data"
@@ -281,10 +281,10 @@ void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
     uint8_t* data = framebuffer_->get_data();
 
     uint32_t index = (y * framebuffer_->get_width() + x) * 4;
-    data[index]     = color.r();
-    data[index + 1] = color.g();
-    data[index + 2] = color.b();
-    data[index + 3] = color.a();
+    data[index]     = color.x;
+    data[index + 1] = color.y;
+    data[index + 2] = color.z;
+    data[index + 3] = color.w;
 }
 
 // https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
