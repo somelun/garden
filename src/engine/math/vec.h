@@ -102,7 +102,7 @@ struct vec4 {
         return vec4<T>(x - v.x, y - v.y, z - v.z, w - v.w);
     }
 
-    inline vec4<T> operator*(float f) {
+    inline vec4<T> operator*(const float f) {
         return vec4<T>(x * f, y * f, z * f, w * f);
     }
 
@@ -114,9 +114,8 @@ struct vec4 {
                 return y;
             case 2:
                 return z;
-            case 3:
-                return w;
         }
+        return w;
     }
 
     inline const T& operator[](int i) const {
@@ -127,9 +126,8 @@ struct vec4 {
                 return y;
             case 2:
                 return z;
-            case 3:
-                return w;
         }
+        return w;
     }
 
     inline vec4<T>& operator=(const vec4<T>& v) {

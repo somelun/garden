@@ -26,12 +26,12 @@ private:
     Renderer& renderer_;
 
     float distance_{0.0f};
-    float length_{0.0f};
+    // float length_{0.0f};
 
     // mat4<int> asd;
 
-    uint16_t width_{640};
-    uint16_t height_{480};
+    // uint16_t width_{640};
+    // uint16_t height_{480};
 
 //    std::vector<std::pair<float, float>> track_data_;
 

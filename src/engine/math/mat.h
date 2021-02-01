@@ -29,13 +29,13 @@ static mat4 mat4_identity() {
     return m;
 }
 
-static mat4 mat4_test() {
-    mat4 m;
-    int t = 0;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            m.at(i, j) = ++t;
-        }
-    }
-    return m;
-}
+// static mat4 mat4_test() {
+//     mat4 m;
+//     int t = 0;
+//     for (int i = 0; i < 4; ++i) {
+//         for (int j = 0; j < 4; ++j) {
+//             m.at(i, j) = ++t;
+//         }
+//     }
+//     return m;
+// }

@@ -50,7 +50,7 @@ const Color GREY         = {128, 128, 128, 255};
 RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
     renderer_.FillScreen(BLUE);
 
-    mat4 iden = mat4_identity();
+    // mat4 iden = mat4_identity();
 
     // std::cout << iden << std::endl;
     // std::cout << mat4_identity() << std::endl;
@@ -63,11 +63,11 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 
     // std::cout << resu << std::endl;
 
-    vec4f vvv = {5, 5, 5, 5};
+    // vec4f vvv = {5, 5, 5, 5};
 
-    vec4f weee = iden * vvv;
+    // vec4f weee = iden * vvv;
 
-    std::cout << weee << std::endl;
+    // std::cout << weee << std::endl;
 
 //     width_ = buffer_.get_width();
 //     height_ = buffer_.get_height();
@@ -245,6 +245,8 @@ void RaceScene::update(double dt) {
 }
 
 void RaceScene::update2(double dt) {
+    (void)dt;
+
 //    distance_ += 100.0f * dt;
 //
 //    float offset = 0.0f;
