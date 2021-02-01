@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "vec.h"
 
 using mat4_t = int;
 
@@ -11,6 +12,10 @@ public:
     const mat4_t& at(int row, int column) const;
 
     mat4 operator*(const mat4& m);
+    mat4 operator*(const vec4f& v);
+
+    mat4 transpose();
+    // mat4 inverse();  //TODO
 
     friend std::ostream& operator<<(std::ostream& s, mat4& m);
 

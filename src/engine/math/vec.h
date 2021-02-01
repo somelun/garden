@@ -105,13 +105,31 @@ struct vec4 {
         return vec4<T>(x * f, y * f, z * f, w * f);
     }
 
-    // inline T& operator[](int i) {
-    //     return raw[i];
-    // }
+    inline T& operator[](int i) {
+        switch (i) {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            case 3:
+                return w;
+        }
+    }
 
-    // inline const T& operator[](int i) const {
-    //     return raw[i];
-    // }
+    inline const T& operator[](int i) const {
+        switch (i) {
+            case 0:
+                return x;
+            case 1:
+                return y;
+            case 2:
+                return z;
+            case 3:
+                return w;
+        }
+    }
 
     inline vec4<T>& operator=(const vec4<T>& v) {
         x = v.x;
@@ -137,3 +155,4 @@ struct vec4 {
 };
 
 using Color = vec4<uint8_t>;
+using vec4f = vec4<float>;
