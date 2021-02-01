@@ -52,19 +52,20 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 
     mat4 iden = mat4_identity();
 
-    std::cout << iden << std::endl;
+    // std::cout << iden << std::endl;
+    // std::cout << mat4_identity() << std::endl;
 
-    mat4 test = mat4_test();
+    // mat4 test = mat4_test();
 
-    std::cout << test << std::endl;
+    // std::cout << test << std::endl;
 
-    mat4 resu =  test * test;
+    // mat4 resu =  test * test;
 
-    std::cout << resu << std::endl;
+    // std::cout << resu << std::endl;
 
     vec4f vvv = {5, 5, 5, 5};
 
-    mat4 weee = iden * vvv;
+    vec4f weee = iden * vvv;
 
     std::cout << weee << std::endl;
 

@@ -13,11 +13,11 @@ mat4 mat4::operator*(const mat4& m) {
     return result;
 }
 
-mat4 mat4::operator*(const vec4f& v) {
-    mat4 result;
+vec4f mat4::operator*(const vec4f& v) {
+    vec4f result;
     for (size_t i = 0; i < 4; ++i) {
         for (size_t j = 0; j < 4; ++j) {
-            result.at(i, j) += data_[i * 4 + j] * v[j];
+            result[i] += data_[i * 4 + j] * v[j];
         }
     }
     return result;

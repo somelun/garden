@@ -12,7 +12,7 @@ public:
     const mat4_t& at(int row, int column) const;
 
     mat4 operator*(const mat4& m);
-    mat4 operator*(const vec4f& v);
+    vec4f operator*(const vec4f& v);
 
     mat4 transpose();
     // mat4 inverse();  //TODO

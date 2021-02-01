@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <iostream>
 
 //////////////////
 // vec2
@@ -146,6 +147,11 @@ struct vec4 {
     inline vec4<T>& normalize() {
         *this = (*this) * (1 / length());
         return *this;
+    }
+
+    friend std::ostream& operator<<(std::ostream& s, vec4& v) {
+        s << v.x << " " << v.y << " " << v.z << " " << v.w << "\n";
+        return s;
     }
 
     T x;
