@@ -86,6 +86,8 @@ inline vec3<T> cross(const vec3<T>& v1, const vec3<T>& v2) {
                 (v1.x() * v2.y() - v1.y() * v2.x()));
 }
 
+using vec3f = vec3<float>;
+
 //////////////////
 // vec4
 

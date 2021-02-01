@@ -52,7 +52,9 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 
     // mat4 iden = mat4_identity();
 
-    // std::cout << iden << std::endl;
+    mat4 trr = mat4_scale({23, 12, 10});
+
+    std::cout << trr << std::endl;
     // std::cout << mat4_identity() << std::endl;
 
     // mat4 test = mat4_test();

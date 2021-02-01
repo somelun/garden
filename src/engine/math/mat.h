@@ -23,19 +23,40 @@ private:
     mat4_t data_[16] = {0};
 };
 
+[[maybe_unused]]
 static mat4 mat4_identity() {
     mat4 m;
     m.at(0, 0) = m.at(1, 1) = m.at(2, 2) = m.at(3, 3) = 1.0f;
     return m;
 }
 
-// static mat4 mat4_test() {
-//     mat4 m;
-//     int t = 0;
-//     for (int i = 0; i < 4; ++i) {
-//         for (int j = 0; j < 4; ++j) {
-//             m.at(i, j) = ++t;
-//         }
-//     }
-//     return m;
-// }
+[[maybe_unused]]
+static mat4 mat4_translate(const vec3f& v) {
+    mat4 m = mat4_identity();
+    m.at(0, 3) = v.x;
+    m.at(1, 3) = v.y;
+    m.at(2, 3) = v.z;
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_scale(const vec3f& v) {
+    mat4 m;
+    m.at(0, 0) = v.x;
+    m.at(1, 1) = v.y;
+    m.at(2, 2) = v.z;
+    m.at(3, 3) = 1.0f;
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_test() {
+    mat4 m;
+    int t = 0;
+    for (int i = 0; i < 4; ++i) {
+        for (int j = 0; j < 4; ++j) {
+            m.at(i, j) = ++t;
+        }
+    }
+    return m;
+}
