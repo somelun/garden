@@ -1,7 +1,7 @@
 #include "race_scene.h"
 #include "../renderer.h"
 
-#include <math.h>
+// #include <math.h>
 #include <iostream>
 
 
@@ -49,6 +49,18 @@ const Color GREY         = {128, 128, 128, 255};
 
 RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
     renderer_.FillScreen(BLUE);
+
+    mat4 iden = mat4_identity();
+
+    std::cout << iden << std::endl;
+
+    mat4 test = mat4_test();
+
+    std::cout << test << std::endl;
+
+    mat4 resu =  test * test;
+
+    std::cout << resu << std::endl;
 
 //     width_ = buffer_.get_width();
 //     height_ = buffer_.get_height();
