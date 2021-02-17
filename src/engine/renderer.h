@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include "math/mat.h"
 
 class Framebuffer;
 
@@ -13,6 +14,9 @@ public:
     ~Renderer();
 
     void Present();
+
+    vec2f Project(vec3f coord, mat4 trans);
+    void Render(const class Camera& camera);
 
     inline Framebuffer* GetFramebuffer() {
         return framebuffer_;

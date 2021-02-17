@@ -50,6 +50,33 @@ static mat4 mat4_scale(const vec3f& v) {
 }
 
 [[maybe_unused]]
+static mat4 mat4_yaw(const float angle) {
+    (void)angle;
+    mat4 m;
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_pitch(const float angle) {
+    (void)angle;
+    mat4 m;
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_roll(const float angle) {
+    (void)angle;
+    mat4 m;
+    return m;
+}
+
+// [[maybe_unused]]
+// static mat4 mat4_rotate(const vec3f& v) {
+//     mat4 m;
+//     return m;
+// }
+
+[[maybe_unused]]
 static mat4 mat4_test() {
     mat4 m;
     int t = 0;

@@ -38,5 +38,4 @@ private:
     uint16_t height_;
 
     uint8_t* data_;
-
 };

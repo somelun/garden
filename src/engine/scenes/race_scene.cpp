@@ -4,6 +4,12 @@
 // #include <math.h>
 #include <iostream>
 
+#include "../object.h"
+#include "../camera.h"
+
+
+Object* object;
+
 
 namespace defaults {
     float segment_length = 200.0f;
@@ -54,7 +60,20 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 
     mat4 trr = mat4_scale({23, 12, 10});
 
+    object = new Object(8);
+    object->addVertex({-1, 1, 1}, 0);
+    object->addVertex({1, 1, 1}, 1);
+    object->addVertex({-1, -1, 1}, 2);
+    object->addVertex({-1, -1, -1}, 3);
+    object->addVertex({-1, 1, -1}, 4);
+    object->addVertex({1, 1, -1}, 5);
+    object->addVertex({1, -1, 1}, 6);
+    object->addVertex({1, -1, -1}, 7);
+
     std::cout << trr << std::endl;
+
+
+    vec4f asd = vec4f({12, 23, 34}, 1);
     // std::cout << mat4_identity() << std::endl;
 
     // mat4 test = mat4_test();

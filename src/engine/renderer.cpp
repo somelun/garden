@@ -13,6 +13,18 @@ void Renderer::Present() {
     //
 }
 
+vec2f Renderer::Project(vec3f coord, mat4 trans) {
+    vec4f position = vec4f(coord, 1);
+    vec4f point = trans * position;
+    // float x = point.x * framebuffer_.width_ + framebuffer_.width_ / 2.0f;
+    // float y = -point.y * framebuffer_.height_ + framebuffer_.height_ / 2.0f;
+    // return {x, y};
+    return {2, 3};
+}
+
+void Renderer::Render(const class Camera& camera) {
+
+}
 void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {
     // check for horizontal or vertical
     if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
