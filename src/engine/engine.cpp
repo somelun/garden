@@ -37,7 +37,7 @@ void Engine::RunLoop() {
 
     while (application_->is_running()) {
 
-        // scene->update(dt);
+        scene->update(dt);
 
         application_->handle_event();
         application_->draw_buffer(renderer_->GetFramebuffer());

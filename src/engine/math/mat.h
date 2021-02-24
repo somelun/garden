@@ -3,13 +3,25 @@
 #include <iostream>
 #include "vec.h"
 
-using mat4_t = int;
+using mat4_t = float;
 
+constexpr float kPI = 3.14159265359f;
+constexpr float kPI180 = kPI / 180.0f;
+constexpr float k180PI = 180.0f / kPI;
+
+#define degreesToRadians(x) (x * kPI180)
+#define radiansToDegrees(x) (x * k180PI)
+
+// column-major matrix inside, like in opengl
 class mat4 {
 public:
 
     mat4_t& at(int row, int column);
     const mat4_t& at(int row, int column) const;
+
+    // const mat4_t& operator[](int index) {
+    //     return
+    // }
 
     mat4 operator*(const mat4& m);
     vec4f operator*(const vec4f& v);
@@ -50,23 +62,41 @@ static mat4 mat4_scale(const vec3f& v) {
 }
 
 [[maybe_unused]]
-static mat4 mat4_yaw(const float angle) {
-    (void)angle;
+static mat4 mat4_rotate_x(const float degrees) {
     mat4 m;
+    const float radians = degreesToRadians(degrees);
+
+    m.at(1, 1) = cosf(radians);
+    m.at(1, 2) = sinf(radians);
+    m.at(2, 1) = -m.at(1, 2);
+    m.at(2, 2) = m.at(1, 1);
+
     return m;
 }
 
 [[maybe_unused]]
-static mat4 mat4_pitch(const float angle) {
-    (void)angle;
+static mat4 mat4_rotate_y(const float degrees) {
     mat4 m;
+    const float radians = degreesToRadians(degrees);
+
+    m.at(0, 0) = cosf(radians);
+    m.at(2, 0) = sinf(radians);
+    m.at(0, 2) = -m.at(0, 0);
+    m.at(2, 2) = m.at(0, 0);
+
     return m;
 }
 
 [[maybe_unused]]
-static mat4 mat4_roll(const float angle) {
-    (void)angle;
+static mat4 mat4_rotate_z(const float degrees) {
     mat4 m;
+    const float radians = degreesToRadians(degrees);
+
+    m.at(0, 0) = cosf(radians);
+    m.at(1, 0) = sinf(radians);
+    m.at(0, 1) = -m.at(1, 0);
+    m.at(1, 1) = m.at(0, 0);
+
     return m;
 }
 

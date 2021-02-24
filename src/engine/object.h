@@ -1,6 +1,7 @@
 #pragma once
 
 #include "math/vec.h"
+#include "math/mat.h"
 
 class Object {
 public:
@@ -8,6 +9,8 @@ public:
     ~Object();
 
     void addVertex(const vec3i& vertex, const int& index);
+    vec3i getVertex(const int& index);
+    mat4 modelMartix();
 
 private:
     int n_;

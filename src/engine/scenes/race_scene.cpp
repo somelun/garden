@@ -15,6 +15,7 @@ namespace defaults {
     float segment_length = 200.0f;
     uint16_t road_height = 300;
     uint16_t speed = 200;
+
     uint16_t drawDistance = 250;
 }
 
@@ -56,10 +57,6 @@ const Color GREY         = {128, 128, 128, 255};
 RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
     renderer_.FillScreen(BLUE);
 
-    // mat4 iden = mat4_identity();
-
-    mat4 trr = mat4_scale({23, 12, 10});
-
     object = new Object(8);
     object->addVertex({-1, 1, 1}, 0);
     object->addVertex({1, 1, 1}, 1);
@@ -70,10 +67,10 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
     object->addVertex({1, -1, 1}, 6);
     object->addVertex({1, -1, -1}, 7);
 
-    std::cout << trr << std::endl;
-
-
-    vec4f asd = vec4f({12, 23, 34}, 1);
+    // std::cout << trr << std::endl;
+    // 
+    // 
+    // vec4f asd = vec4f({12, 23, 34}, 1);
     // std::cout << mat4_identity() << std::endl;
 
     // mat4 test = mat4_test();
@@ -132,7 +129,7 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 
     // DrawTriangleBottom(buffer_, GREY, {200, 100}, {100, 200}, {300, 200});
 
-    renderer_.DrawQuad(RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
+    // renderer_.DrawQuad(RED, {200, 200}, {400, 200}, {100, 400}, {500, 400});
 
     // DrawTriangle2D(buffer_, GREEN, {234, 321}, {532, 12}, {34, 444});
     // float scaling = (width_ / 2.0f) / tan(fov_angle / 2.0f);
@@ -186,6 +183,13 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 // end if
 
 void RaceScene::update(double dt) {
+     
+
+    for (int i = 0; i < 8; ++i) {
+        renderer_.DrawPixel(WHITE, 34, 34);
+    }
+
+    // void DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
     return;
 
     distance_ += dt * defaults::speed;

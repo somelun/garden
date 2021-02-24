@@ -11,3 +11,7 @@ Object::~Object() {
 void Object::addVertex(const vec3i& vertex, const int& index) {
     vertices_[index] = vertex;
 }
+
+vec3i Object::getVertex(const int& index) {
+    return vertices_[index];
+}

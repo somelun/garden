@@ -1,5 +1,7 @@
 #include "renderer.h"
 #include "framebuffer.h"
+#include "object.h"
+#include <vector>
 
 Renderer::Renderer(uint16_t width, uint16_t height) {
     framebuffer_ = new Framebuffer(width, height);
@@ -16,15 +18,22 @@ void Renderer::Present() {
 vec2f Renderer::Project(vec3f coord, mat4 trans) {
     vec4f position = vec4f(coord, 1);
     vec4f point = trans * position;
-    // float x = point.x * framebuffer_.width_ + framebuffer_.width_ / 2.0f;
-    // float y = -point.y * framebuffer_.height_ + framebuffer_.height_ / 2.0f;
-    // return {x, y};
-    return {2, 3};
+    float x = point.x * framebuffer_->get_width() + framebuffer_->get_width() / 2.0f;
+    float y = -point.y * framebuffer_->get_height() + framebuffer_->get_height() / 2.0f;
+    return {x, y};
 }
 
-void Renderer::Render(const class Camera& camera) {
+void Renderer::Render(const class Camera& camera, const std::vector<Object>& objects) {
+    mat4 viewMatrix;
+    mat4 projectionMatrix;
 
+    for (const auto& object : objects) {
+        // for (const ) {
+        //     //
+        // }
+    }
 }
+
 void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {
     // check for horizontal or vertical
     if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {

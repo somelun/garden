@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <math.h>
 
 //////////////////
 // vec2
@@ -37,6 +38,8 @@ template<typename T>
 struct vec3 {
     vec3() : x(0), y(0), z(0) {}
     vec3(T x, T y, T z) : x(x), y(y), z(z) {}
+
+    vec3(const vec3<T>& v) : x(v.x), y(v.y), z(v.z) {}
 
     inline vec3<T> operator+(const vec3<T>& v) {
         return vec3<T>(x + v.x, y + v.y, z + v.z);
@@ -98,6 +101,7 @@ struct vec4 {
     vec4() : x(0), y(0), z(0), w(0) {}
     vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
 
+    vec4(const vec4<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
     vec4(const vec3<T>& v, const T& w) : x(v.x), y(v.y), z(v.z), w(w) {}
 
     inline vec4<T> operator+(const vec4<T>& v) {

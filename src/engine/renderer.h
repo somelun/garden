@@ -16,7 +16,7 @@ public:
     void Present();
 
     vec2f Project(vec3f coord, mat4 trans);
-    void Render(const class Camera& camera);
+    void Render(const class Camera& camera, const std::vector<class Object>& objects);
 
     inline Framebuffer* GetFramebuffer() {
         return framebuffer_;
