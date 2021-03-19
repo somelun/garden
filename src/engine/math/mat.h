@@ -3,7 +3,7 @@
 #include <iostream>
 #include "vec.h"
 
-using mat4_t = float;
+using mat_t = float;
 
 constexpr float kPI = 3.14159265359f;
 constexpr float kPI180 = kPI / 180.0f;
@@ -12,27 +12,32 @@ constexpr float k180PI = 180.0f / kPI;
 #define degreesToRadians(x) (x * kPI180)
 #define radiansToDegrees(x) (x * k180PI)
 
-// column-major matrix inside, like in opengl
 class mat4 {
 public:
+    
+    mat4() {};
+    mat4(mat_t a00, mat_t a01, mat_t a02, mat_t a03,
+         mat_t a10, mat_t a11, mat_t a12, mat_t a13,
+         mat_t a20, mat_t a21, mat_t a22, mat_t a23,
+         mat_t a30, mat_t a31, mat_t a32, mat_t a33);
 
-    mat4_t& at(int row, int column);
-    const mat4_t& at(int row, int column) const;
-
-    // const mat4_t& operator[](int index) {
-    //     return
-    // }
+    mat_t& at(int row, int column);
+    const mat_t& at(int row, int column) const;
 
     mat4 operator*(const mat4& m);
     vec4f operator*(const vec4f& v);
 
     mat4 transpose();
-    // mat4 inverse();  //TODO
-
+    mat4 inverse();
+    
     friend std::ostream& operator<<(std::ostream& s, mat4& m);
 
 private:
-    mat4_t data_[16] = {0};
+    mat4 adjoint();
+    mat_t cofactor(size_t r, size_t c);
+    mat_t minor(size_t r, size_t c);
+    
+    mat_t data_[16] = {0};
 };
 
 [[maybe_unused]]
@@ -43,7 +48,7 @@ static mat4 mat4_identity() {
 }
 
 [[maybe_unused]]
-static mat4 mat4_translate(const vec3f& v) {
+static mat4 mat_translate(const vec3f& v) {
     mat4 m = mat4_identity();
     m.at(0, 3) = v.x;
     m.at(1, 3) = v.y;
@@ -107,7 +112,7 @@ static mat4 mat4_rotate_z(const float degrees) {
 // }
 
 [[maybe_unused]]
-static mat4 mat4_test() {
+static mat4 mat_test() {
     mat4 m;
     int t = 0;
     for (int i = 0; i < 4; ++i) {
@@ -117,3 +122,15 @@ static mat4 mat4_test() {
     }
     return m;
 }
+
+class mat3 {
+public:
+    friend std::ostream& operator<<(std::ostream& s, mat3& m);
+    
+private:
+    friend class mat4;
+    
+    mat_t determinant();
+    
+    mat_t data_[9] = {0};
+};

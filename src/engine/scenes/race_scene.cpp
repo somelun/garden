@@ -10,6 +10,8 @@
 
 Object* object;
 
+mat4 orthographic;
+mat4 perspective;
 
 namespace defaults {
     float segment_length = 200.0f;
@@ -18,7 +20,7 @@ namespace defaults {
 
     uint16_t drawDistance = 250;
 }
-
+// http://www.songho.ca/opengl/gl_camera.html
 
 int roadW = 2000;
 int segL = 200;
@@ -58,18 +60,125 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
     renderer_.FillScreen(BLUE);
 
     object = new Object(8);
-    object->addVertex({-1, 1, 1}, 0);
-    object->addVertex({1, 1, 1}, 1);
-    object->addVertex({-1, -1, 1}, 2);
-    object->addVertex({-1, -1, -1}, 3);
-    object->addVertex({-1, 1, -1}, 4);
-    object->addVertex({1, 1, -1}, 5);
-    object->addVertex({1, -1, 1}, 6);
-    object->addVertex({1, -1, -1}, 7);
+    object->addVertex({0, 0, 0}, 0);
+    object->addVertex({0, 1, 0}, 1);
+    object->addVertex({1, 1, 0}, 2);
+    object->addVertex({1, 0, 0}, 3);
+    object->addVertex({1, 0, 1}, 4);
+    object->addVertex({1, 1, 1}, 5);
+    object->addVertex({0, 1, 1}, 6);
+    object->addVertex({0, 0, 1}, 7);
+
+
+    float near = 0.001f, far = 100.0f;
+    float left = 0.0f, right = 800.0f, bottom = 600.0f, top = 0.0f;
+    // 
+    orthographic.at(0, 0) = 2.0f / (right - left);
+    orthographic.at(1, 1) = 2.0f / (top - bottom);
+    orthographic.at(2, 2) = -2.0f / (far - near);
+    orthographic.at(3, 3) = 1.0f;
+    orthographic.at(0, 3) = -(right + left) / (right - left);
+    orthographic.at(1, 3) = -(top + bottom) / (top - bottom);
+    orthographic.at(2, 3) = -(far + near) / (far - near);
+    
+     float angleOfView = 45.0;
+     float aspectRatio = 0.75;
+    
+     float size = near * tanf(degreesToRadians(angleOfView) / 2.0f);
+     left = -size, right = size, bottom = -size / aspectRatio, top = size / aspectRatio;
+    
+     perspective.at(0, 0) = 2.0f * near / (right - left);
+
+     perspective.at(1, 1) = 2.0f * near / (top - bottom);
+    
+     perspective.at(0, 2) = (right + left) / (right - left);
+     perspective.at(1, 2) = (top + bottom) / (top - bottom);
+     perspective.at(2, 2) = -(far + near) / (far - near);
+     perspective.at(3, 2) = -1.0f;
+    
+     perspective.at(2, 3) = -(2.0f * far * near) / (far - near);
+    
+
+    // float far = 1000.0f;
+    // float near = 0.1f;
+    // float fov = 90.0f;
+    // float aspectRatio = (top - bottom) / (right - left);
+    // float fovRad = 1.0f / tanf(fov * 0.5f / 180.0f * 3.14159f);
+    // 
+    // mat4 projection;
+    // projection.at(0, 0) = aspectRatio * fovRad;
+    // projection.at(1, 1) = fovRad;
+    // projection.at(2, 2) = far / (far - near);
+    // projection.at(3, 2) = (-far * near) / (far - near);
+    // projection.at(2, 3) = 1.0f;
+    // projection.at(3, 3) = 0.0f;
+    // projection.transpose();
+
+
+    // static float angle = 30.0f;
+    // vec4f* verticesRotated = new vec4f[8];
+    vec4f* verticesProjected = new vec4f[8];
+    // mat4 rotationMatrix = mat4_rotate_x(angle);
+    // std::cout << rotationMatrix << std::endl;
+    for (int i = 0; i < 3; ++i) {
+        vec4f vert = {object->getVertex(i), 1.0f};
+         std::cout << vert << std::endl;
+        //verticesRotated[i] = rotationMatrix * vert;
+
+        //std::cout << verticesRotated[i] << std::endl;
+
+        verticesProjected[i] = orthographic * vert;
+//        verticesProjected[i] = vert;
+
+        // if (verticesProjected[i].w != 0.0f) {
+        //     verticesProjected[i].x /= verticesProjected[i].w;
+        //     verticesProjected[i].y /= verticesProjected[i].w;
+        //     verticesProjected[i].z /= verticesProjected[i].w;
+        // }
+
+        // std::cout << verticesProjected[i].x << ", " << verticesProjected[i].y << std::endl;
+
+//        verticesProjected[i].x += 1.0f;
+//        verticesProjected[i].y += 1.0f;
+//
+//        verticesProjected[i].x *= 0.5f * 800.0f;
+//        verticesProjected[i].y *= 0.5f * 600.0f;
+
+         std::cout << verticesProjected[i] << std::endl;
+        std::cout << "..................." << std::endl;
+
+//        renderer_.DrawPixel(WHITE, verticesProjected[i].x, verticesProjected[i].y);
+    }
+    
+//    renderer_.DrawLine(WHITE, verticesProjected[0].x, verticesProjected[0].y, verticesProjected[1].x, verticesProjected[1].y);
+//    renderer_.DrawLine(WHITE, verticesProjected[1].x, verticesProjected[1].y, verticesProjected[2].x, verticesProjected[2].y);
+//    renderer_.DrawLine(WHITE, verticesProjected[2].x, verticesProjected[2].y, verticesProjected[0].x, verticesProjected[0].y);
+    
+
+    
+    
+    mat4 M = {
+        0.718762f, 0.615033f, -0.324214f, 0.0f,
+        -0.393732f, 0.744416f, 0.539277f, 0.0f,
+        0.573024f, -0.259959f, 0.777216f, 0.0f,
+        0.526967f, 1.254234f, -2.532150f, 1.0f
+    };
+//    M = M.transpose();
+    
+    M = M.inverse();
+    
+    std::cout << M << std::endl;
+    
+//    vec4f point = {-0.5, 0.5f, -0.5f, 1.0f};
+//
+//    vec4f new_point = M * point;
+//
+//    std::cout << new_point << std::endl;
 
     // std::cout << trr << std::endl;
-    // 
-    // 
+    //
+    //
+    //
     // vec4f asd = vec4f({12, 23, 34}, 1);
     // std::cout << mat4_identity() << std::endl;
 
@@ -183,11 +292,20 @@ RaceScene::RaceScene(Renderer& renderer) : renderer_(renderer) {
 // end if
 
 void RaceScene::update(double dt) {
-     
-
+    return;
+    static float angle = 1.0f;
+    vec4f* verticesRotated = new vec4f[8];
+    vec4f* verticesProjected = new vec4f[8];
+    mat4 rotationMatrix = mat4_rotate_x(angle);
     for (int i = 0; i < 8; ++i) {
-        renderer_.DrawPixel(WHITE, 34, 34);
+        vec4f vert = {object->getVertex(i), 1.0f};
+        verticesRotated[i] = rotationMatrix * vert;
+        verticesProjected[i] = orthographic * verticesRotated[i];
     }
+
+        // renderer_.DrawPixel(WHITE, verticesProjected[i].x, verticesProjected[i].y);
+    angle++;
+
 
     // void DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
     return;
@@ -329,13 +447,3 @@ void RaceScene::update2(double dt) {
 RoadSegment* RaceScene::findSegment() {
     return road_[int(distance_/defaults::segment_length) % 500];
 }
-
-//void RaceScene::Project(vector3i& point, vector3i cameraCoords) {
-//    point.camera.x     = (p.world.x || 0) - cameraX;
-//    point.camera.y     = (p.world.y || 0) - cameraY;
-//    point.camera.z     = (p.world.z || 0) - cameraZ;
-//    point.screen.scale = cameraDepth/p.camera.z;
-//    point.screen.x     = Math.round((width/2)  + (p.screen.scale * p.camera.x  * width/2));
-//    point.screen.y     = Math.round((height/2) - (p.screen.scale * p.camera.y  * height/2));
-//    point.screen.w     = Math.round(             (p.screen.scale * roadWidth   * width/2));
-//}

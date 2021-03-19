@@ -1,17 +1,17 @@
 #include "object.h"
 
 Object::Object(int n) : n_(n) {
-    vertices_ = new vec3i[n_];
+    vertices_ = new vec3f[n_];
 }
 
 Object::~Object() {
     delete [] vertices_;
 }
 
-void Object::addVertex(const vec3i& vertex, const int& index) {
+void Object::addVertex(const vec3f& vertex, const int& index) {
     vertices_[index] = vertex;
 }
 
-vec3i Object::getVertex(const int& index) {
+vec3f Object::getVertex(const int& index) {
     return vertices_[index];
 }

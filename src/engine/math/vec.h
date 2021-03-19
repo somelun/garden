@@ -158,7 +158,7 @@ struct vec4 {
     }
 
     friend std::ostream& operator<<(std::ostream& s, vec4& v) {
-        s << v.x << " " << v.y << " " << v.z << " " << v.w << "\n";
+        s << v.x << " " << v.y << " " << v.z << " " << v.w;
         return s;
     }
 
