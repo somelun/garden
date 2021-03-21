@@ -24,14 +24,8 @@ vec2f Renderer::Project(vec3f coord, mat4 trans) {
 }
 
 void Renderer::Render(const class Camera& camera, const std::vector<Object>& objects) {
-    mat4 viewMatrix;
-    mat4 projectionMatrix;
-
-    for (const auto& object : objects) {
-        // for (const ) {
-        //     //
-        // }
-    }
+    (void)camera;
+    (void)objects;
 }
 
 void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {

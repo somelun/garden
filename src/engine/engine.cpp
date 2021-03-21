@@ -5,7 +5,7 @@
 #include <chrono>
 #include <thread>
 
-#include "scenes/race_scene.h"
+#include "scenes/test_scene.h"
 
 
 const uint16_t kWidth = 800;
@@ -30,7 +30,7 @@ void Engine::Start() {
 }
 
 void Engine::RunLoop() {
-    RaceScene* scene = new RaceScene(*renderer_);
+    TestScene* scene = new TestScene(*renderer_);
 
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();
