@@ -21,6 +21,15 @@ public:
     RaceScene(Renderer& renderer);
 
     void update(double dt);
+    
+    void computePixelCoordinates(
+        const vec3f pWorld,
+        vec2i &pRaster,
+        const mat4 &worldToCamera,
+        const float &canvasWidth,
+        const float &canvasHeight,
+        const uint32_t &imageWidth,
+        const uint32_t &imageHeight);
 
 private:
     Renderer& renderer_;

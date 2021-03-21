@@ -23,14 +23,14 @@ public:
 
     mat_t& at(int row, int column);
     const mat_t& at(int row, int column) const;
-
-    mat4 operator*(const mat4& m);
-    vec4f operator*(const vec4f& v);
+    
+    mat4 operator*(const mat4& m) const;
+    vec4f operator*(const vec4f& v) const;
 
     mat4 transpose();
     mat4 inverse();
     
-    friend std::ostream& operator<<(std::ostream& s, mat4& m);
+    friend std::ostream& operator<<(std::ostream& s, const mat4& m);
 
 private:
     mat4 adjoint();
@@ -125,7 +125,7 @@ static mat4 mat_test() {
 
 class mat3 {
 public:
-    friend std::ostream& operator<<(std::ostream& s, mat3& m);
+    friend std::ostream& operator<<(std::ostream& s, const mat3& m);
     
 private:
     friend class mat4;

@@ -24,7 +24,7 @@ mat4::mat4(mat_t a00, mat_t a01, mat_t a02, mat_t a03,
     data_[15] = a33;
 }
 
-mat4 mat4::operator*(const mat4& m) {
+mat4 mat4::operator*(const mat4& m) const {
     mat4 result = {};
     for (size_t i = 0; i < 4; ++i) {
         for (size_t j = 0; j < 4; ++j) {
@@ -36,7 +36,7 @@ mat4 mat4::operator*(const mat4& m) {
     return result;
 }
 
-vec4f mat4::operator*(const vec4f& v) {
+vec4f mat4::operator*(const vec4f& v) const {
     vec4f result = {};
     for (size_t i = 0; i < 4; ++i) {
         for (size_t j = 0; j < 4; ++j) {
@@ -116,7 +116,7 @@ mat_t mat3::determinant() {
          + data_[2] * (data_[3] * data_[7] - data_[4] * data_[6]);
 }
 
-std::ostream& operator<<(std::ostream& s, mat4& m) {
+std::ostream& operator<<(std::ostream& s, const mat4& m) {
     for (size_t i = 0; i < 16; i = i + 4) {
         s << m.data_[i] << " "
           << m.data_[i + 1] << " "
@@ -127,7 +127,7 @@ std::ostream& operator<<(std::ostream& s, mat4& m) {
     return s;
 }
 
-std::ostream& operator<<(std::ostream& s, mat3& m) {
+std::ostream& operator<<(std::ostream& s, const mat3& m) {
     for (size_t i = 0; i < 9; i = i + 3) {
         s << m.data_[i] << " "
           << m.data_[i + 1] << " "

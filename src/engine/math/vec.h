@@ -23,6 +23,11 @@ struct vec2 {
     inline vec2<T> operator*(float f) {
         return vec2<T>(x * f, y * f);
     }
+    
+    friend std::ostream& operator<<(std::ostream& s, const vec2& v) {
+        s << v.x << " " << v.y;
+        return s;
+    }
 
     T x;
     T y;
@@ -30,6 +35,7 @@ struct vec2 {
 
 using Point = vec2<int>;
 using vec2f = vec2<float>;
+using vec2i = vec2<int>;
 
 //////////////////
 // vec3
@@ -71,6 +77,11 @@ struct vec3 {
     inline vec3<T>& normalize() {
         *this = (*this) * (1 / length());
         return *this;
+    }
+    
+    friend std::ostream& operator<<(std::ostream& s, const vec3& v) {
+        s << v.x << " " << v.y << " " << v.z;
+        return s;
     }
 
     T x;
@@ -157,7 +168,7 @@ struct vec4 {
         return *this;
     }
 
-    friend std::ostream& operator<<(std::ostream& s, vec4& v) {
+    friend std::ostream& operator<<(std::ostream& s, const vec4& v) {
         s << v.x << " " << v.y << " " << v.z << " " << v.w;
         return s;
     }
