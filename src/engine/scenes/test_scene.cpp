@@ -86,7 +86,7 @@ const vec3f verts[146] = {
 
 const uint32_t numTris = 128;
 
-const uint32_t numTrisUsed = 1;
+const uint32_t numTrisUsed = numTris;
 
 const uint32_t tris[numTris * 3] = {
       8,   7,   9,   6,   5,   7,   4,   3,   5,   2,   1,   3,   0,   9,   1,
@@ -167,23 +167,13 @@ TestScene::TestScene(Renderer& renderer) : renderer_(renderer) {
         
         ofs << "<line x1=\"" << v0Raster.x << "\" y1=\"" << v0Raster.y << "\" x2=\"" << v1Raster.x << "\" y2=\"" << v1Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
         ofs << "<line x1=\"" << v1Raster.x << "\" y1=\"" << v1Raster.y << "\" x2=\"" << v2Raster.x << "\" y2=\"" << v2Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
-//        ofs << "<line x1=\"" << v2Raster.x << "\" y1=\"" << v2Raster.y << "\" x2=\"" << v0Raster.x << "\" y2=\"" << v0Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
+        ofs << "<line x1=\"" << v2Raster.x << "\" y1=\"" << v2Raster.y << "\" x2=\"" << v0Raster.x << "\" y2=\"" << v0Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
         
         renderer_.DrawLine(WHITE, v0Raster.x, v0Raster.y, v1Raster.x, v1Raster.y);
         renderer_.DrawLine(WHITE, v1Raster.x, v1Raster.y, v2Raster.x, v2Raster.y);
-//        renderer_.DrawLine(WHITE, v2Raster.x, v2Raster.y, v0Raster.x, v0Raster.y);
-        
-//        std::cout << v1Raster.x << " " << v1Raster.y << " " << v2Raster.x << " " << v2Raster.y << std::endl;
+        renderer_.DrawLine(WHITE, v2Raster.x, v2Raster.y, v0Raster.x, v0Raster.y);
         
     }
-    
-    vec2i Start = {150, 100};
-    vec2i End = {100, 300};
-    
-    ofs << "<line x1=\"" << Start.x << "\" y1=\"" << Start.y << "\" x2=\"" << End.x << "\" y2=\"" << End.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
-    
-    
-    renderer_.DrawLine(WHITE, Start.x, Start.y, End.x, End.y);
     
     ofs << "</svg>\n";
     ofs.close();

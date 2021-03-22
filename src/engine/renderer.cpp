@@ -294,6 +294,8 @@ void Renderer::FillScreen(const Color& color) {
 
 void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
     uint8_t* data = framebuffer_->get_data();
+    
+    std::cout << x << ", " << y << std::endl;
 
     uint32_t index = (y * framebuffer_->get_width() + x) * 4;
     data[index]     = color.x;
@@ -302,33 +304,83 @@ void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
     data[index + 3] = color.w;
 }
 
-// https://github.com/ssloy/tinyrenderer/wiki/Lesson-1-Bresenham%E2%80%99s-Line-Drawing-Algorithm
+// https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
+//http://www.edepot.com/algorithm.html
 void Renderer::DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
-    bool steep = false;
-    if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
-        std::swap(x0, y0);
-        std::swap(x1, y1);
-        steep = true;
+//    bool steep = false;
+//    if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
+//        std::swap(x0, y0);
+//        std::swap(x1, y1);
+//        steep = true;
+//    }
+//    if (x0 > x1) {
+//        std::swap(x0, x1);
+//        std::swap(y0, y1);
+//    }
+//    int16_t dx = x1 - x0;
+//    int16_t dy = y1 - y0;
+//    uint16_t derror2 = std::abs(dy) * 2;
+//    uint16_t error2 = 0;
+//    uint16_t y = y0;
+//    for (size_t x = x0; x <= x1; ++x) {
+//        if (steep) {
+//            DrawPixel(color, y, x);
+//        } else {
+//            DrawPixel(color, x, y);
+//        }
+//        error2 += derror2;
+//        if (error2 > dx) {
+//            y += (y1 > y0 ? 1: -1);
+//            error2 -= dx * 2;
+//        }
+//    }
+    
+    int x = x0;
+    int y = y0;
+    int x2 = x1;
+    int y2 = y1;
+    
+    bool yLonger=false;
+    int shortLen=y2-y;
+    int longLen=x2-x;
+    if (abs(shortLen)>abs(longLen)) {
+        int swap=shortLen;
+        shortLen=longLen;
+        longLen=swap;
+        yLonger=true;
     }
-    if (x0 > x1) {
-        std::swap(x0, x1);
-        std::swap(y0, y1);
+    int decInc;
+    if (longLen==0) decInc=0;
+    else decInc = (shortLen << 16) / longLen;
+
+    if (yLonger) {
+        if (longLen>0) {
+            longLen+=y;
+            for (int j=0x8000+(x<<16);y<=longLen;++y) {
+                DrawPixel(color, j >> 16, y);
+                j+=decInc;
+            }
+            return;
+        }
+        longLen+=y;
+        for (int j=0x8000+(x<<16);y>=longLen;--y) {
+            DrawPixel(color, j >> 16, y);
+            j-=decInc;
+        }
+        return;
     }
-    int16_t dx = x1 - x0;
-    int16_t dy = y1 - y0;
-    uint16_t derror2 = std::abs(dy) * 2;
-    uint16_t error2 = 0;
-    uint16_t y = y0;
-    for (size_t x = x0; x <= x1; ++x) {
-        if (steep) {
-            DrawPixel(color, y, x);
-        } else {
-            DrawPixel(color, x, y);
+
+    if (longLen>0) {
+        longLen+=x;
+        for (int j=0x8000+(y<<16);x<=longLen;++x) {
+            DrawPixel(color, x, j >> 16);
+            j+=decInc;
         }
-        error2 += derror2;
-        if (error2 > dx) {
-            y += (y1 > y0 ? 1: -1);
-            error2 -= dx * 2;
-        }
+        return;
+    }
+    longLen+=x;
+    for (int j=0x8000+(y<<16);x>=longLen;--x) {
+        DrawPixel(color, x, j >> 16);
+        j-=decInc;
     }
 }
