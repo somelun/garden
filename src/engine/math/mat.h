@@ -14,7 +14,6 @@ constexpr float k180PI = 180.0f / kPI;
 
 class mat4 {
 public:
-    
     mat4() {};
     mat4(mat_t a00, mat_t a01, mat_t a02, mat_t a03,
          mat_t a10, mat_t a11, mat_t a12, mat_t a13,
@@ -23,20 +22,21 @@ public:
 
     mat_t& at(int row, int column);
     const mat_t& at(int row, int column) const;
-    
+
     mat4 operator*(const mat4& m) const;
     vec4f operator*(const vec4f& v) const;
+    vec3f operator*(const vec3f& v) const;
 
     mat4 transpose();
     mat4 inverse();
-    
+
     friend std::ostream& operator<<(std::ostream& s, const mat4& m);
 
 private:
     mat4 adjoint();
     mat_t cofactor(size_t r, size_t c);
     mat_t minor(size_t r, size_t c);
-    
+
     mat_t data_[16] = {0};
 };
 
@@ -111,26 +111,14 @@ static mat4 mat4_rotate_z(const float degrees) {
 //     return m;
 // }
 
-[[maybe_unused]]
-static mat4 mat_test() {
-    mat4 m;
-    int t = 0;
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            m.at(i, j) = ++t;
-        }
-    }
-    return m;
-}
-
 class mat3 {
 public:
     friend std::ostream& operator<<(std::ostream& s, const mat3& m);
-    
+
 private:
     friend class mat4;
-    
+
     mat_t determinant();
-    
+
     mat_t data_[9] = {0};
 };

@@ -23,7 +23,17 @@ struct vec2 {
     inline vec2<T> operator*(float f) {
         return vec2<T>(x * f, y * f);
     }
-    
+
+    inline T& operator[](size_t i) const {
+        if (i == 0) {
+            return x;
+        } else if (i == 1) {
+            return y;
+        } else {
+            return 0;   //TODO: hanle error
+        }
+    }
+
     friend std::ostream& operator<<(std::ostream& s, const vec2& v) {
         s << v.x << " " << v.y;
         return s;
@@ -59,9 +69,30 @@ struct vec3 {
         return vec3<T>(x * f, y * f, z * f);
     }
 
-    // inline T& operator[](int i) {
-    //     return raw[i];
-    // }
+    inline  T& operator[](int i) {
+        if (i == 0) {
+            return x;
+        } else if (i == 1) {
+            return y;
+        } else if (i == 2) {
+            return z;
+        } else {
+            return 0;   //TODO: hanle error
+        }
+    }
+
+    // TODO: add asserts to all [] operators
+    inline const T& operator[](int i) const {
+        if (i == 0) {
+            return x;
+        } else if (i == 1) {
+            return y;
+        } else if (i == 2) {
+            return z;
+        } else {
+            return 0;   //TODO: hanle error
+        }
+    }
 
     inline vec3<T>& operator=(const vec3<T>& v) {
         x = v.x;
@@ -78,7 +109,7 @@ struct vec3 {
         *this = (*this) * (1 / length());
         return *this;
     }
-    
+
     friend std::ostream& operator<<(std::ostream& s, const vec3& v) {
         s << v.x << " " << v.y << " " << v.z;
         return s;

@@ -139,8 +139,7 @@ TestScene::TestScene(Renderer& renderer) : renderer_(renderer) {
     std::ofstream ofs;
     ofs.open("./proj.svg");
     ofs << "<svg version=\"1.1\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" xmlns=\"http://www.w3.org/2000/svg\" height=\"512\" width=\"512\">" << std::endl;
-    
-    
+
     mat4 cameraToWorld = {
         0.871214,   0,          -0.490904,  0,
         -0.192902,  0.919559,   -0.342346,  0,
@@ -148,36 +147,34 @@ TestScene::TestScene(Renderer& renderer) : renderer_(renderer) {
         14.777467,  29.361945,  27.993464,  1};
 
     cameraToWorld = cameraToWorld.transpose();
-    
     mat4 worldToCamera = cameraToWorld.inverse();
-    
+
     float canvasWidth = 2, canvasHeight = 2;
     uint32_t imageWidth = 800, imageHeight = 600;
-    
-//    return 0;
-    
+
     for (uint32_t i = 0; i < numTrisUsed; ++i) {
         const vec3f &v0World = verts[tris[i * 3]];
         const vec3f &v1World = verts[tris[i * 3 + 1]];
         const vec3f &v2World = verts[tris[i * 3 + 2]];
+
         vec2i v0Raster, v1Raster, v2Raster;
         computePixelCoordinates(v0World, v0Raster, worldToCamera, canvasWidth, canvasHeight, imageWidth, imageHeight);
         computePixelCoordinates(v1World, v1Raster, worldToCamera, canvasWidth, canvasHeight, imageWidth, imageHeight);
         computePixelCoordinates(v2World, v2Raster, worldToCamera, canvasWidth, canvasHeight, imageWidth, imageHeight);
-        
+
         ofs << "<line x1=\"" << v0Raster.x << "\" y1=\"" << v0Raster.y << "\" x2=\"" << v1Raster.x << "\" y2=\"" << v1Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
         ofs << "<line x1=\"" << v1Raster.x << "\" y1=\"" << v1Raster.y << "\" x2=\"" << v2Raster.x << "\" y2=\"" << v2Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
         ofs << "<line x1=\"" << v2Raster.x << "\" y1=\"" << v2Raster.y << "\" x2=\"" << v0Raster.x << "\" y2=\"" << v0Raster.y << "\" style=\"stroke:rgb(0,0,0);stroke-width:1\" />\n";
-        
+
         renderer_.DrawLine(WHITE, v0Raster.x, v0Raster.y, v1Raster.x, v1Raster.y);
         renderer_.DrawLine(WHITE, v1Raster.x, v1Raster.y, v2Raster.x, v2Raster.y);
         renderer_.DrawLine(WHITE, v2Raster.x, v2Raster.y, v0Raster.x, v0Raster.y);
-        
+
     }
-    
+
     ofs << "</svg>\n";
     ofs.close();
-    
+
 //    float near = 0.001f, far = 100.0f;
 //    float left = 0.0f, right = 800.0f, bottom = 600.0f, top = 0.0f;
 //    //
@@ -202,11 +199,9 @@ void TestScene::computePixelCoordinates(const vec3f pWorld,
                                         const uint32_t &imageWidth,
                                         const uint32_t &imageHeight) {
     vec4f pCamera = worldToCamera * vec4f(pWorld, 1.0f);
-    
     vec2f pScreen;
     pScreen.x = pCamera.x / -pCamera.z;
     pScreen.y = pCamera.y / -pCamera.z;
-   
     vec2f pNDC;
     pNDC.x = (pScreen.x + canvasWidth * 0.5) / canvasWidth;
     pNDC.y = (pScreen.y + canvasHeight * 0.5) / canvasHeight;

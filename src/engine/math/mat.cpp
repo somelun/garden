@@ -46,6 +46,17 @@ vec4f mat4::operator*(const vec4f& v) const {
     return result;
 }
 
+vec3f mat4::operator*(const vec3f& v) const {
+    vec4f result = {};
+    vec4f v4 = vec4f(v, 1.0f);
+    for (size_t i = 0; i < 4 ; ++i) {
+        for (size_t j = 0; j < 4; ++j) {
+            result[i] += data_[i * 4 + j] * v4[j];
+        }
+    }
+    return {result.x / result.w, result.y / result.y, result.z / result.w};
+}
+
 mat_t& mat4::at(int row, int column) {
     return data_[row * 4 + column];
 }

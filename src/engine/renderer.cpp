@@ -295,8 +295,6 @@ void Renderer::FillScreen(const Color& color) {
 void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
     uint8_t* data = framebuffer_->get_data();
     
-    std::cout << x << ", " << y << std::endl;
-
     uint32_t index = (y * framebuffer_->get_width() + x) * 4;
     data[index]     = color.x;
     data[index + 1] = color.y;
