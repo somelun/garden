@@ -48,7 +48,7 @@ static mat4 mat4_identity() {
 }
 
 [[maybe_unused]]
-static mat4 mat_translate(const vec3f& v) {
+static mat4 mat4_translate(const vec3f& v) {
     mat4 m = mat4_identity();
     m.at(0, 3) = v.x;
     m.at(1, 3) = v.y;
@@ -68,39 +68,45 @@ static mat4 mat4_scale(const vec3f& v) {
 
 [[maybe_unused]]
 static mat4 mat4_rotate_x(const float degrees) {
-    mat4 m;
+    mat4 m = mat4_identity();
+
     const float radians = degreesToRadians(degrees);
 
     m.at(1, 1) = cosf(radians);
-    m.at(1, 2) = sinf(radians);
-    m.at(2, 1) = -m.at(1, 2);
+    m.at(2, 1) = sinf(radians);
+    m.at(1, 2) = -m.at(1, 2);
     m.at(2, 2) = m.at(1, 1);
+    m.at(3, 3) = 1.0f;
 
     return m;
 }
 
 [[maybe_unused]]
 static mat4 mat4_rotate_y(const float degrees) {
-    mat4 m;
+    mat4 m = mat4_identity();
+
     const float radians = degreesToRadians(degrees);
 
     m.at(0, 0) = cosf(radians);
-    m.at(2, 0) = sinf(radians);
-    m.at(0, 2) = -m.at(0, 0);
+    m.at(0, 2) = sinf(radians);
+    m.at(2, 0) = -m.at(0, 0);
     m.at(2, 2) = m.at(0, 0);
+    m.at(3, 3) = 1.0f;
 
     return m;
 }
 
 [[maybe_unused]]
 static mat4 mat4_rotate_z(const float degrees) {
-    mat4 m;
+    mat4 m  = mat4_identity();
+
     const float radians = degreesToRadians(degrees);
 
     m.at(0, 0) = cosf(radians);
     m.at(1, 0) = sinf(radians);
     m.at(0, 1) = -m.at(1, 0);
     m.at(1, 1) = m.at(0, 0);
+    m.at(3, 3) = 1.0f;
 
     return m;
 }

@@ -293,8 +293,13 @@ void Renderer::FillScreen(const Color& color) {
 }
 
 void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
+    // FIXME:
+    if (x > 799 || y > 599) {
+        return;
+    }
+
     uint8_t* data = framebuffer_->get_data();
-    
+
     uint32_t index = (y * framebuffer_->get_width() + x) * 4;
     data[index]     = color.x;
     data[index + 1] = color.y;
@@ -332,12 +337,12 @@ void Renderer::DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x
 //            error2 -= dx * 2;
 //        }
 //    }
-    
+
     int x = x0;
     int y = y0;
     int x2 = x1;
     int y2 = y1;
-    
+
     bool yLonger=false;
     int shortLen=y2-y;
     int longLen=x2-x;

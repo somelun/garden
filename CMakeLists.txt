@@ -19,6 +19,7 @@ set(HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/test_scene.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/renderer.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/loader.h
 )
 
 set(SOURCES

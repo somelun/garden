@@ -54,7 +54,8 @@ vec3f mat4::operator*(const vec3f& v) const {
             result[i] += data_[i * 4 + j] * v4[j];
         }
     }
-    return {result.x / result.w, result.y / result.y, result.z / result.w};
+    // std::cout << result << std::endl;
+    return {result.x / result.w, result.y / result.w, result.z / result.w};
 }
 
 mat_t& mat4::at(int row, int column) {

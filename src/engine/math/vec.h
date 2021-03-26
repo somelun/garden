@@ -34,6 +34,7 @@ struct vec2 {
         }
     }
 
+
     friend std::ostream& operator<<(std::ostream& s, const vec2& v) {
         s << v.x << " " << v.y;
         return s;
