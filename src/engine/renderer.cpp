@@ -309,7 +309,7 @@ void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
 
 // https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
 //http://www.edepot.com/algorithm.html
-void Renderer::DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1) {
+void Renderer::DrawLine(const Color& color, int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
 //    bool steep = false;
 //    if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
 //        std::swap(x0, y0);
@@ -337,6 +337,11 @@ void Renderer::DrawLine(const Color& color, uint16_t x0, uint16_t y0, uint16_t x
 //            error2 -= dx * 2;
 //        }
 //    }
+
+    x0 = x0 < 0 ? 0 : x0;
+    x1 = x1 < 0 ? 0 : x1;
+    y0 = y0 < 0 ? 0 : y0;
+    y1 = y1 < 0 ? 0 : y1;
 
     int x = x0;
     int y = y0;
