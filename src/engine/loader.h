@@ -34,7 +34,7 @@ static bool LoadObjFile(const char* filePath, std::vector<vec3f>& vertices, std:
             uint16_t d;
             for (size_t i = 0; i < 3; ++i) {
                 ss >> d;
-                triangles.push_back(d);
+                triangles.push_back(--d); // because in .obj file index starts from 1
             }
         }
     }

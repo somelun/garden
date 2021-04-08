@@ -6,6 +6,7 @@ public:
     ~Engine();
 
     void Start();
+
 private:
     void RunLoop();
 

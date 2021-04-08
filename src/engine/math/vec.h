@@ -123,14 +123,14 @@ struct vec3 {
 
 template<typename T>
 inline float dot(const vec3<T>& v1, const vec3<T>& v2) {
-    return v1.x() * v2.x() + v1.y() * v2.y()  + v1.z() * v2.z();
+    return v1.x * v2.x + v1.y * v2.y  + v1.z * v2.z;
 }
 
 template<typename T>
 inline vec3<T> cross(const vec3<T>& v1, const vec3<T>& v2) {
-    return vec3<T>((v1.y() * v2.z() - v1.z() * v2.y()),
-                (-(v1.x() * v2.z() - v1.z() * v2.x())),
-                (v1.x() * v2.y() - v1.y() * v2.x()));
+    return vec3<T>((v1.y * v2.z - v1.z * v2.y),
+                   (v1.z * v2.x - v1.x * v2.z),
+                   (v1.x * v2.y - v1.y * v2.x));
 }
 
 using vec3i = vec3<int>;

@@ -7,10 +7,11 @@ public:
     Application(uint16_t width, uint16_t height);
     ~Application();
 
+    // TODO: move this function to private
     void create_window(const char* title);
     void close_window();
 
-    void draw_buffer(class Framebuffer* framebuffer);
+    void draw_buffer(const class Framebuffer* framebuffer);
 
     void handle_event();
 

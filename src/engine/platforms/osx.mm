@@ -8,7 +8,7 @@
 struct window_impl_t {
     NSWindow* handler;
     Framebuffer* buffer;
-    bool bClosing{false};   //TODO: bad name
+    bool bClosing{false};   //FIXME: please rename
 };
 
 // some information aboud window resize
@@ -186,8 +186,8 @@ void Application::close_window() {
     delete window_impl;
 }
 
-void Application::draw_buffer(Framebuffer* framebuffer) {
-    window_impl->buffer = framebuffer;
+void Application::draw_buffer(const Framebuffer* framebuffer) {
+    window_impl->buffer = const_cast<Framebuffer*>(framebuffer);
     [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 

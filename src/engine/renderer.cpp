@@ -1,31 +1,48 @@
 #include "renderer.h"
 #include "framebuffer.h"
 #include "object.h"
+#include "camera.h"
+
 #include <vector>
 
-Renderer::Renderer(uint16_t width, uint16_t height) {
-    framebuffer_ = new Framebuffer(width, height);
+
+const float kCanvasWidth = 2, kCanvasHeight = 2;
+
+
+Renderer::Renderer(uint16_t width, uint16_t height) 
+    : width_(width)
+    , height_(height) {
+    framebuffer_ = new Framebuffer(width_, height_);
 }
 
 Renderer::~Renderer() {
     delete framebuffer_;
 }
 
-void Renderer::Present() {
-    //
+void Renderer::Draw(const Camera& camera, const std::vector<Object>& objects) {
+    for (const Object& object : objects) {
+        Draw(camera, object);
+    }
 }
 
-vec2f Renderer::Project(vec3f coord, mat4 trans) {
-    vec4f position = vec4f(coord, 1);
-    vec4f point = trans * position;
-    float x = point.x * framebuffer_->get_width() + framebuffer_->get_width() / 2.0f;
-    float y = -point.y * framebuffer_->get_height() + framebuffer_->get_height() / 2.0f;
-    return {x, y};
-}
+void Renderer::Draw(const Camera& camera, const Object& object) {
+        const std::vector<vec3f>& vertices = object.GetVertices();
 
-void Renderer::Render(const class Camera& camera, const std::vector<Object>& objects) {
-    (void)camera;
-    (void)objects;
+        // TODO: add back triagnles, not only vertices
+        // const std::vector<uint16_t> triangles = object.GetTriangles();
+        // const uint16_t numTriangles = triangles.size();
+
+        mat4 translation = mat4_translate(object.GetPosition());
+
+        const uint16_t numVertices = vertices.size();
+        for (uint32_t i = 0; i < numVertices; ++i) {
+
+            vec3f translated = translation * vertices[i];
+
+            vec2i rastered = ComputePixelCoordinates(camera.projection, translated);
+
+            DrawPixel(object.GetVertexColor(), rastered.x, rastered.y);
+        }
 }
 
 void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {
@@ -269,7 +286,7 @@ void Renderer::FillScreen(const Color& color) {
 
     size_t size = framebuffer_->get_width() * framebuffer_->get_height() * 4;
 
-    //
+    //memset(buffer, 0x0, imageWidth * imageHeight);
 
     // return;
     for (size_t i = 0; i < size; i += 4) {
@@ -391,4 +408,25 @@ void Renderer::DrawLine(const Color& color, int16_t x0, int16_t y0, int16_t x1, 
         DrawPixel(color, x, j >> 16);
         j-=decInc;
     }
+}
+
+const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld) {
+    vec4f pointProjected = projection * vec4f(pointWorld, 1.0f);
+
+    const vec2f pointScreen = {
+        pointProjected.x / -pointProjected.z,
+        pointProjected.y / -pointProjected.z
+    };
+
+    const vec2f pointNDC = {
+        (pointScreen.x + kCanvasWidth * 0.5f) / kCanvasWidth,
+        (pointScreen.y + kCanvasHeight * 0.5f) / kCanvasHeight
+    };
+
+    const vec2i pointRaster = {
+        (int)((pointNDC.x) * width_),
+        (int)((1 - pointNDC.y) * height_)
+    };
+
+    return pointRaster;
 }

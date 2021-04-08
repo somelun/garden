@@ -24,7 +24,7 @@ Engine::~Engine() {
 }
 
 void Engine::Start() {
-    application_->create_window("Sanbox");
+    application_->create_window("garden");
 
     RunLoop();
 }
@@ -50,6 +50,7 @@ void Engine::RunLoop() {
             std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
         } else {
             // oops
+            // TODO: handle this sad situation
         }
 
         current_time = new_time;

@@ -3,12 +3,17 @@
 #include "math/vec.h"
 #include "math/mat.h"
 
+// enum class ProjectionType {
+//     Perspective = 0,
+//     Orthographic,
+// };
+
+// http://www.songho.ca/opengl/gl_camera.html
 class Camera {
 public:
-    Camera(vec3f origin, vec3f target) : origin_(origin), target_(target) {};
+    Camera();
 
-    mat4 lookAt();
+    mat4 projection;
 private:
-    vec3f origin_;
-    vec3f target_;
+    // ProjectionType projectionType_{ProjectionType::Perspective};
 };

@@ -1,8 +1,6 @@
 #include "camera.h"
 
-const vec3f Up = {0.0f, 1.0f, 0.0f};
-
-mat4 Camera::lookAt() {
-    vec3f direction = (target_ - origin_).normalize();
-    return mat4_identity();
+Camera::Camera() {
+    // TODO: remove this hardcod
+    projection = mat4_perspective(90.0f, 0.1f, 100.0f);
 }

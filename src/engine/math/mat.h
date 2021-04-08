@@ -42,8 +42,50 @@ private:
 
 [[maybe_unused]]
 static mat4 mat4_identity() {
-    mat4 m;
+    mat4 m = {};
     m.at(0, 0) = m.at(1, 1) = m.at(2, 2) = m.at(3, 3) = 1.0f;
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_orthographic(
+        const float& left,
+        const float& right,
+        const float& top,
+        const float& bottom,
+        const float &near,
+        const float& far
+    ) {
+    mat4 m = {};
+
+    m.at(0, 0) = 2.0f / (right - left);
+    m.at(1, 1) = 2.0f / (top - bottom);
+    m.at(2, 2) = -2.0f / (far - near);
+    m.at(3, 3) = 1.0f;
+    m.at(0, 3) = -(right + left) / (right - left);
+    m.at(1, 3) = -(top + bottom) / (top - bottom);
+    m.at(2, 3) = -(far + near) / (far - near);
+
+    return m;
+}
+
+[[maybe_unused]]
+static mat4 mat4_perspective(
+        const float& fov,
+        const float &near,
+        const float& far
+    ) {
+    mat4 m = {};
+
+    const float scale = 1.0f / tan(fov * 0.5f * kPI / 180.0f);
+
+    m.at(0, 0) = scale;
+    m.at(1, 1) = scale;
+    m.at(2, 2) = -far / (far - near);
+    m.at(2, 3) = -(far * near) / (far - near);
+    m.at(3, 2) = -1.0f;
+    m.at(3, 3) = 0.0f;
+
     return m;
 }
 
@@ -58,7 +100,7 @@ static mat4 mat4_translate(const vec3f& v) {
 
 [[maybe_unused]]
 static mat4 mat4_scale(const vec3f& v) {
-    mat4 m;
+    mat4 m = {};
     m.at(0, 0) = v.x;
     m.at(1, 1) = v.y;
     m.at(2, 2) = v.z;
