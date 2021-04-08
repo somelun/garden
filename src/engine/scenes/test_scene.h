@@ -9,7 +9,7 @@ public:
     TestScene(Renderer& renderer);
     ~TestScene();
 
-    void update(double dt);
+    void Update(double dt);
 
 private:
     Renderer& renderer_;

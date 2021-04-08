@@ -5,7 +5,7 @@ int main(int argc, char *argv[]) {
     (void)argv;
 
     Engine engine;
-    engine.Start();
+    engine.RunLoop();
 
     return 0;
 }

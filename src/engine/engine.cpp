@@ -14,19 +14,13 @@ const uint16_t kFPS = 60;
 
 
 Engine::Engine() {
-    application_ = new Application(kWidth, kHeight);
+    application_ = new Application("garden", kWidth, kHeight);
     renderer_ = new Renderer(kWidth, kHeight);
 }
 
 Engine::~Engine() {
     delete renderer_;
     delete application_;
-}
-
-void Engine::Start() {
-    application_->create_window("garden");
-
-    RunLoop();
 }
 
 void Engine::RunLoop() {
@@ -37,7 +31,7 @@ void Engine::RunLoop() {
 
     while (application_->is_running()) {
 
-        scene->update(dt);
+        scene->Update(dt);
 
         application_->handle_event();
         application_->draw_buffer(renderer_->GetFramebuffer());
@@ -56,7 +50,7 @@ void Engine::RunLoop() {
         current_time = new_time;
     }
 
-    application_->close_window();
+    // application_->close_window();
 
     delete scene;
 }

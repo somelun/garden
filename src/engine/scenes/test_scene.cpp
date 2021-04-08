@@ -22,7 +22,7 @@ TestScene::~TestScene() {
     delete object_;
 }
 
-void TestScene::update(double dt) {
+void TestScene::Update(double dt) {
     (void)dt;
     return;
 //         // vec3f line1 = v1World - v0World;

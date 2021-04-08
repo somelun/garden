@@ -110,7 +110,7 @@ struct window_impl_t {
 // static NSAutoreleasePool* globalAutoreleasePool = nullptr;
 
 // public window class implementation
-Application::Application(uint16_t width, uint16_t height)
+Application::Application(const char* title, uint16_t width, uint16_t height)
     : width_(width),height_(height) {
     std::cout << "Application launching...\n";
     if (NSApp == nil) {
@@ -132,10 +132,13 @@ Application::Application(uint16_t width, uint16_t height)
         [appMenuItem setSubmenu:appMenu];
 
         [NSApp finishLaunching];
+
+        create_window(title);
     }
 }
 
 Application::~Application () {
+    close_window();
     std::cout << "Application closing...\n";
 }
 
