@@ -14,7 +14,7 @@ public:
         return vertices_;
     }
 
-    const std::vector<uint16_t> GetTriangles() const {
+    const std::vector<uint16_t>& GetTriangles() const {
         return triangles_;
     }
 
