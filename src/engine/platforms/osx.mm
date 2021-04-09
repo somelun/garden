@@ -210,3 +210,7 @@ void Application::HandleEvent() {
 bool Application::IsRunning() {
     return !window_impl->bClosing;
 }
+
+void Application::SetTitle(const char *newTitle) {
+    //
+}

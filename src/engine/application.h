@@ -11,6 +11,7 @@ public:
     void HandleEvent();
 
     bool IsRunning();
+    void SetTitle(const char *newTitle);
 
 private:
     void CreateWindow(const char* title);

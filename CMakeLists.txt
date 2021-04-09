@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(sandbox VERSION 0.1 LANGUAGES CXX OBJCXX)
+project(garden VERSION 0.1 LANGUAGES CXX OBJCXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -42,7 +42,7 @@ endif(MSVC)
 
 # message(${SRC})
 
-set(TARGET sandbox)
+set(TARGET garden)
 
 add_executable(${TARGET} ${SOURCES} ${HEADERS})
 
