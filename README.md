@@ -1,8 +1,7 @@
-**CPU Sandbox**
+**CPU Garden**
 
-The goal is to create simple sandbox, so I could use it for fun projecs, such as experiment with 1000000 particles, or implement game of life, or create arcade racing game. You get the idea.
-
-My aim is make it from scratch, completely independent of any libraries, but supporting for window, linux and mac os.
+The goal is to create simple software renderer, so I could use it for fun projecs, such as experiment with 100...0 particles, or implement game of life, or create arcade racing game, whatever.
+I am going to make everything from scratch, completely independent of any libraries, for Windows, Linux and MacOS.
 
 **Work In Progress!**
 
@@ -11,8 +10,9 @@ My aim is make it from scratch, completely independent of any libraries, but sup
 ### Mac OS
 
 ```cmd
+mkdir build
 cd build
-cmake .. 
+cmake ..
 make
-./sandbox
+./garden
 ```
