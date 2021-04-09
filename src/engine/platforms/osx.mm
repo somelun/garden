@@ -211,6 +211,6 @@ bool Application::IsRunning() {
     return !window_impl->bClosing;
 }
 
-void Application::SetTitle(const char *newTitle) {
-    //
+void Application::SetTitle(const char *title) {
+    [window_impl->handler setTitle:[NSString stringWithUTF8String:title]];
 }
