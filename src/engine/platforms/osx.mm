@@ -133,17 +133,17 @@ Application::Application(const char* title, uint16_t width, uint16_t height)
 
         [NSApp finishLaunching];
 
-        create_window(title);
+        CreateWindow(title);
     }
 }
 
 Application::~Application () {
-    close_window();
+    CloseWindow();
     std::cout << "Application closing...\n";
 }
 
 // window implementation
-void Application::create_window(const char* title) {
+void Application::CreateWindow(const char* title) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
     } else {
@@ -177,7 +177,7 @@ void Application::create_window(const char* title) {
     [window_impl->handler makeKeyAndOrderFront:nil];
 }
 
-void Application::close_window() {
+void Application::CloseWindow() {
     [window_impl->handler orderOut:nil];
 
     [[window_impl->handler delegate] release];
@@ -189,12 +189,12 @@ void Application::close_window() {
     delete window_impl;
 }
 
-void Application::draw_buffer(const Framebuffer* framebuffer) {
+void Application::PresentBuffer(const Framebuffer* framebuffer) {
     window_impl->buffer = const_cast<Framebuffer*>(framebuffer);
     [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
-void Application::handle_event() {
+void Application::HandleEvent() {
     @autoreleasepool {
         NSEvent* event = nil;
         do {
@@ -207,6 +207,6 @@ void Application::handle_event() {
     }
 }
 
-bool Application::is_running() {
+bool Application::IsRunning() {
     return !window_impl->bClosing;
 }

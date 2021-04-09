@@ -29,12 +29,12 @@ void Engine::RunLoop() {
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();
 
-    while (application_->is_running()) {
+    while (application_->IsRunning()) {
 
         scene->Update(dt);
 
-        application_->handle_event();
-        application_->draw_buffer(renderer_->GetFramebuffer());
+        application_->HandleEvent();
+        application_->PresentBuffer(renderer_->GetFramebuffer());
 
         auto new_time = std::chrono::steady_clock::now();
         double delta_time = std::chrono::duration<double>(new_time - current_time).count();
@@ -43,14 +43,11 @@ void Engine::RunLoop() {
         if (sleep_time > 0.0f) {
             std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
         } else {
-            // oops
             // TODO: handle this sad situation
         }
 
         current_time = new_time;
     }
-
-    // application_->close_window();
 
     delete scene;
 }
