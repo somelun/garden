@@ -1,7 +1,12 @@
-#include "../application.h"
-
 #include <windows.h>
 #include <iostream>
+
+// MS Windows used this define for I don't know what, but I don't want to rename
+// my function, thats why I undefine it firts
+// #undef CreateWindow
+
+#include "../application.h"
+
 
 WNDCLASS WindowClass = {};
 
@@ -17,8 +22,8 @@ static LRESULT CALLBACK MainCallback(HWND window, UINT message, WPARAM wParam, L
         case WM_PAINT: {
             PAINTSTRUCT ps;
 
-            HDC hDc = BeginPaint(window, &ps);
-            FillRect(hDc, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
+            HDC DeviceContext = BeginPaint(window, &ps);
+            FillRect(DeviceContext, &ps.rcPaint, (HBRUSH)(COLOR_WINDOW + 1));
             EndPaint(window, &ps);
 
             return 0;

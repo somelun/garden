@@ -49,3 +49,6 @@ add_executable(${TARGET} ${SOURCES} ${HEADERS})
 if(APPLE)
     target_link_libraries(${TARGET} PRIVATE "-framework Cocoa")
 endif()
+
+if(MSVC)
+endif()
