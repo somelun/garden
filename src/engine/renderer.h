@@ -1,9 +1,11 @@
 #pragma once
 
-#include "math/vec.h"
 #include <algorithm>
 #include <cstdlib>
 #include <iostream>
+#include <vector>
+
+#include "math/vec.h"
 #include "math/mat.h"
 
 class Framebuffer;

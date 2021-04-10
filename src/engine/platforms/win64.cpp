@@ -1,4 +1,4 @@
-#include "application.h"
+#include "../application.h"
 
 #include <windows.h>
 #include <iostream>
@@ -38,7 +38,9 @@ static LRESULT CALLBACK MainCallback(HWND window, UINT message, WPARAM wParam, L
     return DefWindowProc(window, message, wParam, lParam);
 }
 
-Application::Application(const char* title, uint16_t width, uint16_t height) {
+Application::Application(const char* title, uint16_t width, uint16_t height) 
+    : width_(width)
+    , height_(height) {
     std::cout << "Application launching...\n";
 
     WindowClass = {};
@@ -54,7 +56,7 @@ Application::Application(const char* title, uint16_t width, uint16_t height) {
     WindowClass.lpszClassName = title;
 
     if (RegisterClass(&WindowClass)) {
-        CreateWindow(title, width, height);
+        CreateWindow(title);
     }
 }
 
@@ -62,7 +64,7 @@ Application::~Application() {
     std::cout << "Application closing...\n";
 }
 
-void Application::CreateWindow(const char* title, uint16_t width, uint16_t height) {
+void Application::CreateWindow(const char* title) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
     }
@@ -75,8 +77,8 @@ void Application::CreateWindow(const char* title, uint16_t width, uint16_t heigh
         WS_OVERLAPPEDWINDOW | WS_VISIBLE,
         CW_USEDEFAULT, // x
         CW_USEDEFAULT, // y
-        width,
-        height,
+        width_,
+        height_,
         0, // parent window
         0, // menu
         GetModuleHandle(nullptr), // instance
@@ -92,7 +94,7 @@ void Application::CloseWindow() {
     delete window_impl;
 }
 
-void Application::DrawBuffer(const class Framebuffer* buffer) {
+void Application::PresentBuffer(const class Framebuffer* buffer) {
     //
 }
 
@@ -104,7 +106,10 @@ void Application::HandleEvent() {
     }
 }
 
+void Application::SetTitle(const char* title) {
+    //
+}
+
 bool Application::IsRunning() {
     return !window_impl->bClosing;
 }
-
