@@ -1,11 +1,14 @@
 #include <windows.h>
 #include <iostream>
 
-// MS Windows used this define for I don't know what, but I don't want to rename
-// my function, thats why I undefine it firts
-// #undef CreateWindow
+// MS Windows used this define for I don't know what reason, but I don't want
+// to rename my function, thats why I undefine it firt
+ #undef CreateWindow
 
 #include "../application.h"
+
+
+static const char* const WINDOW_ENTRY_NAME = "Entry";
 
 
 WNDCLASS WindowClass = {};
@@ -13,11 +16,13 @@ WNDCLASS WindowClass = {};
 // Win64 window implementation
 struct window_impl_t {
     HWND handler;
-    //Framebuffer* buffer;
+    Framebuffer* buffer;
     bool bClosing{ false };
 };
 
 static LRESULT CALLBACK MainCallback(HWND window, UINT message, WPARAM wParam, LPARAM lParam) {
+    window_impl_t* window_impl = (window_impl_t*)GetProp(window, WINDOW_ENTRY_NAME);
+
     switch (message) {
         case WM_PAINT: {
             PAINTSTRUCT ps;
@@ -30,12 +35,13 @@ static LRESULT CALLBACK MainCallback(HWND window, UINT message, WPARAM wParam, L
         }
 
         case WM_CLOSE: {
+            window_impl->bClosing = true;
             return 0;
         }
 
         case WM_DESTROY: {
-            PostQuitMessage(0);
-
+            window_impl->bClosing = true;
+            PostQuitMessage(0); // not sure if I need this call here
             return 0;
         }
     }
@@ -91,6 +97,7 @@ void Application::CreateWindow(const char* title) {
     );
 
     if (window_impl->handler) {
+        SetProp(window_impl->handler, WINDOW_ENTRY_NAME, window_impl);
         ShowWindow(window_impl->handler, SW_SHOW);
     }
 }
@@ -100,7 +107,13 @@ void Application::CloseWindow() {
 }
 
 void Application::PresentBuffer(const class Framebuffer* buffer) {
-    //
+    //HDC window_dc = GetDC(window_impl->handler);
+    //HDC memory_dc = window->memory_dc;
+    //image_t* surface = window->surface;
+    //int width = surface->width;
+    //int height = surface->height;
+    //BitBlt(window_dc, 0, 0, width, height, memory_dc, 0, 0, SRCCOPY);
+    //ReleaseDC(window->handle, window_dc);
 }
 
 void Application::HandleEvent() {
