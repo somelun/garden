@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(garden VERSION 0.1 LANGUAGES CXX OBJCXX)
+if(APPLE)
+    project(garden VERSION 0.1 LANGUAGES CXX OBJCXX)
+else()
+    project(garden VERSION 0.1 LANGUAGES CXX)
+endif()
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
@@ -40,6 +44,9 @@ if(MSVC)
     set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/win64.cpp)
 endif(MSVC)
 
+if(UNIX)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/linux.cpp)
+endif()
 # message(${SRC})
 
 set(TARGET garden)
