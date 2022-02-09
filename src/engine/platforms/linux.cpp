@@ -1,4 +1,4 @@
-#include "application.h"
+#include "../application.h"
 
 #include <iostream>
 
@@ -8,7 +8,7 @@ struct window_impl_t {
     bool bClosing{false};
 };
 
-Application::Application() {
+Application::Application(const char* title, uint16_t width, uint16_t height) {
     std::cout << "Application launching...\n";
 }
 
@@ -16,25 +16,25 @@ Application::~Application() {
     std::cout << "Application closing...\n";
 }
 
-void Application::create_window(const char* title, uint16_t width, uint16_t height) {
+void Application::CreateWindow(const char* title) {
     if (window_impl == nullptr) {
         window_impl = new window_impl_t();
     }
 }
 
-void Application::close_window() {
+void Application::CloseWindow() {
     delete window_impl;
 }
 
-void Application::draw_buffer(class Framebuffer* buffer) {
+void Application::PresentBuffer(const Framebuffer* framebuffer) {
     //
 }
 
-void Application::handle_event() {
+void Application::HandleEvent() {
     //
 }
 
-bool Application::is_running() {
+bool Application::IsRunning() {
     return !window_impl->bClosing;
 }
 

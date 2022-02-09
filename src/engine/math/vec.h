@@ -10,7 +10,7 @@
 template<typename T>
 struct vec2 {
     vec2() : x(0), y(0) {}
-    vec2(T x, T y) : x(x), y(y) {}
+    vec2(T x_, T y_) : x(x_), y(y_) {}
 
     inline vec2<T> operator+(const vec2<T>& v) {
         return vec2<T>(x + v.x, y + v.y);
@@ -54,7 +54,7 @@ using vec2i = vec2<int>;
 template<typename T>
 struct vec3 {
     vec3() : x(0), y(0), z(0) {}
-    vec3(T x, T y, T z) : x(x), y(y), z(z) {}
+    vec3(T x_, T y_, T z_) : x(x_), y(y_), z(z_) {}
 
     vec3(const vec3<T>& v) : x(v.x), y(v.y), z(v.z) {}
 
@@ -142,10 +142,10 @@ using vec3f = vec3<float>;
 template<typename T>
 struct vec4 {
     vec4() : x(0), y(0), z(0), w(0) {}
-    vec4(T x, T y, T z, T w) : x(x), y(y), z(z), w(w) {}
+    vec4(T x_, T y_, T z_, T w_) : x(x_), y(y_), z(z_), w(w_) {}
 
     vec4(const vec4<T>& v) : x(v.x), y(v.y), z(v.z), w(v.w) {}
-    vec4(const vec3<T>& v, const T& w) : x(v.x), y(v.y), z(v.z), w(w) {}
+    vec4(const vec3<T>& v, const T& w_) : x(v.x), y(v.y), z(v.z), w(w_) {}
 
     inline vec4<T> operator+(const vec4<T>& v) {
         return vec4<T>(x + v.x, y + v.y, z + v.z, w + v.w);
