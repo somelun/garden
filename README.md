@@ -17,3 +17,7 @@ cmake ..
 make
 ./garden
 ```
+### Linux
+
+You might need to install X11 first:
+```sudo apt-get install libx11-dev```
