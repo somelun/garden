@@ -111,8 +111,10 @@ struct window_impl_t {
 
 // public window class implementation
 Application::Application(const char* title, uint16_t width, uint16_t height)
-    : width_(width),height_(height) {
+    : width_(width)
+    , height_(height) {
     std::cout << "Application launching...\n";
+
     if (NSApp == nil) {
         // globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
         [NSApplication sharedApplication];

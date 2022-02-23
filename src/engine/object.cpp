@@ -3,6 +3,7 @@
 
 Object::Object(const char* filePath) {
     bool result = LoadObjFile(filePath, vertices_, triangles_);
+    (void)result;
 }
 
 // Object::Object(int n) : n_(n) {

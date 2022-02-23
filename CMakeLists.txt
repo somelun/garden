@@ -41,7 +41,7 @@ set(SOURCES
 )
 
 if(APPLE)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/osx.mm)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/macos.mm)
 endif(APPLE)
 
 if(MSVC)
@@ -50,7 +50,7 @@ endif(MSVC)
 
 if(LINUX)
     set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/linux.cpp)
-endif()
+endif(LINUX)
 
 set(TARGET garden)
 
@@ -58,7 +58,6 @@ add_executable(${TARGET} ${SOURCES} ${HEADERS})
 
 if(APPLE)
     target_link_libraries(${TARGET} PRIVATE "-framework Cocoa")
-endif()
-
-if(MSVC)
+elseif(LINUX)
+    target_link_libraries(${TARGET} PRIVATE "-lX11")
 endif()
