@@ -13,8 +13,8 @@ static Atom delete_window = None;
 // linux window implementation
 struct window_impl_t {
     Window handler;
-    XImage *ximage;
     Framebuffer* buffer;
+    XImage* ximage;
     bool bClosing{false};
 };
 
@@ -70,6 +70,24 @@ void Application::CreateWindow(const char* title) {
     delete_window = XInternAtom(display, "WM_DELETE_WINDOW", false);
     XSetWMProtocols(display, window_impl->handler, &delete_window, 1);
 
+    Visual* visual = XDefaultVisual(display, screen);
+    const int depth = XDefaultDepth(display, screen);
+
+    Framebuffer* fb = new Framebuffer(width_, height_);
+
+    window_impl->ximage = XCreateImage(
+        display,
+        visual,
+        depth,
+        ZPixmap,
+        0,
+        (char*)fb->get_data(),
+        width_,
+        height_,
+        32,
+        0
+    );
+
     XMapWindow(display, window_impl->handler);
 
     XFlush(display);
@@ -82,6 +100,20 @@ void Application::CloseWindow() {
 void Application::PresentBuffer(const Framebuffer* framebuffer) {
     int screen = XDefaultScreen(display);
     GC gc = XDefaultGC(display, screen);
+
+    window_impl->ximage->data = (char*)framebuffer->get_data();
+
+    //TODO: someday check this with proper linux
+    XPutImage(
+        display,
+        window_impl->handler,
+        gc,
+        window_impl->ximage,
+        0, 0, 0, 0,
+        framebuffer->get_width(),
+        framebuffer->get_height()
+    );
+
     XFlush(display);
 }
 
