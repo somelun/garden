@@ -28,8 +28,8 @@ mat4 mat4::operator*(const mat4& m) const {
     mat4 result = {};
 
     for (size_t i = 0; i < 4; ++i) {
-        for (size_t j = 0; j < 4; ++j) {
-            for (size_t k = 0; k < 4; ++k) {
+        for (size_t k = 0; k < 4; ++k) {
+            for (size_t j = 0; j < 4; ++j) {
                 result.at(i, j) += data_[i * 4 + k] * m.at(k, j);
             }
         }
