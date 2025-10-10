@@ -18,43 +18,26 @@ else()
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic -g -O3")
 endif()
 
-set(HEADERS
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/math/vec.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/math/mat.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/application.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/object.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/framebuffer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/test_scene.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/renderer.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/loader.h
-)
-
-set(SOURCES
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/math/mat.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/engine.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/object.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/renderer.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/camera.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/scenes/test_scene.cpp
+file(GLOB_RECURSE SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/shared/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/shared/*.h"
 )
 
 if(APPLE)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/macos.mm)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/macos/macos.mm)
 endif(APPLE)
 
 if(MSVC)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/win64.cpp)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/windows/win64.cpp)
 endif(MSVC)
 
 if(LINUX)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/platforms/linux.cpp)
+    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/linux/linux.cpp)
 endif(LINUX)
 
 set(TARGET garden)
 
-add_executable(${TARGET} ${SOURCES} ${HEADERS})
+add_executable(${TARGET} ${SOURCES})
 
 if(APPLE)
     target_link_libraries(${TARGET} PRIVATE "-framework Cocoa")

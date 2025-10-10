@@ -1,5 +1,5 @@
-#include "../application.h"
-#include "../framebuffer.h"
+#include "../shared/application.h"
+#include "../shared/framebuffer.h"
 
 #import <Cocoa/Cocoa.h>
 #include <iostream>

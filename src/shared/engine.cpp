@@ -7,7 +7,6 @@
 
 #include "scenes/test_scene.h"
 
-
 const uint16_t kWidth = 800;
 const uint16_t kHeight = 600;
 const uint16_t kFPS = 60;
