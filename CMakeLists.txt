@@ -18,7 +18,7 @@ else()
     set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic -g -O3")
 endif()
 
-file(GLOB_RECURSE SOURCES
+file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/src/shared/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/shared/*.h"
 )
