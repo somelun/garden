@@ -11,10 +11,9 @@ const uint16_t kWidth = 800;
 const uint16_t kHeight = 600;
 const uint16_t kFPS = 60;
 
-
 Engine::Engine() {
     application_ = new Application("garden", kWidth, kHeight);
-    renderer_ = new Renderer(kWidth, kHeight);
+    renderer_ = new Renderer();
 }
 
 Engine::~Engine() {
@@ -23,17 +22,20 @@ Engine::~Engine() {
 }
 
 void Engine::RunLoop() {
-    TestScene* scene = new TestScene(*renderer_);
+    // TestScene* scene = new TestScene(*renderer_);
 
     double dt = 1.0f / kFPS;
     auto current_time = std::chrono::steady_clock::now();
 
+    Framebuffer* fb = application_->GetFrameBuffer();
+    renderer_->SetTarget(fb);
+
     while (application_->IsRunning()) {
 
-       scene->Update(dt);
+       // scene->Update(dt);
 
        application_->HandleEvent();
-       application_->PresentBuffer(renderer_->GetFramebuffer());
+       // application_->PresentBuffer(renderer_->GetFramebuffer());
 
        auto new_time = std::chrono::steady_clock::now();
        double delta_time = std::chrono::duration<double>(new_time - current_time).count();
@@ -48,5 +50,5 @@ void Engine::RunLoop() {
        current_time = new_time;
     }
 
-    delete scene;
+    // delete scene;
 }

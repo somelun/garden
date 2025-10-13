@@ -5,18 +5,18 @@
 
 #include <vector>
 
-
 const float kCanvasWidth = 2, kCanvasHeight = 2;
 
+static Framebuffer* target;
 
-Renderer::Renderer(uint16_t width, uint16_t height) 
-    : width_(width)
-    , height_(height) {
-    framebuffer_ = new Framebuffer(width_, height_);
+Renderer::Renderer() {
 }
 
 Renderer::~Renderer() {
-    delete framebuffer_;
+}
+
+void Renderer::SetTarget(Framebuffer* fb) {
+    target = fb;
 }
 
 void Renderer::Draw(const Camera& camera, const std::vector<Object>& objects) {
@@ -282,9 +282,9 @@ void Renderer::DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point 
 
 // fills the whole screen with one color
 void Renderer::FillScreen(const Color& color) {
-    uint8_t* data = framebuffer_->get_data();
+    uint32_t* data = target->data_;
 
-    size_t size = framebuffer_->get_width() * framebuffer_->get_height() * 4;
+    size_t size = target->width_ * target->height_ * 4;
 
     //memset(buffer, 0x0, imageWidth * imageHeight);
 
@@ -315,9 +315,9 @@ void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
         return;
     }
 
-    uint8_t* data = framebuffer_->get_data();
+    uint32_t* data = target->data_;
 
-    uint32_t index = (y * framebuffer_->get_width() + x) * 4;
+    uint32_t index = (y * target->width_ + x) * 4;
     data[index]     = color.x;
     data[index + 1] = color.y;
     data[index + 2] = color.z;
@@ -424,8 +424,8 @@ const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3
     };
 
     const vec2i pointRaster = {
-        (int)((pointNDC.x) * width_),
-        (int)((1 - pointNDC.y) * height_)
+        (int)((pointNDC.x) * target->width_),
+        (int)((1 - pointNDC.y) * target->height_)
     };
 
     return pointRaster;

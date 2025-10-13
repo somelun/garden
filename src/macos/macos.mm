@@ -5,7 +5,7 @@
 #include <iostream>
 
 // MacOS window implementation
-struct window_impl_t {
+struct WindowImpl {
     NSWindow* handler;
     Framebuffer* buffer;
     bool bClosing{false};   //FIXME: please rename
@@ -21,10 +21,10 @@ struct window_impl_t {
 @end
 
 @implementation WindowDelegate {
-    window_impl_t* window_;
+    WindowImpl* window_;
 }
 
-- (instancetype)initWithWindow:(window_impl_t *)in_window {
+- (instancetype)initWithWindow:(WindowImpl *)in_window {
     self = [super init];
     if (self != nil) {
         window_ = in_window;
@@ -49,10 +49,10 @@ struct window_impl_t {
 @end
 
 @implementation BufferView {
-    window_impl_t* window_;
+    WindowImpl* window_;
 }
 
-- (instancetype)initWithWindow:(window_impl_t *)in_window {
+- (instancetype)initWithWindow:(WindowImpl *)in_window {
     self = [super init];
     if (self != nil) {
         window_ = in_window;
@@ -66,18 +66,19 @@ struct window_impl_t {
         return;
     }
 
-    uint8_t* data = window_->buffer->get_data();
+    uint32_t* data = window_->buffer->data_;
+    uint8_t *planes[1] = { (unsigned char *)data };
 
     NSBitmapImageRep *image_rep = [[[NSBitmapImageRep alloc]
-            initWithBitmapDataPlanes:&(data)
-                          pixelsWide:window_->buffer->get_width()
-                          pixelsHigh:window_->buffer->get_height()
+            initWithBitmapDataPlanes:planes
+                          pixelsWide:window_->buffer->width_
+                          pixelsHigh:window_->buffer->height_
                        bitsPerSample:8
-                     samplesPerPixel:3
-                            hasAlpha:NO
+                     samplesPerPixel:4
+                            hasAlpha:YES
                             isPlanar:NO
                       colorSpaceName:NSCalibratedRGBColorSpace
-                         bytesPerRow:window_->buffer->get_width() * 4
+                         bytesPerRow:window_->buffer->width_ * 4
                         bitsPerPixel:32] autorelease];
 
     NSImage *image = [[[NSImage alloc] init] autorelease];
@@ -107,16 +108,13 @@ struct window_impl_t {
 
 @end
 
-// static NSAutoreleasePool* globalAutoreleasePool = nullptr;
-
 // public window class implementation
 Application::Application(const char* title, uint16_t width, uint16_t height)
-    : width_(width)
-    , height_(height) {
+    /*: width_(width)
+    , height_(height)*/ {
     std::cout << "Application launching...\n";
 
     if (NSApp == nil) {
-        // globalAutoreleasePool = [[NSAutoreleasePool alloc] init];
         [NSApplication sharedApplication];
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];
 
@@ -135,25 +133,39 @@ Application::Application(const char* title, uint16_t width, uint16_t height)
 
         [NSApp finishLaunching];
 
-        CreateWindow(title);
+        CreateWindowImpl(title, width, height);
     }
 }
 
 Application::~Application () {
-    CloseWindow();
+    CloseWindowImpl();
+
     std::cout << "Application closing...\n";
 }
 
+Framebuffer* Application::GetFrameBuffer() const {
+    return window_impl->buffer;
+}
+
 // window implementation
-void Application::CreateWindow(const char* title) {
+void Application::CreateWindowImpl(const char* title, uint16_t width, uint16_t height) {
     if (window_impl == nullptr) {
-        window_impl = new window_impl_t();
+        window_impl = new WindowImpl();
     } else {
-        // i think that for now we already have window, so just do nothing
+        // i think right now we already have window, so just do nothing
         return;
     }
 
-    NSRect rect = NSMakeRect(0, 0, width_, height_);
+    if (window_impl->buffer == nullptr) {
+        window_impl->buffer = new Framebuffer();
+        if (window_impl->buffer != nullptr) {
+            window_impl->buffer->width_ = width;
+            window_impl->buffer->height_ = height;
+            window_impl->buffer->data_ = new uint32_t[width * height];
+        }
+    }
+
+    NSRect rect = NSMakeRect(0, 0, width, height);
 
     NSUInteger mask = NSWindowStyleMaskTitled
                     | NSWindowStyleMaskClosable
@@ -179,7 +191,7 @@ void Application::CreateWindow(const char* title) {
     [window_impl->handler makeKeyAndOrderFront:nil];
 }
 
-void Application::CloseWindow() {
+void Application::CloseWindowImpl() {
     [window_impl->handler orderOut:nil];
 
     [[window_impl->handler delegate] release];
@@ -188,6 +200,8 @@ void Application::CloseWindow() {
     // [g_autoreleasepool drain];
     // g_autoreleasepool = [[NSAutoreleasePool alloc] init];
 
+    delete window_impl->buffer->data_;
+    delete window_impl->buffer;
     delete window_impl;
 }
 
@@ -211,8 +225,4 @@ void Application::HandleEvent() {
 
 bool Application::IsRunning() {
     return !window_impl->bClosing;
-}
-
-void Application::SetTitle(const char *title) {
-    [window_impl->handler setTitle:[NSString stringWithUTF8String:title]];
 }

@@ -8,12 +8,14 @@
 #include "math/vec.h"
 #include "math/mat.h"
 
-class Framebuffer;
+struct Framebuffer;
 
 class Renderer {
 public:
-    Renderer(uint16_t width, uint16_t height);
+    Renderer();
     ~Renderer();
+
+    void SetTarget(Framebuffer* fb);
 
     // function used to draw scene
     void Draw(const class Camera& camera, const std::vector<class Object>& objects);
@@ -27,9 +29,9 @@ public:
     void DrawPixel(const Color& color, uint16_t x, uint16_t y);
 
     // used for the application class to actully draw the buffer to the screen
-    inline const Framebuffer* GetFramebuffer() const {
-        return framebuffer_;
-    }
+    // inline const Framebuffer* GetFramebuffer() const {
+    //     return framebuffer_;
+    // }
 
 private:
     void DrawTriangleBottom(const Color& color, Point p1, Point p2, Point p3);
@@ -37,7 +39,7 @@ private:
 
     const vec2i ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld);
 
-    class Framebuffer* framebuffer_;
-    float width_;
-    float height_;
+    // class Framebuffer* framebuffer_;
+    // float width_;
+    // float height_;
 };

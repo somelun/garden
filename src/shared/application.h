@@ -7,18 +7,16 @@ public:
     Application(const char* title, uint16_t width, uint16_t height);
     ~Application();
 
-    void PresentBuffer(const class Framebuffer* framebuffer);
+    struct Framebuffer* GetFrameBuffer() const;
+
+    void PresentBuffer(const struct Framebuffer* framebuffer);
     void HandleEvent();
 
     bool IsRunning();
-    void SetTitle(const char *title);
 
 private:
-    void CreateWindow(const char* title);
-    void CloseWindow();
+    void CreateWindowImpl(const char* title, uint16_t width, uint16_t height);
+    void CloseWindowImpl();
 
-    struct window_impl_t* window_impl{nullptr};
-
-    uint16_t width_;
-    uint16_t height_;
+    struct WindowImpl* window_impl{nullptr};
 };
