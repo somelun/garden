@@ -35,7 +35,7 @@ void Engine::RunLoop() {
        // scene->Update(dt);
 
        application_->HandleEvent();
-       // application_->PresentBuffer(renderer_->GetFramebuffer());
+       application_->PresentBuffer();
 
        auto new_time = std::chrono::steady_clock::now();
        double delta_time = std::chrono::duration<double>(new_time - current_time).count();

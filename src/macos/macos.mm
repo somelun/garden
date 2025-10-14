@@ -205,8 +205,7 @@ void Application::CloseWindowImpl() {
     delete window_impl;
 }
 
-void Application::PresentBuffer(const Framebuffer* framebuffer) {
-    window_impl->buffer = const_cast<Framebuffer*>(framebuffer);
+void Application::PresentBuffer() {
     [[window_impl->handler contentView] setNeedsDisplay:YES];
 }
 
