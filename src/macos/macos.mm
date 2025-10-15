@@ -6,9 +6,9 @@
 
 // MacOS window implementation
 struct WindowImpl {
-    NSWindow* handler;
-    Framebuffer* buffer;
-    bool bClosing{false};   //FIXME: please rename
+    NSWindow* handler = nil;
+    Framebuffer* buffer = nullptr;
+    bool should_close = false;
 };
 
 // some information aboud window resize
@@ -34,7 +34,7 @@ struct WindowImpl {
 
 - (BOOL)windowShouldClose:(NSWindow *)sender {
     (void)sender;
-    window_->bClosing = true;
+    window_->should_close = true;
     return NO;
 }
 
@@ -223,5 +223,5 @@ void Application::HandleEvent() {
 }
 
 bool Application::IsRunning() {
-    return !window_impl->bClosing;
+    return !window_impl->should_close;
 }
