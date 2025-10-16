@@ -15,11 +15,8 @@ public:
     void PresentBuffer();
     void HandleEvent();
 
-    bool IsRunning();
+    bool IsRunning() const;
 
 private:
-    void CreateWindowImpl(const char* title, uint16_t width, uint16_t height);
-    void CloseWindowImpl();
-
-    WindowImpl* window_impl{nullptr};
+    void* platform_window_ = nullptr;
 };

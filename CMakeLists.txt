@@ -24,7 +24,11 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
 )
 
 if(APPLE)
-    set(SOURCES ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/src/macos/macos.mm)
+    file(GLOB_RECURSE MACOS_SOURCES CONFIGURE_DEPENDS
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/macos/*.mm"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/macos/*.h"
+    )
+    list(APPEND SOURCES ${MACOS_SOURCES})
 endif(APPLE)
 
 if(MSVC)
