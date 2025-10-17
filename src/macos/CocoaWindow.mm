@@ -1,7 +1,58 @@
 #import "CocoaWindow.h"
 
+///////////////////////////
+
+@interface FramebufferView : NSView
+- (instancetype)initWithFramebuffer:(Framebuffer*)fb;
+@property (nonatomic, readonly) Framebuffer* framebuffer;
+@end
+
+@implementation FramebufferView {
+    Framebuffer* _framebuffer;
+}
+
+- (instancetype)initWithFramebuffer:(Framebuffer*)fb {
+    if ((self = [super initWithFrame:NSZeroRect])) {
+        _framebuffer = fb;
+        [self setWantsLayer:YES];
+    }
+    return self;
+}
+
+- (Framebuffer*)framebuffer {
+    return _framebuffer;
+}
+
+- (void)drawRect:(NSRect)dirtyRect {
+    if (!_framebuffer || !_framebuffer->data_) return;
+
+    uint32_t* data = _framebuffer->data_;
+    NSBitmapImageRep* rep = [[NSBitmapImageRep alloc]
+        initWithBitmapDataPlanes:(unsigned char**)&data
+                      pixelsWide:_framebuffer->width_
+                      pixelsHigh:_framebuffer->height_
+                   bitsPerSample:8
+                 samplesPerPixel:4
+                        hasAlpha:YES
+                        isPlanar:NO
+                  colorSpaceName:NSDeviceRGBColorSpace
+                     bytesPerRow:_framebuffer->width_ * 4
+                    bitsPerPixel:32];
+
+    NSImage* image = [[NSImage alloc] init];
+    [image addRepresentation:rep];
+    [image drawInRect:[self bounds]];
+
+    [rep release];
+    [image release];
+}
+@end
+
+/////////////////////////////////
+
 @implementation CocoaWindow {
     Framebuffer* _framebuffer;
+    FramebufferView* _view;
 }
 
 - (instancetype)initWithTitle:(const char*)title
@@ -26,11 +77,10 @@
         [_nsWindow setTitle:[NSString stringWithUTF8String:title]];
         [_nsWindow setDelegate:self];
 
-        // create custom view for framebuffer display
-        NSView* view = [[NSView alloc] initWithFrame:rect];
-        [view setWantsLayer:YES];
-        [_nsWindow setContentView:view];
+        _view = [[FramebufferView alloc] initWithFramebuffer:_framebuffer];
+        [_nsWindow setContentView:_view];
         [_nsWindow makeKeyAndOrderFront:nil];
+        [_view release]; // if not using ARC
     }
     return self;
 }
@@ -40,35 +90,7 @@
 }
 
 - (void)present {
-    if (!_framebuffer) {
-        return;
-    }
-
-    NSView* view = [_nsWindow contentView];
-    [view lockFocus];
-
-    uint32_t* data = _framebuffer->data_;
-    if (data) {
-        NSBitmapImageRep* rep = [[NSBitmapImageRep alloc]
-            initWithBitmapDataPlanes:(unsigned char**)&data
-                          pixelsWide:_framebuffer->width_
-                          pixelsHigh:_framebuffer->height_
-                       bitsPerSample:8
-                     samplesPerPixel:4
-                            hasAlpha:YES
-                            isPlanar:NO
-                      colorSpaceName:NSDeviceRGBColorSpace
-                         bytesPerRow:_framebuffer->width_ * 4
-                        bitsPerPixel:32];
-
-        NSImage* image = [[NSImage alloc] init];
-        [image addRepresentation:rep];
-        [image drawInRect:[view bounds]];
-        [rep release];
-        [image release];
-    }
-
-    [view unlockFocus];
+    [_view setNeedsDisplay:YES];
 }
 
 - (BOOL)windowShouldClose:(NSWindow*)sender {
