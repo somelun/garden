@@ -282,9 +282,9 @@ void Renderer::DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point 
 
 // fills the whole screen with one color
 void Renderer::FillScreen(const Color& color) {
-    uint32_t* data = target->data_;
+    uint32_t* data = target->data;
 
-    size_t size = target->width_ * target->height_ * 4;
+    size_t size = target->width * target->height * 4;
 
     //memset(buffer, 0x0, imageWidth * imageHeight);
 
@@ -315,9 +315,9 @@ void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
         return;
     }
 
-    uint32_t* data = target->data_;
+    uint32_t* data = target->data;
 
-    uint32_t index = (y * target->width_ + x) * 4;
+    uint32_t index = (y * target->width + x) * 4;
     data[index]     = color.x;
     data[index + 1] = color.y;
     data[index + 2] = color.z;
@@ -424,8 +424,8 @@ const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3
     };
 
     const vec2i pointRaster = {
-        (int)((pointNDC.x) * target->width_),
-        (int)((1 - pointNDC.y) * target->height_)
+        (int)((pointNDC.x) * target->width),
+        (int)((1 - pointNDC.y) * target->height)
     };
 
     return pointRaster;

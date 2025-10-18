@@ -1,4 +1,4 @@
-#import "CocoaWindow.h"
+#import "cocoa_window.h"
 
 ///////////////////////////
 
@@ -24,19 +24,21 @@
 }
 
 - (void)drawRect:(NSRect)dirtyRect {
-    if (!_framebuffer || !_framebuffer->data_) return;
+    if (!_framebuffer || !_framebuffer->data) {
+        return;
+    }
 
-    uint32_t* data = _framebuffer->data_;
+    uint32_t* data = _framebuffer->data;
     NSBitmapImageRep* rep = [[NSBitmapImageRep alloc]
         initWithBitmapDataPlanes:(unsigned char**)&data
-                      pixelsWide:_framebuffer->width_
-                      pixelsHigh:_framebuffer->height_
+                      pixelsWide:_framebuffer->width
+                      pixelsHigh:_framebuffer->height
                    bitsPerSample:8
                  samplesPerPixel:4
                         hasAlpha:YES
                         isPlanar:NO
                   colorSpaceName:NSDeviceRGBColorSpace
-                     bytesPerRow:_framebuffer->width_ * 4
+                     bytesPerRow:_framebuffer->width * 4
                     bitsPerPixel:32];
 
     NSImage* image = [[NSImage alloc] init];
@@ -63,9 +65,9 @@
         _shouldClose = NO;
 
         _framebuffer = new Framebuffer();
-        _framebuffer->width_ = width;
-        _framebuffer->height_ = height;
-        _framebuffer->data_ = new uint32_t[width * height];
+        _framebuffer->width = width;
+        _framebuffer->height = height;
+        _framebuffer->data = new uint32_t[width * height];
 
         NSRect rect = NSMakeRect(0, 0, width, height);
         _nsWindow = [[NSWindow alloc] initWithContentRect:rect
@@ -99,7 +101,7 @@
 }
 
 - (void)dealloc {
-    delete[] _framebuffer->data_;
+    delete[] _framebuffer->data;
     delete _framebuffer;
     [_nsWindow close];
     [super dealloc];

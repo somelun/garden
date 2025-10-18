@@ -1,6 +1,6 @@
-#include "../shared/Application.h"
+#include "../shared/application.h"
 
-#import "CocoaWindow.h"
+#import "cocoa_window.h"
 
 Application::Application(const char* title, uint16_t width, uint16_t height) {
     if (NSApp == nil) {
