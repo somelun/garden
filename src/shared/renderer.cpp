@@ -289,12 +289,12 @@ void Renderer::FillScreen(const Color& color) {
     //memset(buffer, 0x0, imageWidth * imageHeight);
 
     // return;
-    for (size_t i = 0; i < size; i += 4) {
-        data[i]     = color.x;
-        data[i + 1] = color.y;
-        data[i + 2] = color.z;
-        data[i + 3] = color.w;
-    }
+    // for (size_t i = 0; i < size; i += 4) {
+    //     data[i]     = color.x;
+    //     data[i + 1] = color.y;
+    //     data[i + 2] = color.z;
+    //     data[i + 3] = color.w;
+    // }
     // TODO:
     // __asm__(//"lea dword rdi, data"
             // "mov dword rdi, data"
