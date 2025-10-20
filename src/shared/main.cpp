@@ -15,31 +15,31 @@ int main(int argc, char *argv[]) {
     Application* application = new Application("garden", WIDTH, HEIGHT);
     Renderer* renderer = new Renderer();
 
-    double dt = 1.0f / FPS;
-    std::chrono::time_point current_time = std::chrono::steady_clock::now();
-
     Framebuffer* fb = application->GetFrameBuffer();
     renderer->SetTarget(fb);
 
+    double target_time = 1.0f / FPS;
+    std::chrono::time_point last_time = std::chrono::steady_clock::now();
     while (application->IsRunning()) {
-        // Update(dt);
+        application->HandleEvent();
 
-       application->HandleEvent();
-       application->PresentBuffer();
+        std::chrono::time_point now = std::chrono::steady_clock::now();
+        double delta_time = std::chrono::duration<double>(now - last_time).count();
+        last_time = now;
 
-       std::chrono::time_point new_time = std::chrono::steady_clock::now();
-       double delta_time = std::chrono::duration<double>(new_time - current_time).count();
+        // scene->Update(delta_time);
+        // renderer->Render(scene);
 
-       double sleep_time = dt - delta_time;
-       if (sleep_time > 0.0f) {
-           std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
-       } else {
-           // TODO: handle this sad situation
-       }
+        application->PresentBuffer();
 
-       current_time = new_time;
+        std::chrono::time_point end = std::chrono::steady_clock::now();
+        double elapsed = std::chrono::duration<double>(end - now).count();
+        double sleep_time = target_time - elapsed;
+
+        if (sleep_time > 0.0f) {
+            std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
+        }
     }
-
 
     delete renderer;
     delete application;
