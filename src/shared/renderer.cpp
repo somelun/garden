@@ -280,33 +280,18 @@ void Renderer::DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point 
     DrawTriangle2D(color, p2, p3, p4);
 }
 
-// fills the whole screen with one color
 void Renderer::FillScreen(const Color& color) {
-    uint32_t* data = target->data;
-
     size_t size = target->width * target->height * 4;
 
-    //memset(buffer, 0x0, imageWidth * imageHeight);
+    uint32_t c = (color.x << 24) | (color.y << 16) | (color.z << 8) | color.w;
+    target->data[0] = c;
+    size_t filled = 1;
 
-    // return;
-    // for (size_t i = 0; i < size; i += 4) {
-    //     data[i]     = color.x;
-    //     data[i + 1] = color.y;
-    //     data[i + 2] = color.z;
-    //     data[i + 3] = color.w;
-    // }
-    // TODO:
-    // __asm__(//"lea dword rdi, data"
-            // "mov dword rdi, data"
-            // "mov ecx, size"
-            // "mov eax, color"
-            //"rep stosw"
-        //mov edi, dest   ; edi points to destination memory
-        //    mov ecx, count  ; number of 16-bit words to move
-        //    mov ax,  data   ; 16-bit data
-        //    rep stosw       ; move data
-        // );
-        //
+    while (filled < size) {
+        size_t copy = (filled < size - filled) ? filled : (size - filled);
+        memcpy(target->data + filled, target->data, copy * sizeof(uint32_t));
+        filled += copy;
+    }
 }
 
 void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {

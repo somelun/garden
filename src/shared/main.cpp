@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
     Framebuffer* fb = application->GetFrameBuffer();
     renderer->SetTarget(fb);
 
+    renderer->FillScreen(Color(122, 67, 113, 255));
+
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
     while (application->IsRunning()) {
