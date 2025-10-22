@@ -1,19 +1,10 @@
 #pragma once
 
 #include "math/vec.h"
-#include "math/mat.h"
 
-// enum class ProjectionType {
-//     Perspective = 0,
-//     Orthographic,
-// };
+struct Camera {
+    Camera(Vec3 position);
 
-// http://www.songho.ca/opengl/gl_camera.html
-class Camera {
-public:
-    Camera();
-
-    mat4 projection;
-private:
-    // ProjectionType projectionType_{ProjectionType::Perspective};
+    Vec3 position;
+    Vec3 target;
 };
