@@ -3,8 +3,8 @@
 #include "math/vec.h"
 
 struct Camera {
-    Camera(Vec3 position);
+    Camera(Vec3f position);
 
-    Vec3 position;
-    Vec3 target;
+    Vec3f position;
+    Vec3f target;
 };

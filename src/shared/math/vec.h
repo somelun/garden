@@ -6,7 +6,7 @@ struct Vec2 {
     float x, y;
 };
 
-struct Vec3 {
+struct Vec3f {
     float x, y, z;
 };
 
@@ -19,4 +19,4 @@ struct Vec4f {
 };
 
 using Color = Vec4i;
-using Point = Vec3;
+using Point = Vec3f;
