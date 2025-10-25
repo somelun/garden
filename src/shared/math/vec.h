@@ -2,7 +2,7 @@
 
 #include "stdint.h"
 
-struct Vec2 {
+struct Vec2f {
     float x, y;
 };
 
@@ -18,5 +18,5 @@ struct Vec4f {
     float x, y, z, w;
 };
 
-using Color = Vec4i;
-using Point = Vec3f;
+
+using Point2D = Vec2f;

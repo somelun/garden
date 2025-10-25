@@ -1,6 +1,5 @@
 #include "test_scene.h"
 #include "../renderer.h"
-#include "../object.h"
 #include "../camera.h"
 
 const Color PINK = {255,   0, 127, 255};

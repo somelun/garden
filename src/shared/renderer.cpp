@@ -1,19 +1,7 @@
 #include "renderer.h"
 #include "framebuffer.h"
-#include "object.h"
-#include "camera.h"
 
-#include <vector>
-
-const float kCanvasWidth = 2, kCanvasHeight = 2;
-
-static Framebuffer* target;
-
-Renderer::Renderer() {
-}
-
-Renderer::~Renderer() {
-}
+#include <utility>
 
 void Renderer::SetTarget(Framebuffer* fb) {
     target = fb;
@@ -283,7 +271,7 @@ void Renderer::SetTarget(Framebuffer* fb) {
 void Renderer::FillScreen(const Color& color) {
     size_t size = target->width * target->height * 4;
 
-    uint32_t c = (color.x << 24) | (color.y << 16) | (color.z << 8) | color.w;
+    uint32_t c = PackedColor(color);
     target->data[0] = c;
     size_t filled = 1;
 
@@ -309,92 +297,40 @@ void Renderer::FillScreen(const Color& color) {
 //     data[index + 3] = color.w;
 // }
 
-// https://github.com/ssloy/tinyrenderer/wiki/Lesson-1:-Bresenham%E2%80%99s-Line-Drawing-Algorithm
-//http://www.edepot.com/algorithm.html
-// void Renderer::DrawLine(const Color& color, int16_t x0, int16_t y0, int16_t x1, int16_t y1) {
-// //    bool steep = false;
-// //    if (std::abs(x0 - x1) < std::abs(y0 - y1)) {
-// //        std::swap(x0, y0);
-// //        std::swap(x1, y1);
-// //        steep = true;
-// //    }
-// //    if (x0 > x1) {
-// //        std::swap(x0, x1);
-// //        std::swap(y0, y1);
-// //    }
-// //    int16_t dx = x1 - x0;
-// //    int16_t dy = y1 - y0;
-// //    uint16_t derror2 = std::abs(dy) * 2;
-// //    uint16_t error2 = 0;
-// //    uint16_t y = y0;
-// //    for (size_t x = x0; x <= x1; ++x) {
-// //        if (steep) {
-// //            DrawPixel(color, y, x);
-// //        } else {
-// //            DrawPixel(color, x, y);
-// //        }
-// //        error2 += derror2;
-// //        if (error2 > dx) {
-// //            y += (y1 > y0 ? 1: -1);
-// //            error2 -= dx * 2;
-// //        }
-// //    }
-// 
-//     x0 = x0 < 0 ? 0 : x0;
-//     x1 = x1 < 0 ? 0 : x1;
-//     y0 = y0 < 0 ? 0 : y0;
-//     y1 = y1 < 0 ? 0 : y1;
-// 
-//     int x = x0;
-//     int y = y0;
-//     int x2 = x1;
-//     int y2 = y1;
-// 
-//     bool yLonger=false;
-//     int shortLen=y2-y;
-//     int longLen=x2-x;
-//     if (abs(shortLen)>abs(longLen)) {
-//         int swap=shortLen;
-//         shortLen=longLen;
-//         longLen=swap;
-//         yLonger=true;
-//     }
-//     int decInc;
-//     if (longLen==0) decInc=0;
-//     else decInc = (shortLen << 16) / longLen;
-// 
-//     if (yLonger) {
-//         if (longLen>0) {
-//             longLen+=y;
-//             for (int j=0x8000+(x<<16);y<=longLen;++y) {
-//                 DrawPixel(color, j >> 16, y);
-//                 j+=decInc;
-//             }
-//             return;
-//         }
-//         longLen+=y;
-//         for (int j=0x8000+(x<<16);y>=longLen;--y) {
-//             DrawPixel(color, j >> 16, y);
-//             j-=decInc;
-//         }
-//         return;
-//     }
-// 
-//     if (longLen>0) {
-//         longLen+=x;
-//         for (int j=0x8000+(y<<16);x<=longLen;++x) {
-//             DrawPixel(color, x, j >> 16);
-//             j+=decInc;
-//         }
-//         return;
-//     }
-//     longLen+=x;
-//     for (int j=0x8000+(y<<16);x>=longLen;--x) {
-//         DrawPixel(color, x, j >> 16);
-//         j-=decInc;
-//     }
-// }
-// 
+// https://haqr.eu/tinyrenderer/bresenham/
+void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
+    bool steep = std::abs(p1.x - p2.x) < std::abs(p1.y - p2.y);
+
+    if (steep) { // if the line is steep, we transpose the image
+        std::swap(p1.x, p1.y);
+        std::swap(p2.x, p2.y);
+    }
+
+    if (p1.x > p2.x) { // make it left−to−right
+        std::swap(p1, p2);
+    }
+
+    const uint32_t packed_color = PackedColor(color);
+
+    int y = p1.y;
+    int ierror = 0;
+    for (int x = p1.x; x <= p2.x; ++x) {
+
+        if (steep) { // if transposed, de−transpose
+            const uint32_t index = x * target->width + y;
+            target->data[index] = packed_color;
+        } else {
+            const uint32_t index = y * target->width + x;
+            target->data[index] = packed_color;
+        }
+        ierror += 2 * std::abs(p2.y - p1.y);
+        if (ierror > p2.x - p1.x) {
+            y += p2.y > p1.y ? 1 : -1;
+            ierror -= 2 * (p2.x - p1.x);
+        }
+    }
+}
+
 // const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld) {
 //     vec4f pointProjected = projection * vec4f(pointWorld, 1.0f);
 // 
