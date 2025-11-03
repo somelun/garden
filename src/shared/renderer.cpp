@@ -1,7 +1,8 @@
 #include "renderer.h"
 #include "framebuffer.h"
 
-#include <utility>
+#include <utility> // std::swap
+#include <cstring> // memcpy
 
 void Renderer::SetTarget(Framebuffer* fb) {
     target = fb;
@@ -271,13 +272,12 @@ void Renderer::SetTarget(Framebuffer* fb) {
 void Renderer::FillScreen(const Color& color) {
     size_t size = target->width * target->height * 4;
 
-    uint32_t c = PackedColor(color);
-    target->data[0] = c;
+    target->data[0] = PackedColor(color);
     size_t filled = 1;
 
     while (filled < size) {
         size_t copy = (filled < size - filled) ? filled : (size - filled);
-        memcpy(target->data + filled, target->data, copy * sizeof(uint32_t));
+        memcpy(target->data + filled, target->data, copy * sizeof(u32));
         filled += copy;
     }
 }
@@ -310,25 +310,48 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
         std::swap(p1, p2);
     }
 
-    const uint32_t packed_color = PackedColor(color);
+    const u32 packed_color = PackedColor(color);
 
-    int y = p1.y;
-    int ierror = 0;
-    for (int x = p1.x; x <= p2.x; ++x) {
+    float dx = p2.x - p1.x;
+    float dy = std::abs(p2.y - p1.y);
+    float error = 0.0f;
+    float y = p1.y;
+    float ystep = (p2.y > p1.y) ? 1.0f : -1.0f;
 
-        if (steep) { // if transposed, de−transpose
-            const uint32_t index = x * target->width + y;
-            target->data[index] = packed_color;
+    for (u32 x = (u32)p1.x; x <= (u32)p2.x; x++) {
+        if (steep) {
+            SetPixel((u32)y, x, packed_color);
         } else {
-            const uint32_t index = y * target->width + x;
-            target->data[index] = packed_color;
+            SetPixel(x, (u32)y, packed_color);
         }
-        ierror += 2 * std::abs(p2.y - p1.y);
-        if (ierror > p2.x - p1.x) {
-            y += p2.y > p1.y ? 1 : -1;
-            ierror -= 2 * (p2.x - p1.x);
+
+        error += dy;
+        if (error > dx) {
+            y += ystep;
+            error -= dx;
         }
     }
+
+    // u32 y = p1.y;
+    // u32 ierror = 0;
+    // for (u32 x = p1.x; x <= p2.x; ++x) {
+    // 
+    //     if (steep) { // if transposed, de−transpose
+    //         SetPixel(y, x, packed_color);
+    //     } else {
+    //         SetPixel(x, y, packed_color);
+    //     }
+    //     ierror += 2 * std::abs(p2.y - p1.y);
+    //     if (ierror > p2.x - p1.x) {
+    //         y += p2.y > p1.y ? 1 : -1;
+    //         ierror -= 2 * (p2.x - p1.x);
+    //     }
+    // }
+}
+
+void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
+    const u32 index = y * target->width + x;
+    target->data[index] = packed_color;
 }
 
 // const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld) {

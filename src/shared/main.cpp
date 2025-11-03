@@ -20,6 +20,13 @@ int main(int argc, char *argv[]) {
 
     renderer->FillScreen({122, 67, 113, 255});
 
+    renderer->DrawLine({50, 50}, {750, 50}, {255, 0, 0, 255});
+    renderer->DrawLine({400, 100}, {400, 500}, {0, 255, 0, 255});
+    renderer->DrawLine({100, 100}, {700, 300}, {0, 0, 255, 255});
+    renderer->DrawLine({200, 500}, {300, 100}, {255, 255, 0, 255});
+    renderer->DrawLine({700, 550}, {100, 550}, {0, 255, 255, 255});
+    renderer->DrawLine({600, 500}, {600, 100}, {255, 0, 255, 255});
+
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
     while (application->IsRunning()) {

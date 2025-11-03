@@ -1,9 +1,9 @@
 #include "test_scene.h"
-#include "../renderer.h"
-#include "../camera.h"
+// #include "../renderer.h"
+// #include "../camera.h"
 
-const Color PINK = {255,   0, 127, 255};
-const Color GREY = { 32,  32,  32, 255};
+// const Color PINK = {255,   0, 127, 255};
+// const Color GREY = { 32,  32,  32, 255};
 
 // TestScene::TestScene(Renderer& renderer) : renderer_(renderer) {
 //     camera_ = new Camera();
