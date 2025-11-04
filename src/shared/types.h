@@ -19,3 +19,10 @@ inline uint32_t PackedColor(const Color& color) {
            ((u32)(color.g & 0xFF) << 8)  |
            ((u32)(color.b & 0xFF));
 }
+
+struct Framebuffer {
+    u16 width;
+    u16 height;
+
+    u32* data;
+};

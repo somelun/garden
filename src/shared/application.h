@@ -1,13 +1,13 @@
 #pragma once
 
-#include <cstdint>
+// #include <cstdint>
+#include "types.h"
 
-struct Framebuffer;
 struct WindowImpl;
 
 class Application {
 public:
-    Application(const char* title, uint16_t width, uint16_t height);
+    Application(const char* title, u16 width, u16 height);
     ~Application();
 
     Framebuffer* GetFrameBuffer() const;

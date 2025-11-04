@@ -2,7 +2,7 @@
 
 #import "cocoa_window.h"
 
-Application::Application(const char* title, uint16_t width, uint16_t height) {
+Application::Application(const char* title, u16 width, u16 height) {
     if (NSApp == nil) {
         [NSApplication sharedApplication];
         [NSApp setActivationPolicy:NSApplicationActivationPolicyRegular];

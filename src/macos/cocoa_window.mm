@@ -58,8 +58,8 @@
 }
 
 - (instancetype)initWithTitle:(const char*)title
-                        width:(uint16_t)width
-                       height:(uint16_t)height
+                        width:(u16)width
+                       height:(u16)height
 {
     if ((self = [super init])) {
         _shouldClose = NO;
@@ -67,7 +67,7 @@
         _framebuffer = new Framebuffer();
         _framebuffer->width = width;
         _framebuffer->height = height;
-        _framebuffer->data = new uint32_t[width * height];
+        _framebuffer->data = new u32[width * height];
 
         NSRect rect = NSMakeRect(0, 0, width, height);
         _nsWindow = [[NSWindow alloc] initWithContentRect:rect

@@ -282,21 +282,6 @@ void Renderer::FillScreen(const Color& color) {
     }
 }
 
-// void Renderer::DrawPixel(const Color& color, uint16_t x, uint16_t y) {
-//     // FIXME:
-//     if (x > 799 || y > 599) {
-//         return;
-//     }
-// 
-//     uint32_t* data = target->data;
-// 
-//     uint32_t index = (y * target->width + x) * 4;
-//     data[index]     = color.x;
-//     data[index + 1] = color.y;
-//     data[index + 2] = color.z;
-//     data[index + 3] = color.w;
-// }
-
 // https://haqr.eu/tinyrenderer/bresenham/
 void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
     bool steep = std::abs(p1.x - p2.x) < std::abs(p1.y - p2.y);
@@ -331,22 +316,6 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
             error -= dx;
         }
     }
-
-    // u32 y = p1.y;
-    // u32 ierror = 0;
-    // for (u32 x = p1.x; x <= p2.x; ++x) {
-    // 
-    //     if (steep) { // if transposed, de−transpose
-    //         SetPixel(y, x, packed_color);
-    //     } else {
-    //         SetPixel(x, y, packed_color);
-    //     }
-    //     ierror += 2 * std::abs(p2.y - p1.y);
-    //     if (ierror > p2.x - p1.x) {
-    //         y += p2.y > p1.y ? 1 : -1;
-    //         ierror -= 2 * (p2.x - p1.x);
-    //     }
-    // }
 }
 
 void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
