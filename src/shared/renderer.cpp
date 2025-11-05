@@ -1,5 +1,4 @@
 #include "renderer.h"
-#include "framebuffer.h"
 
 #include <utility> // std::swap
 #include <cstring> // memcpy
@@ -297,25 +296,22 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
 
     const u32 packed_color = PackedColor(color);
 
-    float dx = p2.x - p1.x;
-    float dy = std::abs(p2.y - p1.y);
-    float error = 0.0f;
-    float y = p1.y;
-    float ystep = (p2.y > p1.y) ? 1.0f : -1.0f;
-
-    for (u32 x = (u32)p1.x; x <= (u32)p2.x; x++) {
-        if (steep) {
-            SetPixel((u32)y, x, packed_color);
+    i32 y = p1.y;
+    i32 ierror = 0;
+    for (u32 x = p1.x; x <= p2.x; ++x) {
+        if (steep) {// if transposed, de−transpose
+            SetPixel(y, x, packed_color);
         } else {
-            SetPixel(x, (u32)y, packed_color);
+            SetPixel(x, y, packed_color);
         }
-
-        error += dy;
-        if (error > dx) {
-            y += ystep;
-            error -= dx;
-        }
+        ierror += 2 * std::abs(p2.y - p1.y);
+        y += (p2.y > p1.y ? 1 : -1) * (ierror > p2.x - p1.x);
+        ierror -= 2 * (p2.x - p1.x)   * (ierror > p2.x - p1.x);
     }
+}
+
+void Renderer::DrawMesh(const Mesh* mesh) {
+    //
 }
 
 void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {

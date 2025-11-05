@@ -1,5 +1,6 @@
 #include "application.h"
 #include "renderer.h"
+#include "mesh.h"
 
 #include <chrono>
 #include <thread> // sleep_for
@@ -20,12 +21,14 @@ int main(int argc, char *argv[]) {
 
     renderer->FillScreen({122, 67, 113, 255});
 
-    renderer->DrawLine({50, 50}, {750, 50}, {255, 0, 0, 255});
-    renderer->DrawLine({400, 100}, {400, 500}, {0, 255, 0, 255});
-    renderer->DrawLine({100, 100}, {700, 300}, {0, 0, 255, 255});
-    renderer->DrawLine({200, 500}, {300, 100}, {255, 255, 0, 255});
-    renderer->DrawLine({700, 550}, {100, 550}, {0, 255, 255, 255});
-    renderer->DrawLine({600, 500}, {600, 100}, {255, 0, 255, 255});
+    for (u32 i = 0; i < (1<<20); ++i) {
+        float ax = rand() % WIDTH, ay = rand() % HEIGHT;
+        float bx = rand() % WIDTH, by = rand() % HEIGHT;
+        renderer->DrawLine({ax, ay}, {bx, by}, { (u8)(rand() % 255), (u8)(rand() % 255), (u8)(rand() % 255), (u8)(rand() % 255) });
+    }
+
+    // const Mesh* mesh = new Mesh("../assets/teapot.obj");
+    // renderer->DrawMesh(mesh);
 
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
@@ -50,6 +53,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    // delete mesh;
     delete renderer;
     delete application;
 
