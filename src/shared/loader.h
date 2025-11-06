@@ -9,14 +9,14 @@
 
 // TODO: this requires refactoring and optimizations, made just to speedup development
 // [[maybe_unused]]
-static bool LoadObjFile(const char* filePath, std::vector<Vec3f>& vertices, std::vector<u16>& triangles) {
+static bool LoadObjFile(const char* filePath, std::vector<Vec3f>& vertices, std::vector<u32>& faces) {
     std::ifstream ifs(filePath, std::ifstream::in);
     if (!ifs.is_open()) {
         return false;
     }
 
     vertices.clear();
-    triangles.clear();
+    faces.clear();
 
     std::string line;
 
@@ -25,21 +25,26 @@ static bool LoadObjFile(const char* filePath, std::vector<Vec3f>& vertices, std:
             continue;
         }
 
-        std::istringstream ss(line);
+        std::istringstream lss(line);
         std::string type;
-        ss >> type;
+        lss >> type;
 
         if (type == "v") {
             Vec3f v;
-            ss >> v.x >> v.y >> v.z;
+            lss >> v.x >> v.y >> v.z;
             vertices.push_back(v);
         }
 
         if (type == "f") {
             u16 d;
-            for (size_t i = 0; i < 3; ++i) {
-                ss >> d;
-                triangles.push_back(--d); // because in .obj file index starts from 1
+            std::istringstream iss(line.substr(2)); // we skipping "f "
+            std::string group;
+
+            while (iss >> group) {
+                // group could be "1193/1240/1193" or "1193//1193" or "1193"
+                std::stringstream gss(group);
+                gss >> d; // reads only the first integer before '/'
+                faces.push_back(--d);
             }
         }
     }

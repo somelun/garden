@@ -2,8 +2,8 @@
 #include "loader.h"
 
 Mesh::Mesh(const char* file_path) {
-    const bool result = LoadObjFile(file_path, vertices, triangles);
+    const bool result = LoadObjFile(file_path, vertices, faces);
     if (!result) {
-        // maybe I need to print an error
+    
     }
 }

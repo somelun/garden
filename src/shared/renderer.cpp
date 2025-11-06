@@ -267,7 +267,7 @@ void Renderer::SetTarget(Framebuffer* fb) {
 //     DrawTriangle2D(color, p1, p2, p3);
 //     DrawTriangle2D(color, p2, p3, p4);
 // }
-// 
+
 void Renderer::FillScreen(const Color& color) {
     size_t size = target->width * target->height * 4;
 
@@ -318,6 +318,12 @@ void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
     const u32 index = y * target->width + x;
     target->data[index] = packed_color;
 }
+
+Point2D Renderer::ProjectToScreen(Point3D vertex) {
+    return { (u16)((vertex.x + 1) *  target->width / 2),
+             (u16)((vertex.y + 1) * target->height / 2) };
+}
+
 
 // const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld) {
 //     vec4f pointProjected = projection * vec4f(pointWorld, 1.0f);

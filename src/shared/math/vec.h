@@ -1,9 +1,13 @@
 #pragma once
 
-#include "stdint.h"
+#include "../types.h"
 
 struct Vec2f {
     float x, y;
+};
+
+struct Vec2i {
+    u16 x, y;
 };
 
 struct Vec3f {
@@ -11,7 +15,7 @@ struct Vec3f {
 };
 
 struct Vec4i {
-    uint8_t x, y, z, w;
+    u8 x, y, z, w;
 };
 
 struct Vec4f {
@@ -19,4 +23,5 @@ struct Vec4f {
 };
 
 
-using Point2D = Vec2f;
+using Point2D = Vec2i;
+using Point3D = Vec3f;

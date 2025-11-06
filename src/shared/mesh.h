@@ -9,5 +9,5 @@ public:
 
 private:
     std::vector<Vec3f> vertices;
-    std::vector<uint16_t> triangles;
+    std::vector<u32> faces;
 };
