@@ -30,28 +30,28 @@ int main(int argc, char *argv[]) {
     const Mesh* mesh = new Mesh("../assets/teapot.obj");
     renderer->DrawMesh(mesh);
 
-    // double target_time = 1.0f / FPS;
-    // std::chrono::time_point last_time = std::chrono::steady_clock::now();
-    // while (application->IsRunning()) {
-    //     application->HandleEvent();
-    // 
-    //     std::chrono::time_point now = std::chrono::steady_clock::now();
-    //     double delta_time = std::chrono::duration<double>(now - last_time).count();
-    //     last_time = now;
-    // 
-    //     // scene->Update(delta_time);
-    //     // renderer->Render(scene);
-    // 
-    //     application->PresentBuffer();
-    // 
-    //     std::chrono::time_point end = std::chrono::steady_clock::now();
-    //     double elapsed = std::chrono::duration<double>(end - now).count();
-    //     double sleep_time = target_time - elapsed;
-    // 
-    //     if (sleep_time > 0.0f) {
-    //         std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
-    //     }
-    // }
+    double target_time = 1.0f / FPS;
+    std::chrono::time_point last_time = std::chrono::steady_clock::now();
+    while (application->IsRunning()) {
+        application->HandleEvent();
+
+        std::chrono::time_point now = std::chrono::steady_clock::now();
+        double delta_time = std::chrono::duration<double>(now - last_time).count();
+        last_time = now;
+
+        // scene->Update(delta_time);
+        // renderer->Render(scene);
+
+        application->PresentBuffer();
+
+        std::chrono::time_point end = std::chrono::steady_clock::now();
+        double elapsed = std::chrono::duration<double>(end - now).count();
+        double sleep_time = target_time - elapsed;
+
+        if (sleep_time > 0.0f) {
+            std::this_thread::sleep_for(std::chrono::duration<double>(sleep_time));
+        }
+    }
 
     delete mesh;
     delete renderer;

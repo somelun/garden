@@ -299,19 +299,24 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
     i32 y = p1.y;
     i32 ierror = 0;
     for (u32 x = p1.x; x <= p2.x; ++x) {
-        if (steep) {// if transposed, de−transpose
+        if (steep) { // if transposed, de−transpose
             SetPixel(y, x, packed_color);
         } else {
             SetPixel(x, y, packed_color);
         }
         ierror += 2 * std::abs(p2.y - p1.y);
         y += (p2.y > p1.y ? 1 : -1) * (ierror > p2.x - p1.x);
-        ierror -= 2 * (p2.x - p1.x)   * (ierror > p2.x - p1.x);
+        ierror -= 2 * (p2.x - p1.x) * (ierror > p2.x - p1.x);
     }
 }
 
 void Renderer::DrawMesh(const Mesh* mesh) {
-    //
+    const size_t vertices_num = mesh->vertices.size();
+    for (size_t i = 0; i < vertices_num; ++i) {
+        Vec3f vertex = mesh->vertices[i];
+        Point2D projected = ProjectToScreen(vertex);
+        SetPixel(projected.x, projected.y, PackedColor({255, 255, 255, 1}));
+    }
 }
 
 void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
@@ -320,7 +325,7 @@ void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
 }
 
 Point2D Renderer::ProjectToScreen(Point3D vertex) {
-    return { (u16)((vertex.x + 1) *  target->width / 2),
+    return { (u16)((vertex.x + 1) * target->width / 2),
              (u16)((vertex.y + 1) * target->height / 2) };
 }
 
