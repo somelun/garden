@@ -311,6 +311,16 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
 }
 
 void Renderer::DrawMesh(const Mesh* mesh) {
+    const size_t faces_num = mesh->faces.size();
+    for (size_t i = 0; i < faces_num; i+=3) {
+        Point2D One = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
+        Point2D Two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
+        Point2D Three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
+        DrawLine(One, Two, {255, 0, 0, 1});
+        DrawLine(Two, Three, {255, 0, 0, 1});
+        DrawLine(Three, One, {255, 0, 0, 1});
+    }
+
     const size_t vertices_num = mesh->vertices.size();
     for (size_t i = 0; i < vertices_num; ++i) {
         Vec3f vertex = mesh->vertices[i];
@@ -325,28 +335,13 @@ void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
 }
 
 Point2D Renderer::ProjectToScreen(Point3D vertex) {
-    return { (u16)((vertex.x + 1) * target->width / 2),
-             (u16)((vertex.y + 1) * target->height / 2) };
+    const float z = vertex.z + 5.0f;  // push model in front of camera
+
+    float px = vertex.x / z;
+    float py = vertex.y / z;
+
+    return {
+        (u16)((px + 1.0f) * 0.5f * target->width),
+        (u16)((1.0f - (py + 1.0f) * 0.5f) * target->height)
+    };
 }
-
-
-// const vec2i Renderer::ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld) {
-//     vec4f pointProjected = projection * vec4f(pointWorld, 1.0f);
-// 
-//     const vec2f pointScreen = {
-//         pointProjected.x / -pointProjected.z,
-//         pointProjected.y / -pointProjected.z
-//     };
-// 
-//     const vec2f pointNDC = {
-//         (pointScreen.x + kCanvasWidth * 0.5f) / kCanvasWidth,
-//         (pointScreen.y + kCanvasHeight * 0.5f) / kCanvasHeight
-//     };
-// 
-//     const vec2i pointRaster = {
-//         (int)((pointNDC.x) * target->width),
-//         (int)((1 - pointNDC.y) * target->height)
-//     };
-// 
-//     return pointRaster;
-// }

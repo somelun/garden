@@ -15,9 +15,9 @@ struct Color {
 
 inline uint32_t PackedColor(const Color& color) {
     return ((u32)(color.a & 0xFF) << 24) |
-           ((u32)(color.r & 0xFF) << 16) |
+           ((u32)(color.b & 0xFF) << 16) |
            ((u32)(color.g & 0xFF) << 8)  |
-           ((u32)(color.b & 0xFF));
+           ((u32)(color.r & 0xFF));
 }
 
 struct Framebuffer {

@@ -24,12 +24,7 @@ public:
 
 private:
     void SetPixel(const u32 x, const u32 y, const u32 packed_color);
-    Point2D ProjectToScreen(Point3D vertex);
-
     // void DrawTriangleBottom(const Color& color, Point p1, Point p2, Point p3);
     // void DrawTriangleTop(const Color& color, Point p1, Point p2, Point p3);
-
-    // const vec2i ComputePixelCoordinates(const mat4& projection, const vec3f& pointWorld);
-
     Framebuffer* target;
 };
