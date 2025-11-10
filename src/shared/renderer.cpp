@@ -316,16 +316,16 @@ void Renderer::DrawMesh(const Mesh* mesh) {
         Point2D One = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
         Point2D Two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
         Point2D Three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
-        DrawLine(One, Two, {255, 0, 0, 1});
-        DrawLine(Two, Three, {255, 0, 0, 1});
-        DrawLine(Three, One, {255, 0, 0, 1});
+        DrawLine(One, Two, {255, 255, 255, 1});
+        DrawLine(Two, Three, {255, 255, 255, 1});
+        DrawLine(Three, One, {255, 255, 255, 1});
     }
 
     const size_t vertices_num = mesh->vertices.size();
     for (size_t i = 0; i < vertices_num; ++i) {
         Vec3f vertex = mesh->vertices[i];
         Point2D projected = ProjectToScreen(vertex);
-        SetPixel(projected.x, projected.y, PackedColor({255, 255, 255, 1}));
+        SetPixel(projected.x, projected.y, PackedColor({255, 0, 0, 1}));
     }
 }
 
