@@ -13,6 +13,11 @@ struct Color {
     u8 r, g, b, a;
 };
 
+#define RED     Color{255, 0, 0, 255}
+#define GREEN   Color{0, 255, 0, 255}
+#define BLUE    Color{0, 0, 255, 255}
+#define WHITE   Color{255, 255, 255, 255}
+
 inline uint32_t PackedColor(const Color& color) {
     return ((u32)(color.a & 0xFF) << 24) |
            ((u32)(color.b & 0xFF) << 16) |

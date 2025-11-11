@@ -7,32 +7,6 @@ void Renderer::SetTarget(Framebuffer* fb) {
     target = fb;
 }
 
-// void Renderer::Draw(const Camera& camera, const std::vector<Object>& objects) {
-//     for (const Object& object : objects) {
-//         Draw(camera, object);
-//     }
-// }
-
-// void Renderer::Draw(const Camera& camera, const Object& object) {
-//         const std::vector<vec3f>& vertices = object.GetVertices();
-// 
-//         // TODO: add back triagnles, not only vertices
-//         // const std::vector<uint16_t> triangles = object.GetTriangles();
-//         // const uint16_t numTriangles = triangles.size();
-// 
-//         mat4 translation = mat4_translate(object.GetPosition());
-// 
-//         const uint16_t numVertices = vertices.size();
-//         for (uint32_t i = 0; i < numVertices; ++i) {
-// 
-//             vec3f translated = translation * vertices[i];
-// 
-//             vec2i rastered = ComputePixelCoordinates(camera.projection, translated);
-// 
-//             DrawPixel(object.GetVertexColor(), rastered.x, rastered.y);
-//         }
-// }
-
 // void Renderer::DrawTriangle2D(const Color& color, Point p1, Point p2, Point p3) {
 //     // check for horizontal or vertical
 //     if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
@@ -316,17 +290,39 @@ void Renderer::DrawMesh(const Mesh* mesh) {
         Point2D One = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
         Point2D Two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
         Point2D Three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
-        DrawLine(One, Two, {255, 255, 255, 1});
-        DrawLine(Two, Three, {255, 255, 255, 1});
-        DrawLine(Three, One, {255, 255, 255, 1});
+        DrawLine(One, Two, WHITE);
+        DrawLine(Two, Three, WHITE);
+        DrawLine(Three, One, WHITE);
     }
 
     const size_t vertices_num = mesh->vertices.size();
     for (size_t i = 0; i < vertices_num; ++i) {
         Vec3f vertex = mesh->vertices[i];
         Point2D projected = ProjectToScreen(vertex);
-        SetPixel(projected.x, projected.y, PackedColor({255, 0, 0, 1}));
+        SetPixel(projected.x, projected.y, PackedColor(RED));
     }
+}
+
+void Renderer::DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& color) {
+    if ((p1.x == p2.x && p2.x == p3.x) || (p1.y == p2.y && p2.y == p3.y)) {
+        return;
+    }
+
+    if (p2.y < p1.y) {
+        std::swap(p1, p2);
+    }
+
+    if (p3.y < p1.y) {
+        std::swap(p1, p3);
+    }
+
+    if (p3.y < p2.y) {
+        std::swap(p2, p3);
+    }
+
+    DrawLine(p1, p2, color);
+    DrawLine(p2, p3, color);
+    DrawLine(p3, p1, color);
 }
 
 void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
