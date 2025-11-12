@@ -7,7 +7,28 @@ struct Vec2f {
 };
 
 struct Vec2i {
-    u16 x, y;
+    i32 x, y;
+
+    Vec2i operator+(const Vec2i& other) const {
+        return {
+            static_cast<i32>(x + other.x),
+            static_cast<i32>(y + other.y)
+        };
+    }
+
+    Vec2i operator-(const Vec2i& other) const {
+        return {
+            static_cast<i32>(x - other.x),
+            static_cast<i32>(y - other.y)
+        };
+    }
+
+    Vec2i operator*(const float& other) const {
+        return {
+            static_cast<i32>(x * other),
+            static_cast<i32>(y * other)
+        };
+    }
 };
 
 struct Vec3f {

@@ -15,7 +15,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 if(MSVC)
 else()
-    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic -g -O3")
+    set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wshadow -pedantic -g -O0")
 endif()
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
