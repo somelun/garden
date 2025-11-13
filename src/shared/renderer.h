@@ -15,7 +15,6 @@ public:
     void DrawLine(Point2D p1, Point2D p2, const Color& color);
     void DrawMesh(const Mesh* mesh);
     void DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& color);
-    // void DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point p4);
 
 private:
     Point2D ProjectToScreen(Point3D vertex);

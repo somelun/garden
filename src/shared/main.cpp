@@ -27,13 +27,13 @@ int main(int argc, char *argv[]) {
     //     renderer->DrawLine({ax, ay}, {bx, by}, { (u8)(rand() % 255), (u8)(rand() % 255), (u8)(rand() % 255), (u8)(rand() % 255) });
     // }
 
-    // const Mesh* mesh = new Mesh("../assets/teapot.obj");
-    // renderer->DrawMesh(mesh);
+    const Mesh* mesh = new Mesh("../assets/teapot.obj");
+    renderer->DrawMesh(mesh);
 
-    renderer->DrawTriangle({7, 45}, {35, 100}, {45, 60}, RED);
-    renderer->DrawTriangle({120, 35}, {90, 5}, {45, 110}, GREEN);
-    renderer->DrawTriangle({115, 83}, {80, 90}, {85, 120}, BLUE);
-
+    // renderer->DrawTriangle({7, 45}, {35, 100}, {45, 60}, RED);
+    // renderer->DrawTriangle({120, 35}, {90, 5}, {45, 110}, GREEN);
+    // renderer->DrawTriangle({115, 83}, {80, 90}, {85, 120}, BLUE);
+    // 
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
     while (application->IsRunning()) {
@@ -57,7 +57,7 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    // delete mesh;
+    delete mesh;
     delete renderer;
     delete application;
 

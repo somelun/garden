@@ -7,11 +7,6 @@ void Renderer::SetTarget(Framebuffer* fb) {
     target = fb;
 }
 
-// void Renderer::DrawQuad(const Color& color, Point p1, Point p2, Point p3, Point p4) {
-//     DrawTriangle2D(color, p1, p2, p3);
-//     DrawTriangle2D(color, p2, p3, p4);
-// }
-
 void Renderer::FillScreen(const Color& color) {
     size_t size = target->width * target->height * 4;
 
@@ -60,9 +55,10 @@ void Renderer::DrawMesh(const Mesh* mesh) {
         Point2D One = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
         Point2D Two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
         Point2D Three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
-        DrawLine(One, Two, WHITE);
-        DrawLine(Two, Three, WHITE);
-        DrawLine(Three, One, WHITE);
+        // DrawLine(One, Two, WHITE);
+        // DrawLine(Two, Three, WHITE);
+        // DrawLine(Three, One, WHITE);
+        DrawTriangle(One, Two, Three, WHITE);
     }
 
     const size_t vertices_num = mesh->vertices.size();
