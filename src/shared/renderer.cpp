@@ -3,6 +3,8 @@
 #include <utility> // std::swap
 #include <cstring> // memcpy
 
+#define USE_BARYCENTRIC_FOR_RASTERIZATION 1
+
 void Renderer::SetTarget(Framebuffer* fb) {
     target = fb;
 }
@@ -52,13 +54,13 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
 void Renderer::DrawMesh(const Mesh* mesh) {
     const size_t faces_num = mesh->faces.size();
     for (size_t i = 0; i < faces_num; i+=3) {
-        Point2D One = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
-        Point2D Two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
-        Point2D Three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
+        Point2D one = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
+        Point2D two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
+        Point2D three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
         // DrawLine(One, Two, WHITE);
         // DrawLine(Two, Three, WHITE);
         // DrawLine(Three, One, WHITE);
-        DrawTriangle(One, Two, Three, WHITE);
+        DrawTriangle(one, two, three, WHITE);
     }
 
     const size_t vertices_num = mesh->vertices.size();
@@ -70,6 +72,27 @@ void Renderer::DrawMesh(const Mesh* mesh) {
 }
 
 void Renderer::DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& color) {
+#if USE_BARYCENTRIC_FOR_RASTERIZATION
+    const i32 bb_min_x = std::min(std::min(p1.x, p2.x), p3.x);
+    const i32 bb_min_y = std::min(std::min(p1.y, p2.y), p3.y);
+    const i32 bb_max_x = std::max(std::max(p1.x, p2.x), p3.x);
+    const i32 bb_max_y = std::max(std::max(p1.y, p2.y), p3.y);
+
+    const double total_area = TriangleAreaSigned(p1, p2, p3);
+
+    for (i32 x = bb_min_x; x <= bb_max_x; ++x) {
+        for (i32 y = bb_min_y; y<=bb_max_y; ++y) {
+            double alpha = TriangleAreaSigned({x, y}, p2, p3) / total_area;
+            double beta  = TriangleAreaSigned({x, y}, p3, p1) / total_area;
+            double gamma = TriangleAreaSigned({x, y}, p1, p2) / total_area;
+            if (alpha < 0 || beta < 0 || gamma < 0) {
+                continue;
+            }
+
+            SetPixel(x, y, PackedColor(color));
+        }
+    }
+#else
     if (p2.y < p1.y) {
         std::swap(p1, p2);
     }
@@ -111,11 +134,7 @@ void Renderer::DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& col
             SetPixel(x, p1.y + i, PackedColor(color));
         }
     }
-}
-
-void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
-    const u32 index = y * target->width + x;
-    target->data[index] = packed_color;
+#endif // #if USE_BARYCENTRIC_FOR_RASTERIZATION
 }
 
 Point2D Renderer::ProjectToScreen(Point3D vertex) {
@@ -128,4 +147,13 @@ Point2D Renderer::ProjectToScreen(Point3D vertex) {
         (u16)((px + 1.0f) * 0.5f * target->width),
         (u16)((1.0f - (py + 1.0f) * 0.5f) * target->height)
     };
+}
+
+void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
+    const u32 index = y * target->width + x;
+    target->data[index] = packed_color;
+}
+
+double Renderer::TriangleAreaSigned(Point2D p1, Point2D p2, Point2D p3) {
+    return 0.5 * ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y));
 }
