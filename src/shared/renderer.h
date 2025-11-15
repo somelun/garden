@@ -20,7 +20,7 @@ private:
     Point2D ProjectToScreen(Point3D vertex);
     void SetPixel(const u32 x, const u32 y, const u32 packed_color);
 
-    double TriangleAreaSigned(Point2D p1, Point2D p2, Point2D p3);
+    double TriangleAreaSigned(const Point2D& p1, const Point2D& p2, const Point2D& p3);
 
     Framebuffer* target;
 };

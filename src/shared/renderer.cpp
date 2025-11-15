@@ -79,6 +79,9 @@ void Renderer::DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& col
     const i32 bb_max_y = std::max(std::max(p1.y, p2.y), p3.y);
 
     const double total_area = TriangleAreaSigned(p1, p2, p3);
+    if (total_area < 1.0) {
+        return;
+    }
 
     for (i32 x = bb_min_x; x <= bb_max_x; ++x) {
         for (i32 y = bb_min_y; y<=bb_max_y; ++y) {
@@ -89,7 +92,12 @@ void Renderer::DrawTriangle(Point2D p1, Point2D p2, Point2D p3, const Color& col
                 continue;
             }
 
-            SetPixel(x, y, PackedColor(color));
+            unsigned char r = static_cast<unsigned char>(alpha * RED.r + beta * GREEN.r + gamma * BLUE.r);
+            unsigned char g = static_cast<unsigned char>(alpha * RED.g + beta * GREEN.g + gamma * BLUE.g);
+            unsigned char b = static_cast<unsigned char>(alpha * RED.b + beta * GREEN.b + gamma * BLUE.b);
+
+            SetPixel(x, y, PackedColor({r, g, b}));
+            // SetPixel(x, y, PackedColor(color));
         }
     }
 #else
@@ -154,6 +162,7 @@ void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
     target->data[index] = packed_color;
 }
 
-double Renderer::TriangleAreaSigned(Point2D p1, Point2D p2, Point2D p3) {
+// variation of https://en.wikipedia.org/wiki/Shoelace_formula
+double Renderer::TriangleAreaSigned(const Point2D& p1, const Point2D& p2, const Point2D& p3) {
     return 0.5 * ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y));
 }
