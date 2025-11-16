@@ -43,6 +43,10 @@ struct Vec4f {
     float x, y, z, w;
 };
 
+struct ScreenVertex {
+    i32 x, y;
+    float depth;
+};
 
 using Point2D = Vec2i;
 using Point3D = Vec3f;
