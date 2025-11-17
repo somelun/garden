@@ -65,9 +65,21 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
 void Renderer::DrawMesh(const Mesh* mesh) {
     const size_t faces_num = mesh->faces.size();
     for (size_t i = 0; i < faces_num; i+=3) {
-        ScreenVertex one = ProjectToScreen(mesh->vertices[mesh->faces[i]]);
-        ScreenVertex two = ProjectToScreen(mesh->vertices[mesh->faces[i + 1]]);
-        ScreenVertex three = ProjectToScreen(mesh->vertices[mesh->faces[i + 2]]);
+        Vec3f v0 = mesh->vertices[mesh->faces[i]];
+        Vec3f v1 = mesh->vertices[mesh->faces[i + 1]];
+        Vec3f v2 = mesh->vertices[mesh->faces[i + 2]];
+
+        Vec3f a = v1 - v0;
+        Vec3f b = v2 - v0;
+        Vec3f n = Cross(a, b);
+        if (n.z >= 0) {
+            continue;
+        }
+
+        const ScreenVertex& one = ProjectToScreen(v0);
+        const ScreenVertex& two = ProjectToScreen(v1);
+        const ScreenVertex& three = ProjectToScreen(v2);
+
         DrawTriangle(one, two, three, WHITE);
     }
 }
@@ -105,7 +117,7 @@ void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3
     }
 }
 
-ScreenVertex Renderer::ProjectToScreen(Point3D vertex) {
+ScreenVertex Renderer::ProjectToScreen(Vec3f vertex) {
     const float z = vertex.z + 5.0f;  // push model in front of camera
 
     float px = vertex.x / z;

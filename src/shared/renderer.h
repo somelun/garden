@@ -18,7 +18,7 @@ public:
     void DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3, const Color& color);
 
 private:
-    ScreenVertex ProjectToScreen(Point3D vertex);
+    ScreenVertex ProjectToScreen(Vec3f vertex);
     void SetPixel(const u32 x, const u32 y, const u32 packed_color);
 
     double TriangleAreaSigned(const Point2D& p1, const Point2D& p2, const Point2D& p3);
