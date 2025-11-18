@@ -1,6 +1,7 @@
 #pragma once
 
-#include "stdint.h"
+#include <stdint.h>
+#include <stdlib.h>
 
 typedef int8_t    i8;   // signed 8-bit integer
 typedef int16_t   i16;  // signed 16-bit integer
@@ -23,6 +24,15 @@ inline uint32_t PackedColor(const Color& color) {
            ((u32)(color.b & 0xFF) << 16) |
            ((u32)(color.g & 0xFF) << 8)  |
            ((u32)(color.r & 0xFF));
+}
+
+inline Color RandomColor() {
+    return {
+        static_cast<u8>(rand() % 255),
+        static_cast<u8>(rand() % 255),
+        static_cast<u8>(rand() % 255),
+        255
+    };
 }
 
 struct Framebuffer {

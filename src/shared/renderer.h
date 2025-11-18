@@ -6,6 +6,12 @@
 
 struct Framebuffer;
 
+enum class RenderMode : u8 {
+    Wireframe,
+    Solid,
+    RandomColor
+};
+
 class Renderer {
 public:
     ~Renderer();
@@ -14,7 +20,7 @@ public:
     void FillScreen(const Color& color);
 
     void DrawLine(Point2D p1, Point2D p2, const Color& color);
-    void DrawMesh(const Mesh* mesh);
+    void DrawMesh(const Mesh* mesh, RenderMode render_mode = RenderMode::Wireframe);
     void DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3, const Color& color);
 
 private:
