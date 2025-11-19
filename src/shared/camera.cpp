@@ -1,5 +1,5 @@
 #include "camera.h"
 
-Camera::Camera(Vec3f position) {
+Camera::Camera(Vec3 position) {
     this->position = position;
 }

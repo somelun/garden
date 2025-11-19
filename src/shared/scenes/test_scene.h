@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../math/mat.h"
+#include "../mat.h"
 
 // class Renderer;
 

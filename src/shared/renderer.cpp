@@ -34,7 +34,7 @@ void Renderer::FillScreen(const Color& color) {
 }
 
 // https://haqr.eu/tinyrenderer/bresenham/
-void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
+void Renderer::DrawLine(Vec2 p1, Vec2 p2, const Color& color) {
     bool steep = std::abs(p1.x - p2.x) < std::abs(p1.y - p2.y);
 
     if (steep) { // if the line is steep, we transpose the image
@@ -65,14 +65,14 @@ void Renderer::DrawLine(Point2D p1, Point2D p2, const Color& color) {
 void Renderer::DrawMesh(const Mesh* mesh, RenderMode render_mode) {
     const size_t faces_num = mesh->faces.size();
     for (size_t i = 0; i < faces_num; i+=3) {
-        Vec3f v0 = mesh->vertices[mesh->faces[i]];
-        Vec3f v1 = mesh->vertices[mesh->faces[i + 1]];
-        Vec3f v2 = mesh->vertices[mesh->faces[i + 2]];
+        Vec3 v0 = mesh->vertices[mesh->faces[i]];
+        Vec3 v1 = mesh->vertices[mesh->faces[i + 1]];
+        Vec3 v2 = mesh->vertices[mesh->faces[i + 2]];
 
         if (render_mode != RenderMode::Wireframe) {
-            Vec3f a = v1 - v0;
-            Vec3f b = v2 - v0;
-            Vec3f n = Cross(a, b);
+            Vec3 a = v1 - v0;
+            Vec3 b = v2 - v0;
+            Vec3 n = Cross(a, b);
             if (n.z >= 0) {
                 continue;
             }
@@ -135,7 +135,7 @@ void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3
     }
 }
 
-ScreenVertex Renderer::ProjectToScreen(Vec3f vertex) {
+ScreenVertex Renderer::ProjectToScreen(Vec3 vertex) {
     const float z = vertex.z + 5.0f;  // push model in front of camera
 
     float px = vertex.x / z;
@@ -155,7 +155,7 @@ void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {
 }
 
 // variation of https://en.wikipedia.org/wiki/Shoelace_formula
-double Renderer::TriangleAreaSigned(const Point2D& p1, const Point2D& p2, const Point2D& p3) {
+double Renderer::TriangleAreaSigned(const Vec2& p1, const Vec2& p2, const Vec2& p3) {
     return 0.5 * ((p2.x - p1.x) * (p3.y - p1.y) - (p3.x - p1.x) * (p2.y - p1.y));
 }
 

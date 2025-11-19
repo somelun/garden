@@ -1,11 +1,16 @@
 #pragma once
 
-#include <iostream>
-#include "vec.h"
+#include "types.h"
+
+struct Mat4 {
+    float data[4][4];
+};
+
+//#include <iostream>
+//#include "vec.h"
 
 // using mat_t = float;
 // 
-// constexpr float kPI = 3.14159265359f;
 // constexpr float kPI180 = kPI / 180.0f;
 // constexpr float k180PI = 180.0f / kPI;
 // 

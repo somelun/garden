@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "math/vec.h"
+#include "vec.h"
 
 #include <fstream>
 #include <sstream>
@@ -9,7 +9,7 @@
 
 // TODO: this requires refactoring and optimizations, made just to speedup development
 // [[maybe_unused]]
-static bool LoadObjFile(const char* filePath, std::vector<Vec3f>& vertices, std::vector<u32>& faces) {
+static bool LoadObjFile(const char* filePath, std::vector<Vec3>& vertices, std::vector<u32>& faces) {
     std::ifstream ifs(filePath, std::ifstream::in);
     if (!ifs.is_open()) {
         return false;
@@ -30,7 +30,7 @@ static bool LoadObjFile(const char* filePath, std::vector<Vec3f>& vertices, std:
         lss >> type;
 
         if (type == "v") {
-            Vec3f v;
+            Vec3 v;
             lss >> v.x >> v.y >> v.z;
             vertices.push_back(v);
         }

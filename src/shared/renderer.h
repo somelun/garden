@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "math/vec.h"
+#include "vec.h"
 #include "mesh.h"
 
 struct Framebuffer;
@@ -19,15 +19,15 @@ public:
 
     void FillScreen(const Color& color);
 
-    void DrawLine(Point2D p1, Point2D p2, const Color& color);
+    void DrawLine(Vec2 p1, Vec2 p2, const Color& color);
     void DrawMesh(const Mesh* mesh, RenderMode render_mode = RenderMode::Wireframe);
     void DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3, const Color& color);
 
 private:
-    ScreenVertex ProjectToScreen(Vec3f vertex);
+    ScreenVertex ProjectToScreen(Vec3 vertex);
     void SetPixel(const u32 x, const u32 y, const u32 packed_color);
 
-    double TriangleAreaSigned(const Point2D& p1, const Point2D& p2, const Point2D& p3);
+    double TriangleAreaSigned(const Vec2& p1, const Vec2& p2, const Vec2& p3);
 
     void ClearZBuffer();
 

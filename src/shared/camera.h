@@ -1,10 +1,10 @@
 #pragma once
 
-#include "math/vec.h"
+#include "vec.h"
 
 struct Camera {
-    Camera(Vec3f position);
+    Camera(Vec3 position);
 
-    Vec3f position;
-    Vec3f target;
+    Vec3 position;
+    Vec3 target;
 };

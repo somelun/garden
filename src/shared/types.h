@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+#define PI 3.14159265359f
+
 typedef int8_t    i8;   // signed 8-bit integer
 typedef int16_t   i16;  // signed 16-bit integer
 typedef int32_t   i32;  // signed 32-bit integer
@@ -13,11 +15,6 @@ typedef uint32_t  u32;  // unsigned 32-bit integer
 struct Color {
     u8 r, g, b, a;
 };
-
-#define RED     Color{255, 0, 0, 255}
-#define GREEN   Color{0, 255, 0, 255}
-#define BLUE    Color{0, 0, 255, 255}
-#define WHITE   Color{255, 255, 255, 255}
 
 inline uint32_t PackedColor(const Color& color) {
     return ((u32)(color.a & 0xFF) << 24) |
@@ -34,6 +31,11 @@ inline Color RandomColor() {
         255
     };
 }
+
+#define RED     Color{255, 0, 0, 255}
+#define GREEN   Color{0, 255, 0, 255}
+#define BLUE    Color{0, 0, 255, 255}
+#define WHITE   Color{255, 255, 255, 255}
 
 struct Framebuffer {
     u16 width;
