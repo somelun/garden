@@ -6,9 +6,6 @@ struct Mat4 {
     float data[4][4];
 };
 
-//#include <iostream>
-//#include "vec.h"
-
 // using mat_t = float;
 // 
 // constexpr float kPI180 = kPI / 180.0f;
