@@ -22,6 +22,10 @@ inline Vec3 Cross(const Vec3& a, const Vec3& b) {
     };
 }
 
+struct Vec4 {
+    float x, y, z, w;
+};
+
 struct ScreenVertex {
     i32 x, y;
     float depth;
