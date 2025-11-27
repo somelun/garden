@@ -12,11 +12,13 @@ struct Mat4 {
     }
 
     inline Mat4 transpose() const {
-        Mat4 R;
-        for (size_t r = 0; r < 4; ++r)
-            for (size_t c = 0; c < 4; ++c)
-                R.data[r][c] = data[c][r];
-        return R;
+        Mat4 result;
+        for (size_t r = 0; r < 4; ++r) {
+            for (size_t c = 0; c < 4; ++c) {
+                result.data[r][c] = data[c][r];
+            }
+        }
+        return result;
     }
 };
 
@@ -29,16 +31,21 @@ inline Vec4 operator*(const Vec4& v, const Mat4& m) {
     };
 }
 
+inline Vec3 operator*(const Vec3& v, const Mat4& m) {
+    Vec4 r = Vec4{v.x, v.y, v.z, 1.0f} * m;
+    return { r.x, r.y, r.z };
+}
+
 inline Mat4 operator*(const Mat4& a, const Mat4& b) {
-    Mat4 R;
+    Mat4 result;
     for (size_t r = 0; r < 4; ++r) {
         for (size_t c = 0; c < 4; ++c) {
-            R.data[r][c] =
+            result.data[r][c] =
                 a.data[r][0] * b.data[0][c] +
                 a.data[r][1] * b.data[1][c] +
                 a.data[r][2] * b.data[2][c] +
                 a.data[r][3] * b.data[3][c];
         }
     }
-    return R;
+    return result;
 }

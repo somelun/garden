@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     Renderer* renderer = new Renderer();
 
     Framebuffer* fb = application->GetFrameBuffer();
-    renderer->SetTarget(fb);
+    renderer->Initialize(fb);
 
     renderer->FillScreen({122, 67, 113, 255});
 
@@ -32,6 +32,7 @@ int main(int argc, char *argv[]) {
         std::chrono::time_point now = std::chrono::steady_clock::now();
         double delta_time = std::chrono::duration<double>(now - last_time).count();
         last_time = now;
+        (void)delta_time;
 
         // scene->Update(delta_time);
         // renderer->Render(scene);

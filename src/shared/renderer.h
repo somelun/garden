@@ -15,7 +15,7 @@ enum class RenderMode : u8 {
 class Renderer {
 public:
     ~Renderer();
-    void SetTarget(Framebuffer* fb);
+    void Initialize(Framebuffer* fb);
 
     void FillScreen(const Color& color);
 

@@ -10,11 +10,9 @@ Renderer::~Renderer() {
     }
 }
 
-void Renderer::SetTarget(Framebuffer* fb) {
+void Renderer::Initialize(Framebuffer* fb) {
     target = fb;
 
-    // not the best place to allocate z buffer but I don't want to create it
-    // outside of Renderer class
     if (target) {
         z_buffer = new float[target->width * target->height];
     }
