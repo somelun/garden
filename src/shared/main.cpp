@@ -1,6 +1,7 @@
 #include "application.h"
 #include "renderer.h"
 #include "mesh.h"
+#include "camera.h"
 
 #include <chrono>
 #include <thread> // sleep_for
@@ -15,9 +16,10 @@ int main(int argc, char *argv[]) {
 
     Application* application = new Application("garden", WIDTH, HEIGHT);
     Renderer* renderer = new Renderer();
+    Camera* camera = new Camera();
 
-    Framebuffer* fb = application->GetFrameBuffer();
-    renderer->Initialize(fb);
+    Framebuffer* framebuffer = application->GetFrameBuffer();
+    renderer->Initialize(framebuffer);
 
     renderer->FillScreen({122, 67, 113, 255});
 
@@ -49,6 +51,8 @@ int main(int argc, char *argv[]) {
     }
 
     delete mesh;
+
+    delete camera;
     delete renderer;
     delete application;
 
