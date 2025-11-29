@@ -5,13 +5,13 @@
 struct Mat4 {
     float data[4][4];
 
-    static Mat4 identity() {
+    static Mat4 Identity() {
         Mat4 m {};
         m.data[0][0] = m.data[1][1] = m.data[2][2] = m.data[3][3] = 1.0f;
         return m;
     }
 
-    inline Mat4 transpose() const {
+    inline Mat4 Transpose() const {
         Mat4 result;
         for (size_t r = 0; r < 4; ++r) {
             for (size_t c = 0; c < 4; ++c) {
@@ -31,9 +31,8 @@ inline Vec4 operator*(const Vec4& v, const Mat4& m) {
     };
 }
 
-inline Vec3 operator*(const Vec3& v, const Mat4& m) {
-    Vec4 r = Vec4{v.x, v.y, v.z, 1.0f} * m;
-    return { r.x, r.y, r.z };
+inline Vec4 operator*(const Vec3& v, const Mat4& m) {
+    return Vec4{v.x, v.y, v.z, 1.0f} * m;
 }
 
 inline Mat4 operator*(const Mat4& a, const Mat4& b) {

@@ -3,6 +3,7 @@
 #include <utility> // std::swap
 #include <cstring> // memcpy
 #include <float.h> // FLT_MAX
+#include "camera.h"
 
 Renderer::~Renderer() {
     if (z_buffer) {
@@ -60,7 +61,14 @@ void Renderer::DrawLine(Vec2 p1, Vec2 p2, const Color& color) {
     }
 }
 
-void Renderer::DrawMesh(const Mesh* mesh, RenderMode render_mode) {
+void Renderer::DrawMesh(const Mesh* mesh, const Camera* camera, RenderMode render_mode) {
+    Mat4 world = Mat4::Identity();
+
+    Mat4 view = camera->GetViewMatrix();
+    Mat4 projection = camera->GetProjectionMatrix();
+
+    Mat4 mvp = world * view * projection;
+
     const size_t faces_num = mesh->faces.size();
     for (size_t i = 0; i < faces_num; i+=3) {
         Vec3 v0 = mesh->vertices[mesh->faces[i]];
@@ -76,23 +84,45 @@ void Renderer::DrawMesh(const Mesh* mesh, RenderMode render_mode) {
             }
         }
 
-        const ScreenVertex& one = ProjectToScreen(v0);
-        const ScreenVertex& two = ProjectToScreen(v1);
-        const ScreenVertex& three = ProjectToScreen(v2);
+        Vec4 p0 = v0 * mvp;
+        Vec4 p1 = v1 * mvp;
+        Vec4 p2 = v2 * mvp;
+
+        if (p0.w <= 0 || p1.w <= 0 || p2.w <= 0) {
+            continue;
+        }
+
+        p0.x /= p0.w;  p0.y /= p0.w;  p0.z /= p0.w;
+        p1.x /= p1.w;  p1.y /= p1.w;  p1.z /= p1.w;
+        p2.x /= p2.w;  p2.y /= p2.w;  p2.z /= p2.w;
+
+        ScreenVertex s0, s1, s2;
+
+        s0.x = (u16)((p0.x + 1.0f) * 0.5f * target->width);
+        s0.y = (u16)((1.0f - p0.y) * 0.5f * target->height);
+        s0.depth = p0.z;
+
+        s1.x = (u16)((p1.x + 1.0f) * 0.5f * target->width);
+        s1.y = (u16)((1.0f - p1.y) * 0.5f * target->height);
+        s1.depth = p1.z;
+
+        s2.x = (u16)((p2.x + 1.0f) * 0.5f * target->width);
+        s2.y = (u16)((1.0f - p2.y) * 0.5f * target->height);
+        s2.depth = p2.z;
 
         switch(render_mode) {
             case RenderMode::Wireframe: {
-                DrawLine({one.x, one.y}, {two.x, two.y}, WHITE);
-                DrawLine({two.x, two.y}, {three.x, three.y}, WHITE);
-                DrawLine({three.x, three.y}, {one.x, one.y}, WHITE);
+                DrawLine({s0.x, s0.y}, {s1.x, s1.y}, WHITE);
+                DrawLine({s1.x, s1.y}, {s2.x, s2.y}, WHITE);
+                DrawLine({s2.x, s2.y}, {s0.x, s0.y}, WHITE);
                 break;
             }
             case RenderMode::Solid: {
-                DrawTriangle(one, two, three, WHITE);
+                DrawTriangle(s0, s1, s2, WHITE);
                 break;
             }
             case RenderMode::RandomColor: {
-                DrawTriangle(one, two, three, RandomColor());
+                DrawTriangle(s0, s1, s2, RandomColor());
                 break;
             }
         }
@@ -131,20 +161,6 @@ void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3
             }
         }
     }
-}
-
-ScreenVertex Renderer::ProjectToScreen(Vec3 vertex) {
-    const float z = vertex.z + 5.0f;  // push model in front of camera
-
-    float px = vertex.x / z;
-    float py = vertex.y / z;
-
-    ScreenVertex out;
-    out.x = (u16)((px + 1.0f) * 0.5f * target->width);
-    out.y = (u16)((1.0f - (py + 1.0f) * 0.5f) * target->height);
-    out.depth = z;
-
-    return out;
 }
 
 void Renderer::SetPixel(const u32 x, const u32 y, const u32 packed_color) {

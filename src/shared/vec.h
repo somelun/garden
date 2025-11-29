@@ -40,6 +40,13 @@ inline Vec3 Cross(const Vec3& a, const Vec3& b) {
 
 struct Vec4 {
     float x, y, z, w;
+
+    // Vec4(Vec3 v, float f) {
+    //     x = v.x;
+    //     y = v.y;
+    //     z = v.z;
+    //     w = f;
+    // }
 };
 
 struct ScreenVertex {

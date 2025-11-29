@@ -4,14 +4,13 @@
 #include "mat.h"
 
 struct Camera {
-    Vec3 position = {0.0f, 0.0f, -3.0f};
+    Vec3 position = {0.0f, -3.0f, -7.0f};
     Vec3 target = {0.0f, 0.0f, 0.0f};
 
-    Vec3 up = {0.0f, 1.0f, 0.0f};
-    float fov_deg;
-    float aspect;
-    float z_near = 1.0f;
-    float z_far = 1.0f;
+    float fov_deg = 70.0f;
+    float aspect = 1.33f;
+    float z_near = 0.1f;
+    float z_far = 100.0f;
 
     Mat4 GetProjectionMatrix() const {
         float fov_rad = fov_deg * 3.14159265f / 180.0f;
@@ -29,6 +28,7 @@ struct Camera {
     }
 
     Mat4 GetViewMatrix() const {
+        constexpr Vec3 up = {0.0f, 1.0f, 0.0f};
         Vec3 f = Normalize(target - position); // forward (+Z)
         Vec3 r = Normalize(Cross(up, f));      // right
         Vec3 u = Cross(f, r);                  // recomputed up
