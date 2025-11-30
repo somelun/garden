@@ -8,7 +8,6 @@
 #include <vector>
 
 // TODO: this requires refactoring and optimizations, made just to speedup development
-// [[maybe_unused]]
 static bool LoadObjFile(const char* filePath, std::vector<Vec3>& vertices, std::vector<u32>& faces) {
     std::ifstream ifs(filePath, std::ifstream::in);
     if (!ifs.is_open()) {
