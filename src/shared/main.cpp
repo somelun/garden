@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
     renderer->FillScreen({122, 67, 113, 255});
 
     const Mesh* mesh = new Mesh("../assets/teapot.obj");
-    renderer->DrawMesh(mesh, camera, RenderMode::RandomColor);
+    renderer->DrawMesh(mesh, camera, RenderMode::Solid);
 
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();

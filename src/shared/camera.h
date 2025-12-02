@@ -13,7 +13,7 @@ struct Camera {
     float z_far = 100.0f;
 
     Mat4 GetProjectionMatrix() const {
-        float fov_rad = fov_deg * 3.14159265f / 180.0f;
+        float fov_rad = fov_deg * DEG_TO_RAD;
         float y_scale = 1.0f / tanf(fov_rad * 0.5f);
         float x_scale = y_scale / aspect;
 

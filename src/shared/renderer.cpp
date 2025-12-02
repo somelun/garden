@@ -4,6 +4,7 @@
 #include <cstring> // memcpy
 #include <float.h> // FLT_MAX
 #include "camera.h"
+#include "light.h"
 
 Renderer::~Renderer() {
     if (z_buffer) {
@@ -19,10 +20,10 @@ void Renderer::Initialize(Framebuffer* fb) {
     }
 }
 
-void Renderer::FillScreen(const Color& color) {
+void Renderer::FillScreen(const Color8& color) {
     size_t size = target->width * target->height * 4;
 
-    target->data[0] = PackedColor(color);
+    target->data[0] = PackedColor8(color);
     size_t filled = 1;
 
     while (filled < size) {
@@ -33,7 +34,7 @@ void Renderer::FillScreen(const Color& color) {
 }
 
 // https://haqr.eu/tinyrenderer/bresenham/
-void Renderer::DrawLine(Vec2 p1, Vec2 p2, const Color& color) {
+void Renderer::DrawLine(Vec2 p1, Vec2 p2, const Color8& color) {
     bool steep = std::abs(p1.x - p2.x) < std::abs(p1.y - p2.y);
 
     if (steep) { // if the line is steep, we transpose the image
@@ -45,7 +46,7 @@ void Renderer::DrawLine(Vec2 p1, Vec2 p2, const Color& color) {
         std::swap(p1, p2);
     }
 
-    const u32 packed_color = PackedColor(color);
+    const u32 packed_color = PackedColor8(color);
 
     i32 y = p1.y;
     i32 ierror = 0;
@@ -122,7 +123,7 @@ void Renderer::DrawMesh(const Mesh* mesh, const Camera* camera, RenderMode rende
                 break;
             }
             case RenderMode::RandomColor: {
-                DrawTriangle(s0, s1, s2, RandomColor());
+                DrawTriangle(s0, s1, s2, RandomColor8());
                 break;
             }
         }
@@ -130,7 +131,7 @@ void Renderer::DrawMesh(const Mesh* mesh, const Camera* camera, RenderMode rende
     }
 }
 
-void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3, const Color& color) {
+void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3, const Color8& color) {
     const i32 bb_min_x = std::min(std::min(sv1.x, sv2.x), sv3.x);
     const i32 bb_min_y = std::min(std::min(sv1.y, sv2.y), sv3.y);
     const i32 bb_max_x = std::max(std::max(sv1.x, sv2.x), sv3.x);
@@ -157,7 +158,7 @@ void Renderer::DrawTriangle(ScreenVertex sv1, ScreenVertex sv2, ScreenVertex sv3
 
             if (depth < z_buffer[index]) {
                 z_buffer[index] = depth;
-                SetPixel(x, y, PackedColor(color));
+                SetPixel(x, y, PackedColor8(color));
             }
         }
     }

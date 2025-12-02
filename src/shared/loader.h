@@ -16,6 +16,8 @@ static bool LoadObjFile(const char* filePath, Mesh& mesh) {
 
     mesh.vertices.clear();
     mesh.faces.clear();
+    mesh.normals.clear();
+    mesh.normal_indices.clear();
 
     std::string line;
 

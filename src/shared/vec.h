@@ -13,6 +13,10 @@ struct Vec3 {
     Vec3 operator-(const Vec3& other) const {
         return { x - other.x, y - other.y, z - other.z };
     }
+
+    Vec3 operator*(const float f) const {
+        return { x * f, y * f, z * f };
+    }
 };
 
 inline Vec3 Normalize(const Vec3& v) {
@@ -40,13 +44,6 @@ inline Vec3 Cross(const Vec3& a, const Vec3& b) {
 
 struct Vec4 {
     float x, y, z, w;
-
-    // Vec4(Vec3 v, float f) {
-    //     x = v.x;
-    //     y = v.y;
-    //     z = v.z;
-    //     w = f;
-    // }
 };
 
 struct ScreenVertex {
