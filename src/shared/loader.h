@@ -39,7 +39,7 @@ static bool LoadObjFile(const char* filePath, Mesh& mesh) {
         if (type == "vn") {
             Vec3 n;
             lss >> n.x >> n.y >> n.z;
-            mesh.normals.push_back(n);
+            mesh.normals.push_back(Normalize(n));
         }
 
         if (type == "f") {

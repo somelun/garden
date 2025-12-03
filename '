@@ -18,19 +18,13 @@ int main(int argc, char *argv[]) {
     Application* application = new Application("garden", WIDTH, HEIGHT);
     Renderer* renderer = new Renderer();
 
-    Camera camera;
-    camera.position = {0.0f, -3.0f, -7.0f};
-    camera.target   = {0.0f, 0.0f, 0.0f};
-    camera.fov_deg  = 70.0f;
-    camera.aspect   = 1.33f;
-    camera.z_near   = 0.1f;
-    camera.z_far    = 100.0f;
-
+    Camera camera = Camera();
     Light light;
-    light.position  = {0.0f, 0.0f, -4.0f};
-    light.color     = {255, 255, 255, 255};
-    light.intensity = 0.2f;
-    light.ambient   = 0.05f;
+    light.position   = { 0.0f, -2.0f, -4.0f };   // in front of object
+    light.color      = { 255, 255, 255, 255 };   // white light
+    light.intensity  = 1.2f;                     // strong enough to see
+
+    light.ambient   = 0.25f;  // IMPORTANT — prevents full black
     light.diffuse   = 1.0f;
     light.specular  = 0.8f;
     light.shininess = 32.0f;
@@ -41,7 +35,7 @@ int main(int argc, char *argv[]) {
     renderer->FillScreen({122, 67, 113, 255});
 
     const Mesh* mesh = new Mesh("../assets/teapot.obj");
-    renderer->DrawMesh(mesh, camera, light, RenderMode::Phong);
+    renderer->DrawMesh(mesh, camera, light, RenderMode::RandomColor);
 
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
