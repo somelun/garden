@@ -38,11 +38,9 @@ int main(int argc, char *argv[]) {
     Framebuffer* framebuffer = application->GetFrameBuffer();
     renderer->Initialize(framebuffer);
 
-    renderer->FillScreen({122, 67, 113, 255});
-
     const Mesh* mesh = new Mesh("../assets/teapot.obj");
-    renderer->DrawMesh(mesh, camera, light, RenderMode::Phong);
 
+    float angle = 0.0f;
     double target_time = 1.0f / FPS;
     std::chrono::time_point last_time = std::chrono::steady_clock::now();
     while (application->IsRunning()) {
@@ -51,10 +49,17 @@ int main(int argc, char *argv[]) {
         std::chrono::time_point now = std::chrono::steady_clock::now();
         double delta_time = std::chrono::duration<double>(now - last_time).count();
         last_time = now;
-        (void)delta_time;
+
+        angle += 0.5f * delta_time;   // speed in radians/sec
+        float radius = 8.0f;
+
+        camera.position.x = sin(angle) * radius;
+        camera.position.z = cos(angle) * radius;
+        camera.position.y = 2.0f;
 
         // scene->Update(delta_time);
-        // renderer->Render(scene);
+        renderer->FillScreen({122, 67, 113, 255});
+        renderer->DrawMesh(mesh, camera, light, RenderMode::Phong);
 
         application->PresentBuffer();
 

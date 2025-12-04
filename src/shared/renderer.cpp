@@ -21,7 +21,7 @@ void Renderer::Initialize(Framebuffer* fb) {
 }
 
 void Renderer::FillScreen(const Color8& color) {
-    size_t size = target->width * target->height * 4;
+    size_t size = target->width * target->height;
 
     target->data[0] = PackedColor8(color);
     size_t filled = 1;
@@ -85,10 +85,22 @@ void Renderer::DrawMesh(const Mesh* mesh, const Camera camera, const Light light
         Vec3 n2 = mesh->normals[mesh->faces[i + 2]];
 
         if (render_mode != RenderMode::Wireframe) {
-            Vec3 a = v1 - v0;
-            Vec3 b = v2 - v0;
-            Vec3 n = Cross(a, b);
-            if (n.z >= 0) {
+            // transform to view (camera) space
+            Vec4 v0v = Vec4{v0.x, v0.y, v0.z, 1.0f} * view;
+            Vec4 v1v = Vec4{v1.x, v1.y, v1.z, 1.0f} * view;
+            Vec4 v2v = Vec4{v2.x, v2.y, v2.z, 1.0f} * view;
+            
+            Vec3 v0_view = {v0v.x, v0v.y, v0v.z};
+            Vec3 v1_view = {v1v.x, v1v.y, v1v.z};
+            Vec3 v2_view = {v2v.x, v2v.y, v2v.z};
+            
+            // face normal in view space
+            Vec3 a = v1_view - v0_view;
+            Vec3 b = v2_view - v0_view;
+            Vec3 n_view = Cross(a, b);
+            
+            // camera looks down -Z; backfaces have n.z >= 0
+            if (n_view.z >= 0.0f) {
                 continue;
             }
         }
