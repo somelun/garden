@@ -28,8 +28,8 @@ int main(int argc, char *argv[]) {
 
     Light light;
     light.position  = {0.0f, 0.0f, -4.0f};
-    light.color     = {255, 255, 255, 255};
-    light.intensity = 0.2f;
+    light.color     = {255, 0, 0, 255};
+    light.intensity = 1.2f;
     light.ambient   = 0.05f;
     light.diffuse   = 1.0f;
     light.specular  = 0.8f;
@@ -38,7 +38,10 @@ int main(int argc, char *argv[]) {
     Framebuffer* framebuffer = application->GetFrameBuffer();
     renderer->Initialize(framebuffer);
 
-    const Mesh* mesh = new Mesh("../assets/teapot.obj");
+    Mesh* mesh = new Mesh();
+    if (!mesh->LoadFromObjFile("../assets/teapot.obj")) {
+        return 1;
+    }
 
     float angle = 0.0f;
     double target_time = 1.0f / FPS;

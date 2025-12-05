@@ -84,27 +84,6 @@ void Renderer::DrawMesh(const Mesh* mesh, const Camera camera, const Light light
         Vec3 n1 = mesh->normals[mesh->faces[i + 1]];
         Vec3 n2 = mesh->normals[mesh->faces[i + 2]];
 
-        if (render_mode != RenderMode::Wireframe) {
-            // transform to view (camera) space
-            Vec4 v0v = Vec4{v0.x, v0.y, v0.z, 1.0f} * view;
-            Vec4 v1v = Vec4{v1.x, v1.y, v1.z, 1.0f} * view;
-            Vec4 v2v = Vec4{v2.x, v2.y, v2.z, 1.0f} * view;
-            
-            Vec3 v0_view = {v0v.x, v0v.y, v0v.z};
-            Vec3 v1_view = {v1v.x, v1v.y, v1v.z};
-            Vec3 v2_view = {v2v.x, v2v.y, v2v.z};
-            
-            // face normal in view space
-            Vec3 a = v1_view - v0_view;
-            Vec3 b = v2_view - v0_view;
-            Vec3 n_view = Cross(a, b);
-            
-            // camera looks down -Z; backfaces have n.z >= 0
-            if (n_view.z >= 0.0f) {
-                continue;
-            }
-        }
-
         Vec4 p0 = v0 * mvp;
         Vec4 p1 = v1 * mvp;
         Vec4 p2 = v2 * mvp;
@@ -130,6 +109,20 @@ void Renderer::DrawMesh(const Mesh* mesh, const Camera camera, const Light light
         s2.x = (u16)((p2.x + 1.0f) * 0.5f * target->width);
         s2.y = (u16)((1.0f - p2.y) * 0.5f * target->height);
         s2.depth = p2.z;
+
+        // back culling
+        if (render_mode != RenderMode::Wireframe) {
+            float ax = (float)s1.x - (float)s0.x;
+            float ay = (float)s1.y - (float)s0.y;
+            float bx = (float)s2.x - (float)s0.x;
+            float by = (float)s2.y - (float)s0.y;
+
+            float cross = ax * by - ay * bx;
+
+            if (cross < 0.0f) {
+                continue;
+            }
+        }
 
         switch(render_mode) {
             case RenderMode::Wireframe: {
