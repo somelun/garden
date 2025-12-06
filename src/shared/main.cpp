@@ -60,7 +60,6 @@ int main(int argc, char *argv[]) {
         camera.position.z = cos(angle) * radius;
         camera.position.y = 2.0f;
 
-        // scene->Update(delta_time);
         renderer->FillScreen({122, 67, 113, 255});
         renderer->DrawMesh(mesh, camera, light, RenderMode::Phong);
 
